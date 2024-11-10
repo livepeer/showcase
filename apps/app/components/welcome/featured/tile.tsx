@@ -36,7 +36,7 @@ export default function PipelineTile({
   return (
     <motion.div
       onClick={() => {
-        router.replace(`?pipeline=${id}&tab=${tab}`);
+        router.replace(`?pipeline=${id}`);
       }}
       animate={{
         scale: isSelected ? 1.05 : 1,
@@ -48,7 +48,7 @@ export default function PipelineTile({
       }}
       className={cn(
         "relative ml-2 h-48 min-w-[20rem] cursor-pointer rounded-xl",
-        isSelected && "border-2 border-foreground",
+        isSelected && "border-2 border-foreground"
       )}
     >
       <div className="relative z-10 flex h-full flex-col justify-between overflow-visible p-4">
@@ -78,7 +78,7 @@ export default function PipelineTile({
               <motion.div
                 className={cn(
                   "flex items-center gap-2 overflow-hidden rounded-full bg-white",
-                  isHovering ? "px-3 py-1" : "p-0",
+                  isHovering ? "px-3 py-1" : "p-0"
                 )}
                 animate={{
                   width: isHovering ? "auto" : "24px",

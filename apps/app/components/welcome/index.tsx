@@ -121,7 +121,7 @@ const Intro = () => {
       <div>
         <Button className="mt-5 w-auto">Create a pipeline</Button>
         <Button variant="ghost" className="mt-5 ml-2 w-auto">
-          Add Funds <ArrowTopRightIcon className="ml-1 h-4 w-4" />
+          What is a pipeline? <ArrowTopRightIcon className="ml-1 h-4 w-4" />
         </Button>
       </div>
     </div>
@@ -161,7 +161,7 @@ const Leaderboard = () => {
           ))}
         </TableBody>
       </Table>
-      <Button className="mt-1" variant="ghost">
+      <Button className="mt-2" variant="ghost">
         See all <ArrowTopRightIcon className="ml-1 h-4 w-4" />
       </Button>
     </div>
@@ -198,7 +198,7 @@ const MyStats = () => {
           ))}
         </TableBody>
       </Table>
-      <Button className="mt-1" variant="ghost">
+      <Button className="mt-2" variant="ghost">
         See all <ArrowTopRightIcon className="ml-1 h-4 w-4" />
       </Button>
     </div>

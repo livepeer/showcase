@@ -54,12 +54,10 @@ export default function Billing() {
     <AlertDialog open={showBilling} onOpenChange={setShowBilling}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="font-medium">
-            Billing and Credits
-          </AlertDialogTitle>
+          <AlertDialogTitle className="font-medium">Add Funds</AlertDialogTitle>
           <AlertDialogDescription>
-            Credits are used to run pipelines. You can purchase more credits
-            from here. 1 credit provides 1 minutes of ingest usage.
+            Funds are used to run pipelines. You can add more funds here. 1
+            minute of ingest usage costs $0.01.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="flex flex-col">
@@ -83,11 +81,11 @@ export default function Billing() {
           <div className="mt-3 ">
             <div className="flex flex-row items-center justify-between">
               <div className="flex items-center gap-1">
-                <span className="font-medium text-lg">200</span>
-                <span className="text-foreground text-sm">credits left</span>
+                <span className="font-medium text-lg">$200</span>
+                <span className="text-foreground text-sm">left</span>
               </div>
               <span className="flex items-center gap-1 text-muted-foreground text-sm">
-                21 hours until next free credits
+                21 hours until next free funds top up
                 <QuestionMarkCircledIcon className="h-4 w-4" />
               </span>
             </div>
@@ -95,12 +93,12 @@ export default function Billing() {
               <Progress value={80} />
             </div>
             <div className="-mr-4 mt-2 flex flex-row items-center justify-end">
-              <Button variant="link">View credits logs</Button>
+              <Button variant="link">View funds logs</Button>
             </div>
           </div>
           <hr className="mb-4 border-border border-t" />
           <div className="flex items-center gap-2">
-            <p className="font-medium text-md">Add Credits</p>
+            <p className="font-medium text-md">Add amount</p>
           </div>
           <div className="mt-3 h-[5.5rem]">
             <CreditSelection onSelect={setSelectedCredits} />
@@ -116,7 +114,7 @@ export default function Billing() {
             onClick={handleBuyCredits}
             disabled={selectedCredits === null || selectedCredits < 1}
           >
-            Buy {selectedCredits} credits for $0.00
+            Add ${selectedCredits}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -134,10 +132,10 @@ const CreditSelection = ({
   const [customValue, setCustomValue] = useState("");
 
   const creditOptions = [
-    { value: 300, label: "300 credits" },
-    { value: 600, label: "600 credits" },
-    { value: 3000, label: "3000 credits" },
-    { value: 6000, label: "6000 credits" },
+    { value: 10, label: "$10" },
+    { value: 50, label: "$50" },
+    { value: 150, label: "$150" },
+    { value: 500, label: "$500" },
   ];
 
   const handleCreditSelect = (value: number | string) => {
