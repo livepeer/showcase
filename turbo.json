@@ -20,15 +20,5 @@
       "persistent": true
     }
   },
-  "globalEnv": [
-    "STRIPE_SECRET_KEY",
-    "RESEND_TOKEN",
-    "DATABASE_URL",
-    "RESEND_FROM",
-    "CLERK_WEBHOOK_SECRET",
-    "STRIPE_WEBHOOK_SECRET",
-    "BETTERSTACK_API_KEY",
-    "BETTERSTACK_URL",
-    "ARCJET_KEY"
-  ]
+  "globalEnv": []
 }

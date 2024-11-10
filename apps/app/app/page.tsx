@@ -1,6 +1,5 @@
-import Billing from "@/components/billing";
 import Header from "@/components/header/index";
-import Models from "@/components/models";
+import Modals from "@/components/Modals";
 import { Separator } from "@repo/design-system/components/ui/separator";
 import { SidebarTrigger } from "@repo/design-system/components/ui/sidebar";
 import type { Metadata } from "next";
@@ -29,7 +28,7 @@ const App = async (): Promise<ReactElement> => {
           <h1>Hello</h1>
         </div>
       </div>
-      <Models />
+      <Modals />
     </>
   );
 };

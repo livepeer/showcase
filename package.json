@@ -1,12 +1,6 @@
 {
-  "name": "next-forge",
-  "version": "2.12.7",
-  "bin": {
-    "next-forge": "./index.js"
-  },
-  "files": [
-    "index.js"
-  ],
+  "name": "livepeer-showcase-app",
+  "version": "0.0.1",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
