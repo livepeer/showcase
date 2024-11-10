@@ -1,26 +1,24 @@
-"use client";
+'use client';
 
-import { Button } from "@repo/design-system/components/ui/button";
-import { Input } from "@repo/design-system/components/ui/input";
-import Link from "next/link";
-import React, { useState } from "react";
-import { GitHubLogoIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
-import { ModeToggle } from "@repo/design-system/components/mode-toggle";
-import Search from "./search";
+import { GitHubLogoIcon } from '@radix-ui/react-icons';
+import { ModeToggle } from '@repo/design-system/components/mode-toggle';
+import { Button } from '@repo/design-system/components/ui/button';
+import Link from 'next/link';
+import Search from './search';
 
 export default function Header() {
   const menuItems = [
     {
-      label: "Explore",
-      href: "/explore",
+      label: 'Explore',
+      href: '/explore',
     },
     {
-      label: "Learn",
-      href: "/learn",
+      label: 'Learn',
+      href: '/learn',
     },
     {
-      label: "Community",
-      href: "/community",
+      label: 'Community',
+      href: '/community',
     },
   ];
 

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Image from "next/image";
-import { Label } from "@repo/design-system/components/ui/label";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { Badge } from "@repo/design-system/components/ui/badge";
-import { cn } from "@repo/design-system/lib/utils";
+import { Badge } from '@repo/design-system/components/ui/badge';
+import { Label } from '@repo/design-system/components/ui/label';
+import { cn } from '@repo/design-system/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function PipelineTile({
   title,
@@ -28,8 +28,8 @@ export default function PipelineTile({
   const router = useRouter();
   const [isHovering, setIsHovering] = useState(false);
 
-  const tab = searchParams.get("tab");
-  const pipeline = searchParams.get("pipeline");
+  const tab = searchParams.get('tab');
+  const pipeline = searchParams.get('pipeline');
 
   const isSelected = pipeline === id;
 
@@ -42,13 +42,13 @@ export default function PipelineTile({
         scale: isSelected ? 1.05 : 1,
       }}
       transition={{
-        type: "spring",
+        type: 'spring',
         stiffness: 300,
         damping: 30,
       }}
       className={cn(
-        "min-w-[20rem] h-48 rounded-xl relative cursor-pointer ml-2",
-        isSelected && "border-2 border-foreground"
+        'min-w-[20rem] h-48 rounded-xl relative cursor-pointer ml-2',
+        isSelected && 'border-2 border-foreground'
       )}
     >
       <div className="flex flex-col justify-between p-4 overflow-visible relative z-10 h-full">
@@ -68,7 +68,7 @@ export default function PipelineTile({
             <motion.div
               className="flex items-center justify-end"
               animate={{
-                width: isHovering ? "auto" : "24px",
+                width: isHovering ? 'auto' : '24px',
               }}
               transition={{
                 duration: 0.3,
@@ -77,11 +77,11 @@ export default function PipelineTile({
             >
               <motion.div
                 className={cn(
-                  "flex items-center gap-2 bg-white rounded-full overflow-hidden",
-                  isHovering ? "px-3 py-1" : "p-0"
+                  'flex items-center gap-2 bg-white rounded-full overflow-hidden',
+                  isHovering ? 'px-3 py-1' : 'p-0'
                 )}
                 animate={{
-                  width: isHovering ? "auto" : "24px",
+                  width: isHovering ? 'auto' : '24px',
                 }}
                 transition={{
                   duration: 0.3,
@@ -89,7 +89,7 @@ export default function PipelineTile({
                 }}
               >
                 <Image
-                  src={"/suhail.png"}
+                  src={'/suhail.png'}
                   alt="suhail"
                   width={100}
                   height={100}
@@ -99,7 +99,7 @@ export default function PipelineTile({
                   {isHovering && (
                     <motion.span
                       initial={{ opacity: 0, width: 0 }}
-                      animate={{ opacity: 1, width: "auto" }}
+                      animate={{ opacity: 1, width: 'auto' }}
                       exit={{ opacity: 0, width: 0 }}
                       transition={{
                         duration: 0.2,

@@ -1,14 +1,14 @@
-import React, { useState } from "react";
 import {
   CommandDialog,
-  CommandInput,
-  CommandList,
   CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
+  CommandList,
   CommandSeparator,
-} from "@repo/design-system/components/ui/command";
-import { Input } from "@repo/design-system/components/ui/input";
+} from '@repo/design-system/components/ui/command';
+import { Input } from '@repo/design-system/components/ui/input';
+import { useState } from 'react';
 export default function Search() {
   const [open, setOpen] = useState(false);
   return (

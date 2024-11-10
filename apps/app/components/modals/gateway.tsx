@@ -1,37 +1,35 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
 import {
   AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from "@repo/design-system/components/ui/alert-dialog";
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@repo/design-system/components/ui/alert-dialog';
+import { Button } from '@repo/design-system/components/ui/button';
+import { Input } from '@repo/design-system/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@repo/design-system/components/ui/select";
-import { Button } from "@repo/design-system/components/ui/button";
-import { Progress } from "@repo/design-system/components/ui/progress";
-import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
-import { toast } from "sonner";
-import { AnimatePresence, motion } from "framer-motion";
-import { Input } from "@repo/design-system/components/ui/input";
-import { useRouter, useSearchParams } from "next/navigation";
+} from '@repo/design-system/components/ui/select';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 export default function Gateway() {
   const [showGateway, setShowGateway] = React.useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const gateway = searchParams.get("gateway");
+  const gateway = searchParams.get('gateway');
 
   const handleClose = () => {
     setShowGateway(false);
@@ -44,7 +42,7 @@ export default function Gateway() {
   };
 
   useEffect(() => {
-    setShowGateway(gateway === "true");
+    setShowGateway(gateway === 'true');
   }, [gateway]);
 
   return (
@@ -55,8 +53,8 @@ export default function Gateway() {
             Gateway Provider
           </AlertDialogTitle>
           <AlertDialogDescription>
-            You can select the gateway provider you want to use. Please note that
-            this will affect the quality and the cost of outputs.
+            You can select the gateway provider you want to use. Please note
+            that this will affect the quality and the cost of outputs.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <Select defaultValue="livepeer">
@@ -83,17 +81,17 @@ const CreditSelection = ({
 }) => {
   const [selectedCredits, setSelectedCredits] = useState<number | null>(null);
   const [isCustomMode, setIsCustomMode] = useState(false);
-  const [customValue, setCustomValue] = useState("");
+  const [customValue, setCustomValue] = useState('');
 
   const creditOptions = [
-    { value: 300, label: "300 credits" },
-    { value: 600, label: "600 credits" },
-    { value: 3000, label: "3000 credits" },
-    { value: 6000, label: "6000 credits" },
+    { value: 300, label: '300 credits' },
+    { value: 600, label: '600 credits' },
+    { value: 3000, label: '3000 credits' },
+    { value: 6000, label: '6000 credits' },
   ];
 
   const handleCreditSelect = (value: number | string) => {
-    if (value === "custom") {
+    if (value === 'custom') {
       setIsCustomMode(true);
       onSelect(Number(customValue));
     } else {
@@ -108,7 +106,7 @@ const CreditSelection = ({
       {creditOptions.map(({ value, label }) => (
         <Button
           key={value}
-          variant={selectedCredits === value ? "default" : "outline"}
+          variant={selectedCredits === value ? 'default' : 'outline'}
           onClick={() => handleCreditSelect(value)}
           className="w-full"
         >
@@ -116,23 +114,7 @@ const CreditSelection = ({
         </Button>
       ))}
       <AnimatePresence mode="wait">
-        {!isCustomMode ? (
-          <motion.div
-            key="button"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Button
-              variant="outline"
-              onClick={() => handleCreditSelect("custom")}
-              className="w-full h-full"
-            >
-              Custom
-            </Button>
-          </motion.div>
-        ) : (
+        {isCustomMode ? (
           <motion.div
             key="input"
             initial={{ scale: 0.8, opacity: 0 }}
@@ -140,15 +122,15 @@ const CreditSelection = ({
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{
               duration: 0.3,
-              type: "spring",
+              type: 'spring',
               stiffness: 500,
               damping: 25,
             }}
             className="relative"
           >
             <motion.div
-              initial={{ width: "100%" }}
-              animate={{ width: "150%" }}
+              initial={{ width: '100%' }}
+              animate={{ width: '150%' }}
               transition={{ duration: 0.3 }}
               className="absolute z-10"
             >
@@ -169,6 +151,22 @@ const CreditSelection = ({
                 }}
               />
             </motion.div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="button"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Button
+              variant="outline"
+              onClick={() => handleCreditSelect('custom')}
+              className="w-full h-full"
+            >
+              Custom
+            </Button>
           </motion.div>
         )}
       </AnimatePresence>

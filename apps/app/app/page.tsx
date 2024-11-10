@@ -1,13 +1,13 @@
-import Header from "@/components/header/index";
-import Modals from "@/components/Modals";
-import Welcome from "@/components/welcome";
-import { Separator } from "@repo/design-system/components/ui/separator";
-import { SidebarTrigger } from "@repo/design-system/components/ui/sidebar";
-import type { Metadata } from "next";
-import { Suspense, type ReactElement } from "react";
+import Modals from '@/components/Modals';
+import Header from '@/components/header/index';
+import Welcome from '@/components/welcome';
+import { Separator } from '@repo/design-system/components/ui/separator';
+import { SidebarTrigger } from '@repo/design-system/components/ui/sidebar';
+import type { Metadata } from 'next';
+import { type ReactElement, Suspense } from 'react';
 
-const title = "Acme Inc";
-const description = "My application.";
+const title = 'Acme Inc';
+const description = 'My application.';
 
 export const metadata: Metadata = {
   title,

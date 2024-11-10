@@ -1,6 +1,5 @@
-import React from 'react'
-import Gateway from './gateway'
-import Billing from './billing'
+import Billing from './billing';
+import Gateway from './gateway';
 
 export default function Modals() {
   return (
@@ -8,5 +7,5 @@ export default function Modals() {
       <Gateway />
       <Billing />
     </>
-  )
+  );
 }

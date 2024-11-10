@@ -13,11 +13,11 @@ export const DesignSystemProvider = ({
   ...properties
 }: DesignSystemProviderProperties) => (
   <ThemeProvider {...properties}>
-        <TooltipProvider>{children}</TooltipProvider>
-        <Toaster />
-      <VercelAnalytics />
-      {env.NODE_ENV !== 'development' && (
-        <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-      )}
+    <TooltipProvider>{children}</TooltipProvider>
+    <Toaster />
+    <VercelAnalytics />
+    {env.NODE_ENV !== 'development' && (
+      <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+    )}
   </ThemeProvider>
 );

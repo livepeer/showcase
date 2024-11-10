@@ -1,22 +1,12 @@
 'use client';
-
-import { ModeToggle } from '@repo/design-system/components/mode-toggle';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@repo/design-system/components/ui/collapsible';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@repo/design-system/components/ui/dropdown-menu';
-import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -29,31 +19,18 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  SidebarTrigger,
   useSidebar,
 } from '@repo/design-system/components/ui/sidebar';
-import { cn } from '@repo/design-system/lib/utils';
 import {
-  BookOpenIcon,
-  BotIcon,
   ChevronRightIcon,
   Clock2Icon,
-  DollarSign,
   DollarSignIcon,
   DoorOpenIcon,
-  FolderIcon,
-  FrameIcon,
   HeartIcon,
   LibraryIcon,
   LifeBuoyIcon,
-  MapIcon,
-  MoreHorizontalIcon,
-  PieChartIcon,
   SendIcon,
-  Settings2Icon,
-  ShareIcon,
   SquareTerminalIcon,
-  Trash2Icon,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
 
@@ -74,7 +51,7 @@ const data = {
       url: '#',
       icon: HeartIcon,
     },
-   {
+    {
       title: 'My History',
       url: '#',
       icon: Clock2Icon,
@@ -85,13 +62,13 @@ const data = {
       icon: LibraryIcon,
     },
   ],
-  navSettings : [
+  navSettings: [
     {
       title: 'Credits & Billing',
       url: '?billing=true',
       icon: DollarSignIcon,
     },
-        {
+    {
       title: 'Gateway ',
       url: '?gateway=true',
       icon: DoorOpenIcon,
@@ -116,11 +93,11 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
 
   return (
     <>
-      <Sidebar variant="inset" collapsible="icon" >
+      <Sidebar variant="inset" collapsible="icon">
         <SidebarHeader>
-        <div className="flex items-center justify-between">
-          <p>Hello</p>
-        </div>
+          <div className="flex items-center justify-between">
+            <p>Hello</p>
+          </div>
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
@@ -167,7 +144,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
               ))}
             </SidebarMenu>
           </SidebarGroup>
-              <SidebarGroup>
+          <SidebarGroup>
             <SidebarGroupLabel>Billings</SidebarGroupLabel>
             <SidebarMenu>
               {data.navSettings.map((item) => (
