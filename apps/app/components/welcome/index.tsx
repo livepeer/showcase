@@ -1,15 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
-import FeaturedPipelines from "./featured";
+import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import { Avatar, AvatarImage } from "@repo/design-system/components/ui/avatar";
 import { Button } from "@repo/design-system/components/ui/button";
 import { Input } from "@repo/design-system/components/ui/input";
-import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import {
+  ScrollArea,
+  ScrollBar,
+} from "@repo/design-system/components/ui/scroll-area";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@repo/design-system/components/ui/table";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ScrollArea, ScrollBar } from "@repo/design-system/components/ui/scroll-area";
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, TableCaption, TableFooter } from "@repo/design-system/components/ui/table";
-import { Avatar, AvatarImage, AvatarFallback } from "@repo/design-system/components/ui/avatar";
+import { useState } from "react";
+import FeaturedPipelines from "./featured";
 
 export default function Head() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -45,7 +55,7 @@ export default function Head() {
   };
 
   return (
-    <div className="relative border rounded-2xl">
+    <div className="relative rounded-2xl border">
       {isCollapsed && (
         <div className="absolute top-0 left-0 p-4">
           <h3 className="font-medium text-lg">Featured Pipelines</h3>
@@ -53,12 +63,12 @@ export default function Head() {
       )}
 
       <motion.div
-        className="absolute right-0 top-1 p-4 cursor-pointer z-10"
+        className="absolute top-1 right-0 z-10 cursor-pointer p-4"
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm">
           <span>{isCollapsed ? "Expand" : "Collapse"}</span>
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="h-4 w-4" />
         </div>
       </motion.div>
 
@@ -71,7 +81,7 @@ export default function Head() {
           className="overflow-hidden"
         >
           <ScrollArea className="">
-            <div className="grid grid-cols-4 gap-10 p-4 rounded-2xl">
+            <div className="grid grid-cols-4 gap-10 rounded-2xl p-4">
               <Intro />
               <Leaderboard />
               <div className="col-span-2">
@@ -89,10 +99,8 @@ export default function Head() {
 const Intro = () => {
   return (
     <div className="col-span-1">
-      <h3 className="font-medium text-lg">
-        Welcome to Livepeer
-      </h3>
-      <p className="text-sm text-muted-foreground mt-3">
+      <h3 className="font-medium text-lg">Welcome to Livepeer</h3>
+      <p className="mt-3 text-muted-foreground text-sm">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
       </p>
@@ -102,8 +110,8 @@ const Intro = () => {
       />
       <div>
         <Button className="mt-5 w-auto">Create a pipeline</Button>
-        <Button variant="ghost" className="mt-5 w-auto ml-2">
-          What is a Pipeline? <ArrowTopRightIcon className="w-4 h-4 ml-1" />
+        <Button variant="ghost" className="mt-5 ml-2 w-auto">
+          What is a Pipeline? <ArrowTopRightIcon className="ml-1 h-4 w-4" />
         </Button>
       </div>
     </div>
@@ -119,34 +127,33 @@ const Leaderboard = () => {
 
   return (
     <div className="col-span-1">
-      <h3 className="font-medium text-lg">
-        Leaderboard
-      </h3>
-     <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Pipeline</TableHead>
-          <TableHead>Author</TableHead>
-          <TableHead>Usage</TableHead>
-        </TableRow>
+      <h3 className="font-medium text-lg">Leaderboard</h3>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Pipeline</TableHead>
+            <TableHead>Author</TableHead>
+            <TableHead>Usage</TableHead>
+          </TableRow>
         </TableHeader>
         <TableBody>
           {data.map((row) => (
             <TableRow key={row.name}>
               <TableCell>{row.name}</TableCell>
               <TableCell className="flex items-center gap-2">
-                <Avatar className="w-5 h-5">
-                  <AvatarImage src={`https://github.com/suhailkakar.png`} />
+                <Avatar className="h-5 w-5">
+                  <AvatarImage src="https://github.com/suhailkakar.png" />
                 </Avatar>
-                {row.author}</TableCell>
+                {row.author}
+              </TableCell>
               <TableCell>{row.usage}k mins</TableCell>
             </TableRow>
           ))}
         </TableBody>
-        <div className="mt-1">
-          <Button variant="ghost">See all <ArrowTopRightIcon className="w-4 h-4 ml-1" /></Button>
-        </div>
       </Table>
+      <Button className="mt-1" variant="ghost">
+        See all <ArrowTopRightIcon className="ml-1 h-4 w-4" />
+      </Button>
     </div>
-  )
+  );
 };

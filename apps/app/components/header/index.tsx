@@ -1,39 +1,38 @@
-'use client';
-
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
-import { ModeToggle } from '@repo/design-system/components/mode-toggle';
-import { Button } from '@repo/design-system/components/ui/button';
-import Link from 'next/link';
-import Search from './search';
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { ModeToggle } from "@repo/design-system/components/mode-toggle";
+import { Button } from "@repo/design-system/components/ui/button";
+import Link from "next/link";
+import Search from "./search";
+import User from "./user";
 
 export default function Header() {
   const menuItems = [
     {
-      label: 'Explore',
-      href: '/explore',
+      label: "Explore",
+      href: "/explore",
     },
     {
-      label: 'Learn',
-      href: '/learn',
+      label: "Learn",
+      href: "/learn",
     },
     {
-      label: 'Community',
-      href: '/community',
+      label: "Community",
+      href: "/community",
     },
   ];
 
   return (
-    <div className="flex justify-between  items-center  h-16 w-full">
+    <div className="flex h-16 w-full items-center justify-between">
       <div className="flex items-center gap-8">
         <Search />
       </div>
       <div className="flex items-center gap-4">
-        <div className="hidden md:flex gap-6 ">
+        <div className="hidden gap-6 md:flex ">
           {menuItems.map((item) => (
             <Link
               href={item.href}
               key={item.label}
-              className="text-sm text-muted-foreground"
+              className="text-muted-foreground text-sm"
             >
               {item.label}
             </Link>
@@ -44,6 +43,7 @@ export default function Header() {
           <GitHubLogoIcon />
           <span>Github</span>
         </Button>
+        <User />
         {/* {authenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger>

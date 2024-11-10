@@ -1,13 +1,13 @@
-import Modals from '@/components/Modals';
-import Header from '@/components/header/index';
-import Welcome from '@/components/welcome';
-import { Separator } from '@repo/design-system/components/ui/separator';
-import { SidebarTrigger } from '@repo/design-system/components/ui/sidebar';
-import type { Metadata } from 'next';
-import { type ReactElement, Suspense } from 'react';
+import Modals from "@/components/Modals";
+import Header from "@/components/header/index";
+import Welcome from "@/components/welcome";
+import { Separator } from "@repo/design-system/components/ui/separator";
+import { SidebarTrigger } from "@repo/design-system/components/ui/sidebar";
+import type { Metadata } from "next";
+import { type ReactElement, Suspense } from "react";
 
-const title = 'Acme Inc';
-const description = 'My application.';
+const title = "Acme Inc";
+const description = "My application.";
 
 export const metadata: Metadata = {
   title,
@@ -18,20 +18,20 @@ const App = async (): Promise<ReactElement> => {
   return (
     <>
       <header className="flex h-16 shrink-0 items-center gap-2">
-        <div className="flex items-center gap-2 px-4 w-screen border-b border-border">
+        <div className="flex w-screen items-center gap-2 border-border border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Header />
         </div>
       </header>
 
-      <div className="px-6 py-4 flex flex-col h-[calc(100vh-4rem)] overflow-y-auto">
+      <div className="flex h-[calc(100vh-4rem)] flex-col overflow-y-auto px-6 py-4">
         <div className="flex-shrink-0">
           <Suspense>
             <Welcome />
           </Suspense>
         </div>
-        <div className="flex-grow min-h-0">
+        <div className="min-h-0 flex-grow">
           {/* <Suspense>
               <Playground searchParams={searchParams} />
             </Suspense> */}

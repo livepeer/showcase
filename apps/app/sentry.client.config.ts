@@ -4,7 +4,7 @@
  * https://docs.sentry.io/platforms/javascript/guides/nextjs/
  */
 
-import { init, replayIntegration } from '@sentry/nextjs';
+import { init, replayIntegration } from "@sentry/nextjs";
 
 init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,

@@ -1,29 +1,29 @@
-import 'server-only';
-import { env } from '@repo/env';
-import type { ReactElement } from 'react';
-import { getStatus } from './get';
+import "server-only";
+import { env } from "@repo/env";
+import type { ReactElement } from "react";
+import { getStatus } from "./get";
 
 export const Status = async (): Promise<ReactElement> => {
-  let statusColor = 'bg-success';
-  let statusLabel = 'All systems normal';
+  let statusColor = "bg-success";
+  let statusLabel = "All systems normal";
 
   try {
     const data = await getStatus();
 
     const status =
-      data.filter((monitor) => monitor.attributes.status === 'up').length /
+      data.filter((monitor) => monitor.attributes.status === "up").length /
       data.length;
 
     if (status === 0) {
-      statusColor = 'bg-destructive';
-      statusLabel = 'Degraded performance';
+      statusColor = "bg-destructive";
+      statusLabel = "Degraded performance";
     } else if (status < 1) {
-      statusColor = 'bg-warning';
-      statusLabel = 'Partial outage';
+      statusColor = "bg-warning";
+      statusLabel = "Partial outage";
     }
   } catch {
-    statusColor = 'bg-muted-foreground';
-    statusLabel = 'Unable to fetch status';
+    statusColor = "bg-muted-foreground";
+    statusLabel = "Unable to fetch status";
   }
 
   return (

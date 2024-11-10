@@ -1,10 +1,11 @@
-import { GoogleAnalytics } from '@repo/analytics/google';
-import { VercelAnalytics } from '@repo/analytics/vercel';
-import { env } from '@repo/env';
-import type { ThemeProviderProps } from 'next-themes';
-import { Toaster } from '../components/ui/sonner';
-import { TooltipProvider } from '../components/ui/tooltip';
-import { ThemeProvider } from './theme';
+import { GoogleAnalytics } from "@repo/analytics/google";
+import { VercelAnalytics } from "@repo/analytics/vercel";
+import { env } from "@repo/env";
+import type { ThemeProviderProps } from "next-themes";
+import { Toaster } from "../components/ui/sonner";
+import { TooltipProvider } from "../components/ui/tooltip";
+import { PrivyProvider } from "./privy";
+import { ThemeProvider } from "./theme";
 
 type DesignSystemProviderProperties = ThemeProviderProps;
 
@@ -13,10 +14,12 @@ export const DesignSystemProvider = ({
   ...properties
 }: DesignSystemProviderProperties) => (
   <ThemeProvider {...properties}>
-    <TooltipProvider>{children}</TooltipProvider>
+    <PrivyProvider>
+      <TooltipProvider>{children}</TooltipProvider>
+    </PrivyProvider>
     <Toaster />
     <VercelAnalytics />
-    {env.NODE_ENV !== 'development' && (
+    {env.NODE_ENV !== "development" && (
       <GoogleAnalytics gaId={env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
     )}
   </ThemeProvider>

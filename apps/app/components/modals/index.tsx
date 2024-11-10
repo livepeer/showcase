@@ -1,5 +1,5 @@
-import Billing from './billing';
-import Gateway from './gateway';
+import Billing from "./billing";
+import Gateway from "./gateway";
 
 export default function Modals() {
   return (

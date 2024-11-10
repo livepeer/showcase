@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,28 +10,28 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@repo/design-system/components/ui/alert-dialog';
-import { Button } from '@repo/design-system/components/ui/button';
-import { Input } from '@repo/design-system/components/ui/input';
-import { Progress } from '@repo/design-system/components/ui/progress';
+} from "@repo/design-system/components/ui/alert-dialog";
+import { Button } from "@repo/design-system/components/ui/button";
+import { Input } from "@repo/design-system/components/ui/input";
+import { Progress } from "@repo/design-system/components/ui/progress";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@repo/design-system/components/ui/select';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+} from "@repo/design-system/components/ui/select";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function Billing() {
   const [selectedCredits, setSelectedCredits] = useState<null | number>(null);
   const [showBilling, setShowBilling] = React.useState(false);
 
   const searchParams = useSearchParams();
-  const billing = searchParams.get('billing');
+  const billing = searchParams.get("billing");
 
   const router = useRouter();
 
@@ -47,7 +47,7 @@ export default function Billing() {
   };
 
   useEffect(() => {
-    setShowBilling(billing === 'true');
+    setShowBilling(billing === "true");
   }, [billing]);
 
   return (
@@ -64,7 +64,7 @@ export default function Billing() {
         </AlertDialogHeader>
         <div className="flex flex-col">
           <div className="flex items-center gap-2 ">
-            <p className="text-md font-medium">Gateway Provider</p>
+            <p className="font-medium text-md">Gateway Provider</p>
           </div>
           <div className="mt-2 mb-4">
             <Select defaultValue="livepeer">
@@ -78,36 +78,36 @@ export default function Billing() {
           </div>
           <hr className="border-none " />
           <div className="flex items-center gap-2">
-            <p className="text-md font-medium">Balance</p>
+            <p className="font-medium text-md">Balance</p>
           </div>
           <div className="mt-3 ">
             <div className="flex flex-row items-center justify-between">
               <div className="flex items-center gap-1">
-                <span className="text-lg font-medium">200</span>
-                <span className="text-sm text-foreground">credits left</span>
+                <span className="font-medium text-lg">200</span>
+                <span className="text-foreground text-sm">credits left</span>
               </div>
-              <span className="text-sm text-muted-foreground flex items-center gap-1">
+              <span className="flex items-center gap-1 text-muted-foreground text-sm">
                 21 hours until next free credits
-                <QuestionMarkCircledIcon className="w-4 h-4" />
+                <QuestionMarkCircledIcon className="h-4 w-4" />
               </span>
             </div>
             <div className="mt-2">
               <Progress value={80} />
             </div>
-            <div className="mt-2 flex flex-row items-center justify-end -mr-4">
+            <div className="-mr-4 mt-2 flex flex-row items-center justify-end">
               <Button variant="link">View credits logs</Button>
             </div>
           </div>
-          <hr className="border-t border-border mb-4" />
+          <hr className="mb-4 border-border border-t" />
           <div className="flex items-center gap-2">
-            <p className="text-md font-medium">Add Credits</p>
+            <p className="font-medium text-md">Add Credits</p>
           </div>
-          <div className="mt-3  h-[5.5rem]">
+          <div className="mt-3 h-[5.5rem]">
             <CreditSelection onSelect={setSelectedCredits} />
           </div>
         </div>
 
-        <div className="text-sm text-muted-foreground mt-1">
+        <div className="mt-1 text-muted-foreground text-sm">
           🎉 For a limited time, please enjoy free usage subsidized by Livepeer.
         </div>
         <AlertDialogFooter>
@@ -131,17 +131,17 @@ const CreditSelection = ({
 }) => {
   const [selectedCredits, setSelectedCredits] = useState<number | null>(null);
   const [isCustomMode, setIsCustomMode] = useState(false);
-  const [customValue, setCustomValue] = useState('');
+  const [customValue, setCustomValue] = useState("");
 
   const creditOptions = [
-    { value: 300, label: '300 credits' },
-    { value: 600, label: '600 credits' },
-    { value: 3000, label: '3000 credits' },
-    { value: 6000, label: '6000 credits' },
+    { value: 300, label: "300 credits" },
+    { value: 600, label: "600 credits" },
+    { value: 3000, label: "3000 credits" },
+    { value: 6000, label: "6000 credits" },
   ];
 
   const handleCreditSelect = (value: number | string) => {
-    if (value === 'custom') {
+    if (value === "custom") {
       setIsCustomMode(true);
       onSelect(Number(customValue));
     } else {
@@ -156,7 +156,7 @@ const CreditSelection = ({
       {creditOptions.map(({ value, label }) => (
         <Button
           key={value}
-          variant={selectedCredits === value ? 'default' : 'outline'}
+          variant={selectedCredits === value ? "default" : "outline"}
           onClick={() => handleCreditSelect(value)}
           className="w-full"
         >
@@ -172,15 +172,15 @@ const CreditSelection = ({
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{
               duration: 0.3,
-              type: 'spring',
+              type: "spring",
               stiffness: 500,
               damping: 25,
             }}
             className="relative"
           >
             <motion.div
-              initial={{ width: '100%' }}
-              animate={{ width: '150%' }}
+              initial={{ width: "100%" }}
+              animate={{ width: "150%" }}
               transition={{ duration: 0.3 }}
               className="absolute z-10"
             >
@@ -212,8 +212,8 @@ const CreditSelection = ({
           >
             <Button
               variant="outline"
-              onClick={() => handleCreditSelect('custom')}
-              className="w-full h-full"
+              onClick={() => handleCreditSelect("custom")}
+              className="h-full w-full"
             >
               Custom
             </Button>

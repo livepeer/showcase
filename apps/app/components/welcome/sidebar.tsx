@@ -1,9 +1,9 @@
-'use client';
+"use client";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '@repo/design-system/components/ui/collapsible';
+} from "@repo/design-system/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
@@ -20,7 +20,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   useSidebar,
-} from '@repo/design-system/components/ui/sidebar';
+} from "@repo/design-system/components/ui/sidebar";
 import {
   ChevronRightIcon,
   Clock2Icon,
@@ -31,8 +31,8 @@ import {
   LifeBuoyIcon,
   SendIcon,
   SquareTerminalIcon,
-} from 'lucide-react';
-import type { ReactNode } from 'react';
+} from "lucide-react";
+import type { ReactNode } from "react";
 
 type GlobalSidebarProperties = {
   readonly children: ReactNode;
@@ -41,55 +41,55 @@ type GlobalSidebarProperties = {
 const data = {
   navMain: [
     {
-      title: 'Create Pipeline',
-      url: '#',
+      title: "Create Pipeline",
+      url: "#",
       icon: SquareTerminalIcon,
       isActive: true,
     },
     {
-      title: 'Liked Pipelines',
-      url: '#',
+      title: "Liked Pipelines",
+      url: "#",
       icon: HeartIcon,
     },
     {
-      title: 'My History',
-      url: '#',
+      title: "My History",
+      url: "#",
       icon: Clock2Icon,
     },
     {
-      title: 'My Pipelines',
-      url: '#',
+      title: "My Pipelines",
+      url: "#",
       icon: LibraryIcon,
     },
   ],
   navSettings: [
     {
-      title: 'Credits & Billing',
-      url: '?billing=true',
+      title: "Credits & Billing",
+      url: "?billing=true",
       icon: DollarSignIcon,
     },
     {
-      title: 'Gateway ',
-      url: '?gateway=true',
+      title: "Gateway ",
+      url: "?gateway=true",
       icon: DoorOpenIcon,
     },
   ],
   navSecondary: [
     {
-      title: 'Support',
-      url: '#',
+      title: "Support",
+      url: "#",
       icon: LifeBuoyIcon,
     },
     {
-      title: 'Feedback',
-      url: '#',
+      title: "Feedback",
+      url: "#",
       icon: SendIcon,
     },
   ],
 };
 
 export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
-  const sidebar = useSidebar();
+  const _sidebar = useSidebar();
 
   return (
     <>

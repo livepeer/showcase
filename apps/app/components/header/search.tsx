@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CommandDialog,
   CommandEmpty,
@@ -6,9 +8,9 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@repo/design-system/components/ui/command';
-import { Input } from '@repo/design-system/components/ui/input';
-import { useState } from 'react';
+} from "@repo/design-system/components/ui/command";
+import { Input } from "@repo/design-system/components/ui/input";
+import { useState } from "react";
 export default function Search() {
   const [open, setOpen] = useState(false);
   return (
@@ -16,7 +18,7 @@ export default function Search() {
       <Input
         placeholder="I want to build..."
         onClick={() => setOpen(true)}
-        className="w-80 hidden md:block"
+        className="hidden w-80 md:block"
       />
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="I want to build..." />

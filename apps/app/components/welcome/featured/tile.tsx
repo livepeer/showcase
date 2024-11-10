@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { Badge } from '@repo/design-system/components/ui/badge';
-import { Label } from '@repo/design-system/components/ui/label';
-import { cn } from '@repo/design-system/lib/utils';
-import { AnimatePresence, motion } from 'framer-motion';
-import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Badge } from "@repo/design-system/components/ui/badge";
+import { Label } from "@repo/design-system/components/ui/label";
+import { cn } from "@repo/design-system/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function PipelineTile({
   title,
@@ -28,8 +28,8 @@ export default function PipelineTile({
   const router = useRouter();
   const [isHovering, setIsHovering] = useState(false);
 
-  const tab = searchParams.get('tab');
-  const pipeline = searchParams.get('pipeline');
+  const tab = searchParams.get("tab");
+  const pipeline = searchParams.get("pipeline");
 
   const isSelected = pipeline === id;
 
@@ -42,17 +42,17 @@ export default function PipelineTile({
         scale: isSelected ? 1.05 : 1,
       }}
       transition={{
-        type: 'spring',
+        type: "spring",
         stiffness: 300,
         damping: 30,
       }}
       className={cn(
-        'min-w-[20rem] h-48 rounded-xl relative cursor-pointer ml-2',
-        isSelected && 'border-2 border-foreground'
+        "relative ml-2 h-48 min-w-[20rem] cursor-pointer rounded-xl",
+        isSelected && "border-2 border-foreground",
       )}
     >
-      <div className="flex flex-col justify-between p-4 overflow-visible relative z-10 h-full">
-        <div className="flex justify-between items-center h-[2rem]">
+      <div className="relative z-10 flex h-full flex-col justify-between overflow-visible p-4">
+        <div className="flex h-[2rem] items-center justify-between">
           {isComfyUI ? (
             <Badge className="font-medium text-xs">Comfy UI supported</Badge>
           ) : (
@@ -61,14 +61,14 @@ export default function PipelineTile({
             </div>
           )}
           <div
-            className="flex items-center justify-end relative"
+            className="relative flex items-center justify-end"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
             <motion.div
               className="flex items-center justify-end"
               animate={{
-                width: isHovering ? 'auto' : '24px',
+                width: isHovering ? "auto" : "24px",
               }}
               transition={{
                 duration: 0.3,
@@ -77,11 +77,11 @@ export default function PipelineTile({
             >
               <motion.div
                 className={cn(
-                  'flex items-center gap-2 bg-white rounded-full overflow-hidden',
-                  isHovering ? 'px-3 py-1' : 'p-0'
+                  "flex items-center gap-2 overflow-hidden rounded-full bg-white",
+                  isHovering ? "px-3 py-1" : "p-0",
                 )}
                 animate={{
-                  width: isHovering ? 'auto' : '24px',
+                  width: isHovering ? "auto" : "24px",
                 }}
                 transition={{
                   duration: 0.3,
@@ -89,23 +89,23 @@ export default function PipelineTile({
                 }}
               >
                 <Image
-                  src={'/suhail.png'}
+                  src="/suhail.png"
                   alt="suhail"
                   width={100}
                   height={100}
-                  className="rounded-full w-6 h-6 flex-shrink-0"
+                  className="h-6 w-6 flex-shrink-0 rounded-full"
                 />
                 <AnimatePresence>
                   {isHovering && (
                     <motion.span
                       initial={{ opacity: 0, width: 0 }}
-                      animate={{ opacity: 1, width: 'auto' }}
+                      animate={{ opacity: 1, width: "auto" }}
                       exit={{ opacity: 0, width: 0 }}
                       transition={{
                         duration: 0.2,
                         ease: [0.16, 1, 0.3, 1],
                       }}
-                      className="text-xs text-black whitespace-nowrap"
+                      className="whitespace-nowrap text-black text-xs"
                     >
                       @{author}
                     </motion.span>
@@ -116,18 +116,18 @@ export default function PipelineTile({
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <p className="text-white font-medium">{title}</p>
-          <Label className="text-xs text-gray-300">{description}</Label>
+          <p className="font-medium text-white">{title}</p>
+          <Label className="text-gray-300 text-xs">{description}</Label>
         </div>
       </div>
       <Image
-        className="absolute top-0 left-0 w-full h-full object-cover rounded-[10px]"
+        className="absolute top-0 left-0 h-full w-full rounded-[10px] object-cover"
         src={image}
         alt="pipeline"
         width={500}
         height={500}
       />
-      <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/60 via-black/60 to-transparent rounded-b-[10px]" />
+      <div className="absolute bottom-0 left-0 h-1/2 w-full rounded-b-[10px] bg-gradient-to-t from-black/60 via-black/60 to-transparent" />
     </motion.div>
   );
 }

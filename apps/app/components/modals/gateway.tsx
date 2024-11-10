@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   AlertDialog,
@@ -9,27 +9,27 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@repo/design-system/components/ui/alert-dialog';
-import { Button } from '@repo/design-system/components/ui/button';
-import { Input } from '@repo/design-system/components/ui/input';
+} from "@repo/design-system/components/ui/alert-dialog";
+import { Button } from "@repo/design-system/components/ui/button";
+import { Input } from "@repo/design-system/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@repo/design-system/components/ui/select';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+} from "@repo/design-system/components/ui/select";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function Gateway() {
   const [showGateway, setShowGateway] = React.useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const gateway = searchParams.get('gateway');
+  const gateway = searchParams.get("gateway");
 
   const handleClose = () => {
     setShowGateway(false);
@@ -37,12 +37,12 @@ export default function Gateway() {
   };
 
   const handleSave = () => {
-    toast.success(`Saved gateway provider`);
+    toast.success("Saved gateway provider");
     handleClose();
   };
 
   useEffect(() => {
-    setShowGateway(gateway === 'true');
+    setShowGateway(gateway === "true");
   }, [gateway]);
 
   return (
@@ -74,24 +74,24 @@ export default function Gateway() {
   );
 }
 
-const CreditSelection = ({
+const _CreditSelection = ({
   onSelect,
 }: {
   onSelect: (value: null | number) => void;
 }) => {
   const [selectedCredits, setSelectedCredits] = useState<number | null>(null);
   const [isCustomMode, setIsCustomMode] = useState(false);
-  const [customValue, setCustomValue] = useState('');
+  const [customValue, setCustomValue] = useState("");
 
   const creditOptions = [
-    { value: 300, label: '300 credits' },
-    { value: 600, label: '600 credits' },
-    { value: 3000, label: '3000 credits' },
-    { value: 6000, label: '6000 credits' },
+    { value: 300, label: "300 credits" },
+    { value: 600, label: "600 credits" },
+    { value: 3000, label: "3000 credits" },
+    { value: 6000, label: "6000 credits" },
   ];
 
   const handleCreditSelect = (value: number | string) => {
-    if (value === 'custom') {
+    if (value === "custom") {
       setIsCustomMode(true);
       onSelect(Number(customValue));
     } else {
@@ -106,7 +106,7 @@ const CreditSelection = ({
       {creditOptions.map(({ value, label }) => (
         <Button
           key={value}
-          variant={selectedCredits === value ? 'default' : 'outline'}
+          variant={selectedCredits === value ? "default" : "outline"}
           onClick={() => handleCreditSelect(value)}
           className="w-full"
         >
@@ -122,15 +122,15 @@ const CreditSelection = ({
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{
               duration: 0.3,
-              type: 'spring',
+              type: "spring",
               stiffness: 500,
               damping: 25,
             }}
             className="relative"
           >
             <motion.div
-              initial={{ width: '100%' }}
-              animate={{ width: '150%' }}
+              initial={{ width: "100%" }}
+              animate={{ width: "150%" }}
               transition={{ duration: 0.3 }}
               className="absolute z-10"
             >
@@ -162,8 +162,8 @@ const CreditSelection = ({
           >
             <Button
               variant="outline"
-              onClick={() => handleCreditSelect('custom')}
-              className="w-full h-full"
+              onClick={() => handleCreditSelect("custom")}
+              className="h-full w-full"
             >
               Custom
             </Button>

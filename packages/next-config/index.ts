@@ -1,47 +1,45 @@
-import withBundleAnalyzer from '@next/bundle-analyzer';
+import withBundleAnalyzer from "@next/bundle-analyzer";
 
 // @ts-expect-error No declaration file
-import { PrismaPlugin } from '@prisma/nextjs-monorepo-workaround-plugin';
-import { env } from '@repo/env';
-import { withSentryConfig } from '@sentry/nextjs';
-import withVercelToolbar from '@vercel/toolbar/plugins/next';
-import type { NextConfig } from 'next';
-import { createSecureHeaders } from 'next-secure-headers';
+import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
+import { env } from "@repo/env";
+import { withSentryConfig } from "@sentry/nextjs";
+import withVercelToolbar from "@vercel/toolbar/plugins/next";
+import type { NextConfig } from "next";
+import { createSecureHeaders } from "next-secure-headers";
 
 export const config: NextConfig = withVercelToolbar()({
   images: {
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'img.clerk.com',
+        protocol: "https",
+        hostname: "img.clerk.com",
       },
     ],
   },
 
-  // biome-ignore lint/suspicious/useAwait: rewrites is async
   async rewrites() {
     return [
       {
-        source: '/ingest/static/:path*',
-        destination: 'https://us-assets.i.posthog.com/static/:path*',
+        source: "/ingest/static/:path*",
+        destination: "https://us-assets.i.posthog.com/static/:path*",
       },
       {
-        source: '/ingest/:path*',
-        destination: 'https://us.i.posthog.com/:path*',
+        source: "/ingest/:path*",
+        destination: "https://us.i.posthog.com/:path*",
       },
       {
-        source: '/ingest/decide',
-        destination: 'https://us.i.posthog.com/decide',
+        source: "/ingest/decide",
+        destination: "https://us.i.posthog.com/decide",
       },
     ];
   },
 
-  // biome-ignore lint/suspicious/useAwait: headers is async
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: createSecureHeaders({
           // HSTS Preload: https://hstspreload.org/
           forceHTTPSRedirect: [
@@ -88,7 +86,7 @@ export const sentryConfig: Parameters<typeof withSentryConfig>[1] = {
    * Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
    * side errors will fail.
    */
-  tunnelRoute: '/monitoring',
+  tunnelRoute: "/monitoring",
 
   // Hides source maps from generated client bundles
   hideSourceMaps: true,
@@ -111,4 +109,4 @@ export const withSentry = (sourceConfig: NextConfig): NextConfig =>
 export const withAnalyzer = (sourceConfig: NextConfig): NextConfig =>
   withBundleAnalyzer()(sourceConfig);
 
-export { withLogtail } from '@logtail/next';
+export { withLogtail } from "@logtail/next";
