@@ -1,5 +1,5 @@
 import "@repo/design-system/styles/globals.css";
-import { GlobalSidebar } from "@/components/welcome/sidebar";
+import { GlobalSidebar } from "@/components/sidebar";
 import { SidebarProvider } from "@repo/design-system/components/ui/sidebar";
 import { fonts } from "@repo/design-system/lib/fonts";
 import { DesignSystemProvider } from "@repo/design-system/providers";

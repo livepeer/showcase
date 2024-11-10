@@ -14,7 +14,11 @@ export const metadata: Metadata = {
   description,
 };
 
-const App = async (): Promise<ReactElement> => {
+const App = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}): Promise<ReactElement> => {
   return (
     <>
       <header className="flex h-16 shrink-0 items-center gap-2">
@@ -37,7 +41,7 @@ const App = async (): Promise<ReactElement> => {
             </Suspense> */}
         </div>
       </div>
-      <Modals />
+      <Modals searchParams={searchParams} />
     </>
   );
 };

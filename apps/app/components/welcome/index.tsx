@@ -20,9 +20,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import { useState } from "react";
 import FeaturedPipelines from "./featured";
+import { usePrivy } from "@privy-io/react-auth";
+import { cn } from "@repo/design-system/lib/utils";
 
 export default function Head() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { authenticated } = usePrivy();
 
   const contentVariants = {
     expanded: {
@@ -83,8 +86,9 @@ export default function Head() {
           <ScrollArea className="">
             <div className="grid grid-cols-4 gap-10 rounded-2xl p-4">
               <Intro />
+              {authenticated && <MyStats />}
               <Leaderboard />
-              <div className="col-span-2">
+              <div className={cn(authenticated ? "col-span-1" : "col-span-2")}>
                 <FeaturedPipelines />
               </div>
             </div>
@@ -97,9 +101,15 @@ export default function Head() {
 }
 
 const Intro = () => {
+  const { user } = usePrivy();
+
+  const name = user?.github?.name || user?.discord?.username;
+
   return (
     <div className="col-span-1">
-      <h3 className="font-medium text-lg">Welcome to Livepeer</h3>
+      <h3 className="font-medium text-lg">
+        Welcome {name ? `back, ${name}` : "to Livepeer"}
+      </h3>
       <p className="mt-3 text-muted-foreground text-sm">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
@@ -111,7 +121,7 @@ const Intro = () => {
       <div>
         <Button className="mt-5 w-auto">Create a pipeline</Button>
         <Button variant="ghost" className="mt-5 ml-2 w-auto">
-          What is a Pipeline? <ArrowTopRightIcon className="ml-1 h-4 w-4" />
+          Add Funds <ArrowTopRightIcon className="ml-1 h-4 w-4" />
         </Button>
       </div>
     </div>
@@ -145,6 +155,43 @@ const Leaderboard = () => {
                   <AvatarImage src="https://github.com/suhailkakar.png" />
                 </Avatar>
                 {row.author}
+              </TableCell>
+              <TableCell>{row.usage}k mins</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Button className="mt-1" variant="ghost">
+        See all <ArrowTopRightIcon className="ml-1 h-4 w-4" />
+      </Button>
+    </div>
+  );
+};
+
+const MyStats = () => {
+  const data = [
+    { name: "Text to Speech", users: 100, usage: 100 },
+    { name: "Image to Image", users: 95, usage: 95 },
+    { name: "Video to Video", users: 95, usage: 95 },
+  ];
+
+  return (
+    <div className="col-span-1">
+      <h3 className="font-medium text-lg">My Stats</h3>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Pipeline</TableHead>
+            <TableHead>Author</TableHead>
+            <TableHead>Usage</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((row) => (
+            <TableRow key={row.name}>
+              <TableCell>{row.name}</TableCell>
+              <TableCell className="flex items-center gap-2">
+                {row.users} users
               </TableCell>
               <TableCell>{row.usage}k mins</TableCell>
             </TableRow>

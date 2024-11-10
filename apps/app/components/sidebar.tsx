@@ -32,6 +32,7 @@ import {
   SendIcon,
   SquareTerminalIcon,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 
 type GlobalSidebarProperties = {
@@ -42,23 +43,23 @@ const data = {
   navMain: [
     {
       title: "Create Pipeline",
-      url: "#",
+      url: "?tab=create",
       icon: SquareTerminalIcon,
       isActive: true,
     },
     {
       title: "Liked Pipelines",
-      url: "#",
+      url: "?tab=liked",
       icon: HeartIcon,
     },
     {
       title: "My History",
-      url: "#",
+      url: "?tab=history",
       icon: Clock2Icon,
     },
     {
       title: "My Pipelines",
-      url: "#",
+      url: "?tab=my",
       icon: LibraryIcon,
     },
   ],
@@ -90,6 +91,7 @@ const data = {
 
 export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   const _sidebar = useSidebar();
+  const router = useRouter();
 
   return (
     <>
@@ -110,11 +112,17 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
                   defaultOpen={item.isActive}
                 >
                   <SidebarMenuItem>
-                    <SidebarMenuButton asChild tooltip={item.title}>
-                      <a href={item.url}>
+                    <SidebarMenuButton
+                      onClick={() => {
+                        router.replace(item.url);
+                      }}
+                      asChild
+                      tooltip={item.title}
+                    >
+                      <div>
                         <item.icon />
                         <span>{item.title}</span>
-                      </a>
+                      </div>
                     </SidebarMenuButton>
                     {item.items?.length ? (
                       <>
@@ -154,11 +162,17 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
                   defaultOpen={item.isActive}
                 >
                   <SidebarMenuItem>
-                    <SidebarMenuButton asChild tooltip={item.title}>
-                      <a href={item.url}>
+                    <SidebarMenuButton
+                      onClick={() => {
+                        router.replace(item.url);
+                      }}
+                      asChild
+                      tooltip={item.title}
+                    >
+                      <div>
                         <item.icon />
                         <span>{item.title}</span>
-                      </a>
+                      </div>
                     </SidebarMenuButton>
                     {item.items?.length ? (
                       <>
