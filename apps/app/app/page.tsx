@@ -1,9 +1,10 @@
 import Header from "@/components/header/index";
 import Modals from "@/components/Modals";
+import Welcome from "@/components/welcome";
 import { Separator } from "@repo/design-system/components/ui/separator";
 import { SidebarTrigger } from "@repo/design-system/components/ui/sidebar";
 import type { Metadata } from "next";
-import type { ReactElement } from "react";
+import { Suspense, type ReactElement } from "react";
 
 const title = "Acme Inc";
 const description = "My application.";
@@ -23,9 +24,17 @@ const App = async (): Promise<ReactElement> => {
           <Header />
         </div>
       </header>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          <h1>Hello</h1>
+
+      <div className="px-6 py-4 flex flex-col h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="flex-shrink-0">
+          <Suspense>
+            <Welcome />
+          </Suspense>
+        </div>
+        <div className="flex-grow min-h-0">
+          {/* <Suspense>
+              <Playground searchParams={searchParams} />
+            </Suspense> */}
         </div>
       </div>
       <Modals />
