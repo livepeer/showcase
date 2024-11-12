@@ -8,7 +8,6 @@ const track = async (
 
   const userUUID = getUserId();
 
-  //Here we are including additional data that will be sent to Mixpanel like device information, UTM parameters and location
   const additionalProperties = {
     distinct_id: userUUID,
     $user_id: userUUID,
@@ -29,8 +28,6 @@ const track = async (
     ...eventProperties,
     ...additionalProperties,
   };
-
-  console.log("tracking", eventName, properties);
 
   fetch("/api/mixpanel", {
     method: "POST",

@@ -39,7 +39,19 @@ type GlobalSidebarProperties = {
   readonly children: ReactNode;
 };
 
-const data = {
+type NavItem = {
+  title: string;
+  url: string;
+  icon: React.ComponentType;
+  isActive?: boolean;
+  items?: { title: string; url: string }[];
+};
+
+const data: {
+  navMain: NavItem[];
+  navSettings: NavItem[];
+  navSecondary: NavItem[];
+} = {
   navMain: [
     {
       title: "Create Pipeline",

@@ -23,5 +23,9 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@9.12.3"
+  "packageManager": "pnpm@9.12.3",
+  "dependencies": {
+    "@headlessui/react": "^2.2.0",
+    "mixpanel-browser": "^2.56.0"
+  }
 }

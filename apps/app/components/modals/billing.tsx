@@ -48,8 +48,10 @@ export default function Billing() {
   };
 
   useEffect(() => {
-    track("billing_modal_opened");
     setShowBilling(billing === "true");
+    if (billing === "true") {
+      track("billing_modal_opened");
+    }
   }, [billing]);
 
   return (

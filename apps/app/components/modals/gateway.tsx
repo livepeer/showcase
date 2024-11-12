@@ -43,8 +43,10 @@ export default function Gateway() {
   };
 
   useEffect(() => {
-    track("gateway_modal_opened");
     setShowGateway(gateway === "true");
+    if (gateway === "true") {
+      track("gateway_modal_opened");
+    }
   }, [gateway]);
 
   return (

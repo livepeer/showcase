@@ -21,7 +21,7 @@ export default function User() {
   const { ready, authenticated, user, login, logout } = usePrivy();
 
   const name = user?.github?.name || user?.discord?.username;
-  const email = user?.email;
+  const email = typeof user?.email === "string" ? user.email : "";
   const provider = user?.github ? "GitHub" : "Discord";
 
   const disableLogin = !ready || authenticated;

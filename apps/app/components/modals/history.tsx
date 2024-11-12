@@ -149,6 +149,7 @@ export const HistoryPipelines = ({ open }: { open: boolean }) => {
     );
   }
 
+  // @ts-expect-error - TODO: Fix this
   const groupedPipelines = groupPipelinesByDate(MOCK_HISTORY_DATA);
 
   useEffect(() => {

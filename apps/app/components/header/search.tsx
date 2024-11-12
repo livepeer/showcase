@@ -11,7 +11,7 @@ import {
 } from "@repo/design-system/components/ui/command";
 import { Input } from "@repo/design-system/components/ui/input";
 import { useState } from "react";
-import { track } from "@/lib/track";
+import track from "@/lib/track";
 export default function Search() {
   const [open, setOpen] = useState(false);
   return (

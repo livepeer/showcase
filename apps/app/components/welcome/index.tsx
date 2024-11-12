@@ -122,7 +122,7 @@ const Intro = () => {
         className="mt-5 h-11"
         placeholder="I want to build a live portrait app..."
       />
-      <div>
+      <div className="flex">
         <Button
           onClick={() => {
             track("create_pipeline_clicked");
