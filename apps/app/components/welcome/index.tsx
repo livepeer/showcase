@@ -23,6 +23,7 @@ import FeaturedPipelines from "./featured";
 import { usePrivy } from "@privy-io/react-auth";
 import { cn } from "@repo/design-system/lib/utils";
 import track from "@/lib/track";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Head() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -106,6 +107,9 @@ export default function Head() {
 
 const Intro = () => {
   const { user } = usePrivy();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pipeline = searchParams.get("pipeline");
 
   const name = user?.github?.name || user?.discord?.username;
 
@@ -125,6 +129,7 @@ const Intro = () => {
       <div className="flex">
         <Button
           onClick={() => {
+            router.replace(`/?pipeline=${pipeline}&tab=create`);
             track("create_pipeline_clicked");
           }}
           className="mt-5 w-auto"

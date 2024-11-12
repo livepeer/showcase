@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { XIcon } from "lucide-react";
 import { Button } from "@repo/design-system/components/ui/button";
 import LoggedOutComponent from "./logged-out";
@@ -8,13 +8,14 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import track from "@/lib/track";
 import { useEffect } from "react";
+import { Input } from "@repo/design-system/components/ui/input";
 
 const Header = ({ onClick }: { onClick: () => void }) => (
   <div className="flex items-center justify-between">
     <div>
-      <h4 className="text-lg font-medium">My Pipelines</h4>
+      <h4 className="text-lg font-medium">My API Keys</h4>
       <p className="text-sm text-muted-foreground">
-        View all the pipelines you have created
+        View all the API keys you have created
       </p>
     </div>
     <XIcon
@@ -25,10 +26,11 @@ const Header = ({ onClick }: { onClick: () => void }) => (
   </div>
 );
 
-export const MyPipelines = ({ open }: { open: boolean }) => {
+export const APIKeys = ({ open }: { open: boolean }) => {
   if (!open) return null;
 
   const { authenticated } = usePrivy();
+  const [showCreateAPIKey, setShowCreateAPIKey] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,15 +43,31 @@ export const MyPipelines = ({ open }: { open: boolean }) => {
   const EmptyState = () => (
     <div className="flex justify-center h-[calc(100vh-15rem)] items-center">
       <div className="text-center">
-        <h3 className="text-lg font-medium">No pipelines created yet</h3>
+        <h3 className="text-lg font-medium">No API keys created yet</h3>
         <p className="text-sm text-muted-foreground mt-1">
-          Create your first pipeline!
+          Create your first API key!
         </p>
+        <Button onClick={() => setShowCreateAPIKey(true)} className="mt-4">
+          Create API Key
+        </Button>
+      </div>
+    </div>
+  );
+
+  const CreateAPIKey = () => (
+    <div className="mt-6 ">
+      <h5 className="font-medium">Create API Key</h5>
+      <Input className="mt-2" placeholder="API Key Name" />
+      <div className="flex gap-2">
+        <Button disabled className="mt-4">
+          Create API Key
+        </Button>
         <Button
-          onClick={() => router.replace(`/?pipeline=${pipeline}&tab=create`)}
+          onClick={() => setShowCreateAPIKey(false)}
+          variant="outline"
           className="mt-4"
         >
-          Create Pipeline
+          Cancel
         </Button>
       </div>
     </div>
@@ -64,12 +82,12 @@ export const MyPipelines = ({ open }: { open: boolean }) => {
       <Header onClick={closeModal} />
 
       {authenticated ? (
-        <EmptyState />
+        <>{showCreateAPIKey ? <CreateAPIKey /> : <EmptyState />}</>
       ) : (
-        <LoggedOutComponent text="Sign in to view your pipelines" />
+        <LoggedOutComponent text="Sign in to create API keys" />
       )}
     </div>
   );
 };
 
-export default MyPipelines;
+export default APIKeys;

@@ -15,6 +15,12 @@ export default function Playground() {
   const pipeline = searchParams.get("pipeline");
   const pipelineData = pipelines.find((p) => p.id === pipeline);
 
+  useEffect(() => {
+    if (!pipeline) {
+      router.replace(`?pipeline=${pipelines[0].id}`);
+    }
+  }, [pipeline, tab]);
+
   return (
     <div className="flex flex-col h-[calc(100%-1rem)] mt-6  border border-border rounded-2xl p-4">
       <div className="flex-shrink-0 flex flex-row justify-between items-center w-full md:w-[27.5%] h-10">

@@ -89,7 +89,7 @@ export default function PipelineTile({
                 }}
               >
                 <Image
-                  src="/suhail.png"
+                  src="https://github.com/suhailkakar.png"
                   alt="suhail"
                   width={100}
                   height={100}

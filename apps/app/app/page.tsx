@@ -21,7 +21,7 @@ const App = async ({
   searchParams: { [key: string]: string | string[] | undefined };
 }): Promise<ReactElement> => {
   return (
-    <>
+    <div>
       <header className="flex h-16 shrink-0 items-center gap-2">
         <div className="flex w-screen items-center gap-2 border-border border-b px-4">
           <SidebarTrigger className="-ml-1" />
@@ -43,7 +43,7 @@ const App = async ({
         </div>
       </div>
       <Modals searchParams={searchParams} />
-    </>
+    </div>
   );
 };
 

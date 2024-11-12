@@ -23,6 +23,10 @@ import { usePrivy } from "@privy-io/react-auth";
 import LoggedOut from "./logged-out";
 import { useRouter } from "next/navigation";
 import track from "@/lib/track";
+import {
+  ScrollArea,
+  ScrollBar,
+} from "@repo/design-system/components/ui/scroll-area";
 
 const FORM_FIELDS = {
   BASIC: [
@@ -225,9 +229,26 @@ export default function CreatePipeline({ open }: { open: boolean }) {
   const { authenticated } = usePrivy();
   const router = useRouter();
 
+  const closeModal = () => {
+    router.replace(window.location.pathname);
+  };
+
   if (!authenticated) {
     return (
       <div className="px-6 py-2">
+        <div className="flex items-center justify-between">
+          <div>
+            <h4 className="text-lg font-medium">Create a pipeline</h4>
+            <p className="text-sm text-muted-foreground">
+              Create and publish your AI pipeline
+            </p>
+          </div>
+          <XIcon
+            onClick={closeModal}
+            className="w-5 h-5 cursor-pointer"
+            style={{ strokeWidth: 1.5 }}
+          />
+        </div>
         <LoggedOut text="Sign in to create pipelines" />
       </div>
     );
@@ -245,17 +266,13 @@ export default function CreatePipeline({ open }: { open: boolean }) {
     </div>
   );
 
-  const closeModal = () => {
-    router.replace(window.location.pathname);
-  };
-
   useEffect(() => {
     track("create_pipeline_modal_opened");
   }, []);
 
   return (
-    <div className="px-6 py-2">
-      <div className="flex items-center justify-between">
+    <div className="px-6 ">
+      <div className="flex items-center justify-between relative">
         <div>
           <h4 className="text-lg font-medium">Create a pipeline</h4>
           <p className="text-sm text-muted-foreground">
@@ -268,26 +285,25 @@ export default function CreatePipeline({ open }: { open: boolean }) {
           onClick={closeModal}
         />
       </div>
+      <ScrollArea className="h-[90vh]">
+        <Tabs defaultValue="basic" className="my-6  h-full">
+          <TabsList className="grid w-full grid-cols-2 my-4">
+            <TabsTrigger value="basic">Basic Info</TabsTrigger>
+            <TabsTrigger value="model-card">Model Card</TabsTrigger>
+          </TabsList>
 
-      <Tabs defaultValue="basic" className="my-6 h-full">
-        <TabsList className="grid w-full grid-cols-2 mb-4">
-          <TabsTrigger value="basic">Basic Info</TabsTrigger>
-          <TabsTrigger value="model-card">Model Card</TabsTrigger>
-        </TabsList>
+          <TabsContent value="basic" className="space-y-6 ">
+            {renderContent(FORM_FIELDS.BASIC)}
+          </TabsContent>
+          <TabsContent value="model-card" className="space-y-6">
+            {renderContent(FORM_FIELDS.MODEL_CARD)}
+          </TabsContent>
 
-        <TabsContent value="basic" className="space-y-6 -mb-4">
-          {renderContent(FORM_FIELDS.BASIC)}
-        </TabsContent>
-        <TabsContent value="model-card" className="space-y-6">
-          {renderContent(FORM_FIELDS.MODEL_CARD)}
-        </TabsContent>
-      </Tabs>
-
-      <div className="sticky bottom-0 bg-background py-4">
-        <Button disabled className="w-full">
-          Create Pipeline
-        </Button>
-      </div>
+          <Button disabled className="w-full my-6">
+            Create Pipeline
+          </Button>
+        </Tabs>
+      </ScrollArea>
     </div>
   );
 }

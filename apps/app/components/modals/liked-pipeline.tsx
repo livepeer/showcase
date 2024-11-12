@@ -121,17 +121,30 @@ export const LikedPipelines = ({ open }: { open: boolean }) => {
   const { authenticated } = usePrivy();
   const router = useRouter();
 
+  const closeModal = () => {
+    router.replace(window.location.pathname);
+  };
+
   if (!authenticated) {
     return (
       <div className="p-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h4 className="text-lg font-medium">Liked pipelines</h4>
+            <p className="text-sm text-muted-foreground">
+              View all the pipelines you liked
+            </p>
+          </div>
+          <XIcon
+            onClick={closeModal}
+            className="w-5 h-5 cursor-pointer"
+            style={{ strokeWidth: 1.5 }}
+          />
+        </div>
         <LoggedOutComponent text="Sign in to view your liked pipelines" />
       </div>
     );
   }
-
-  const closeModal = () => {
-    router.replace(window.location.pathname);
-  };
 
   useEffect(() => {
     track("liked_pipelines_modal_opened");

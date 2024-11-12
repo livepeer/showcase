@@ -4,6 +4,7 @@ import Gateway from "./gateway";
 import HistoryPipelines from "./history";
 import LikedPipelines from "./liked-pipeline";
 import MyPipelines from "./my-pipelines";
+import APIKeys from "./api-keys";
 
 export default function Modals({
   searchParams,
@@ -27,6 +28,7 @@ export default function Modals({
           <LikedPipelines open={tab === "liked"} />
           <HistoryPipelines open={tab === "history"} />
           <MyPipelines open={tab === "my"} />
+          <APIKeys open={tab === "api-keys"} />
         </div>
       )}
     </>

@@ -27,12 +27,13 @@ import {
   DollarSignIcon,
   DoorOpenIcon,
   HeartIcon,
+  KeyIcon,
   LibraryIcon,
   LifeBuoyIcon,
   SendIcon,
   SquareTerminalIcon,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 
 type GlobalSidebarProperties = {
@@ -45,60 +46,6 @@ type NavItem = {
   icon: React.ComponentType;
   isActive?: boolean;
   items?: { title: string; url: string }[];
-};
-
-const data: {
-  navMain: NavItem[];
-  navSettings: NavItem[];
-  navSecondary: NavItem[];
-} = {
-  navMain: [
-    {
-      title: "Create Pipeline",
-      url: "?tab=create",
-      icon: SquareTerminalIcon,
-      isActive: true,
-    },
-    {
-      title: "Liked Pipelines",
-      url: "?tab=liked",
-      icon: HeartIcon,
-    },
-    {
-      title: "My History",
-      url: "?tab=history",
-      icon: Clock2Icon,
-    },
-    {
-      title: "My Pipelines",
-      url: "?tab=my",
-      icon: LibraryIcon,
-    },
-  ],
-  navSettings: [
-    {
-      title: "Credits & Billing",
-      url: "?billing=true",
-      icon: DollarSignIcon,
-    },
-    {
-      title: "Gateway ",
-      url: "?gateway=true",
-      icon: DoorOpenIcon,
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Support",
-      url: "#",
-      icon: LifeBuoyIcon,
-    },
-    {
-      title: "Feedback",
-      url: "#",
-      icon: SendIcon,
-    },
-  ],
 };
 
 const Logo = () => (
@@ -140,6 +87,67 @@ const Logo = () => (
 export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   const _sidebar = useSidebar();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pipeline = searchParams.get("pipeline");
+
+  const data: {
+    navMain: NavItem[];
+    navSettings: NavItem[];
+    navSecondary: NavItem[];
+  } = {
+    navMain: [
+      {
+        title: "Create Pipeline",
+        url: `?pipeline=${pipeline}&tab=create`,
+        icon: SquareTerminalIcon,
+        isActive: true,
+      },
+      {
+        title: "Liked Pipelines",
+        url: `?pipeline=${pipeline}&tab=liked`,
+        icon: HeartIcon,
+      },
+      {
+        title: "My History",
+        url: `?pipeline=${pipeline}&tab=history`,
+        icon: Clock2Icon,
+      },
+      {
+        title: "My Pipelines",
+        url: `?pipeline=${pipeline}&tab=my`,
+        icon: LibraryIcon,
+      },
+    ],
+    navSettings: [
+      {
+        title: "Credits & Billing",
+        url: `?pipeline=${pipeline}&billing=true`,
+        icon: DollarSignIcon,
+      },
+      {
+        title: "Gateway",
+        url: `?pipeline=${pipeline}&gateway=true`,
+        icon: DoorOpenIcon,
+      },
+      {
+        title: "API Keys",
+        url: `?pipeline=${pipeline}&tab=api-keys`,
+        icon: KeyIcon,
+      },
+    ],
+    navSecondary: [
+      {
+        title: "Support",
+        url: "#",
+        icon: LifeBuoyIcon,
+      },
+      {
+        title: "Feedback",
+        url: "#",
+        icon: SendIcon,
+      },
+    ],
+  };
 
   return (
     <>
@@ -269,7 +277,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
             </SidebarMenu>
           </SidebarGroup>
           <SidebarGroup>
-            <SidebarGroupLabel>Billings</SidebarGroupLabel>
+            <SidebarGroupLabel>Settings</SidebarGroupLabel>
             <SidebarMenu>
               {data.navSettings.map((item) => (
                 <Collapsible
