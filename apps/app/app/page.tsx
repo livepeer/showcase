@@ -1,4 +1,4 @@
-import Modals from "@/components/Modals";
+import Modals from "@/components/modals";
 import Header from "@/components/header/index";
 import Playground from "@/components/playground";
 import Welcome from "@/components/welcome";
