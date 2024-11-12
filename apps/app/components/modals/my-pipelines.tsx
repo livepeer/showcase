@@ -6,6 +6,8 @@ import { Button } from "@repo/design-system/components/ui/button";
 import LoggedOutComponent from "./logged-out";
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
+import track from "@/lib/track";
+import { useEffect } from "react";
 
 const Header = ({ onClick }: { onClick: () => void }) => (
   <div className="flex items-center justify-between">
@@ -45,6 +47,10 @@ export const MyPipelines = ({ open }: { open: boolean }) => {
   const closeModal = () => {
     router.replace(window.location.pathname);
   };
+
+  useEffect(() => {
+    track("my_pipelines_modal_opened");
+  }, []);
 
   return (
     <div className="p-4">

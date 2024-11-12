@@ -25,6 +25,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import track from "@/lib/track";
 
 export default function Billing() {
   const [selectedCredits, setSelectedCredits] = useState<null | number>(null);
@@ -47,6 +48,7 @@ export default function Billing() {
   };
 
   useEffect(() => {
+    track("billing_modal_opened");
     setShowBilling(billing === "true");
   }, [billing]);
 

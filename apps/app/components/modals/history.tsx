@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { XIcon } from "lucide-react";
 import { Label } from "@repo/design-system/components/ui/label";
 import LoggedOutComponent from "./logged-out";
 import { PipelineCard } from "./liked-pipeline";
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
+import track from "@/lib/track";
 
 const MOCK_HISTORY_DATA = [
   {
@@ -149,6 +150,10 @@ export const HistoryPipelines = ({ open }: { open: boolean }) => {
   }
 
   const groupedPipelines = groupPipelinesByDate(MOCK_HISTORY_DATA);
+
+  useEffect(() => {
+    track("history_pipelines_modal_opened");
+  }, []);
 
   return (
     <div className="p-4">

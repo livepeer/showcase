@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { XIcon } from "lucide-react";
 import { Label } from "@repo/design-system/components/ui/label";
 import LoggedOutComponent from "./logged-out";
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
+import track from "@/lib/track";
 
 const PIPELINE_ICONS = {
   image: {
@@ -130,6 +131,11 @@ export const LikedPipelines = ({ open }: { open: boolean }) => {
   const closeModal = () => {
     router.replace(window.location.pathname);
   };
+
+  useEffect(() => {
+    track("liked_pipelines_modal_opened");
+  }, []);
+
   return (
     <div className="p-4">
       <div className="flex items-center justify-between">

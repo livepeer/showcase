@@ -11,13 +11,17 @@ import {
 } from "@repo/design-system/components/ui/command";
 import { Input } from "@repo/design-system/components/ui/input";
 import { useState } from "react";
+import { track } from "@/lib/track";
 export default function Search() {
   const [open, setOpen] = useState(false);
   return (
     <div>
       <Input
         placeholder="I want to build..."
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          track("search_clicked");
+          setOpen(true);
+        }}
         className="hidden w-80 md:block"
       />
       <CommandDialog open={open} onOpenChange={setOpen}>

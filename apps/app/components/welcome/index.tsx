@@ -22,6 +22,7 @@ import { useState } from "react";
 import FeaturedPipelines from "./featured";
 import { usePrivy } from "@privy-io/react-auth";
 import { cn } from "@repo/design-system/lib/utils";
+import track from "@/lib/track";
 
 export default function Head() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -67,7 +68,10 @@ export default function Head() {
 
       <motion.div
         className="absolute top-1 right-0 z-10 cursor-pointer p-4"
-        onClick={() => setIsCollapsed(!isCollapsed)}
+        onClick={() => {
+          track("welcome_collapse_clicked");
+          setIsCollapsed(!isCollapsed);
+        }}
       >
         <div className="flex items-center gap-2 text-muted-foreground text-sm">
           <span>{isCollapsed ? "Expand" : "Collapse"}</span>
@@ -119,8 +123,21 @@ const Intro = () => {
         placeholder="I want to build a live portrait app..."
       />
       <div>
-        <Button className="mt-5 w-auto">Create a pipeline</Button>
-        <Button variant="ghost" className="mt-5 ml-2 w-auto">
+        <Button
+          onClick={() => {
+            track("create_pipeline_clicked");
+          }}
+          className="mt-5 w-auto"
+        >
+          Create a pipeline
+        </Button>
+        <Button
+          onClick={() => {
+            track("what_is_a_pipeline_clicked");
+          }}
+          variant="ghost"
+          className="mt-5 ml-2 w-auto"
+        >
           What is a pipeline? <ArrowTopRightIcon className="ml-1 h-4 w-4" />
         </Button>
       </div>
@@ -161,7 +178,13 @@ const Leaderboard = () => {
           ))}
         </TableBody>
       </Table>
-      <Button className="mt-2" variant="ghost">
+      <Button
+        onClick={() => {
+          track("leaderboard_see_all_clicked");
+        }}
+        className="mt-2"
+        variant="ghost"
+      >
         See all <ArrowTopRightIcon className="ml-1 h-4 w-4" />
       </Button>
     </div>
@@ -198,7 +221,13 @@ const MyStats = () => {
           ))}
         </TableBody>
       </Table>
-      <Button className="mt-2" variant="ghost">
+      <Button
+        onClick={() => {
+          track("my_stats_see_all_clicked");
+        }}
+        className="mt-2"
+        variant="ghost"
+      >
         See all <ArrowTopRightIcon className="ml-1 h-4 w-4" />
       </Button>
     </div>

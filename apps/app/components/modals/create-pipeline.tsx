@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { XIcon, Upload } from "lucide-react";
 import {
   Tabs,
@@ -22,6 +22,7 @@ import {
 import { usePrivy } from "@privy-io/react-auth";
 import LoggedOut from "./logged-out";
 import { useRouter } from "next/navigation";
+import track from "@/lib/track";
 
 const FORM_FIELDS = {
   BASIC: [
@@ -247,6 +248,10 @@ export default function CreatePipeline({ open }: { open: boolean }) {
   const closeModal = () => {
     router.replace(window.location.pathname);
   };
+
+  useEffect(() => {
+    track("create_pipeline_modal_opened");
+  }, []);
 
   return (
     <div className="px-6 py-2">

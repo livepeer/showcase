@@ -23,6 +23,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import track from "@/lib/track";
 
 export default function Gateway() {
   const [showGateway, setShowGateway] = React.useState(false);
@@ -42,6 +43,7 @@ export default function Gateway() {
   };
 
   useEffect(() => {
+    track("gateway_modal_opened");
     setShowGateway(gateway === "true");
   }, [gateway]);
 

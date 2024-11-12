@@ -1,5 +1,6 @@
 "use client";
 
+import track from "@/lib/track";
 import { usePrivy } from "@privy-io/react-auth";
 import {
   Avatar,
@@ -71,7 +72,13 @@ export default function User() {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <Button disabled={disableLogin} onClick={login}>
+        <Button
+          onClick={() => {
+            track("login_clicked");
+            login();
+          }}
+          disabled={disableLogin}
+        >
           Sign In
         </Button>
       )}

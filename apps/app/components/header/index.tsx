@@ -44,63 +44,6 @@ export default function Header() {
           <span>Github</span>
         </Button>
         <User />
-        {/* {authenticated ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar className="w-9 h-9">
-                  <AvatarImage
-                    src={`https://github.com/${user?.github?.username}.png`}
-                    alt={name || ""}
-                    className="rounded-lg"
-                  />
-                  <AvatarFallback>
-                    <span className="capitalize">{name?.charAt(0)}</span>
-                  </AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-72 mr-4 mt-5  p-3 pb-1">
-                <div>
-                  <p className="text-sm text-muted-foreground mb-2">{email}</p>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Avatar className="w-10 h-10 rounded-lg">
-                      <AvatarImage
-                        src={`https://github.com/${user?.github?.username}.png`}
-                        alt={name || ""}
-                        className="rounded-lg"
-                      />
-                      <AvatarFallback className="rounded-lg">
-                        <span className="capitalize">{name?.charAt(0)}</span>
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col ">
-                      <span className="text-sm">{name}</span>
-                      <span className="text-sm text-muted-foreground ">
-                        via {provider}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <DropdownMenuSeparator />
-
-                <DropdownMenuItem
-                  onClick={() => setShowBilling(!showBilling)}
-                  className="h-10"
-                >
-                  <CreditCard />
-                  Credits and Billing
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="h-10" onClick={logout}>
-                  <LogOut />
-                  Sign Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Button disabled={disableLogin} onClick={login}>
-              Sign In
-            </Button>
-          )} */}
         <ModeToggle />
       </div>
     </div>
