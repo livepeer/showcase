@@ -55,8 +55,6 @@ export const config: NextConfig = {
       config.plugins = [...config.plugins, new PrismaPlugin()];
     }
 
-    config.ignoreWarnings = [{ module: /@opentelemetry\/instrumentation/ }];
-
     return config;
   },
 
