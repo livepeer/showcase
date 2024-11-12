@@ -7,12 +7,10 @@ import { SidebarTrigger } from "@repo/design-system/components/ui/sidebar";
 import type { Metadata } from "next";
 import { type ReactElement, Suspense } from "react";
 
-const title = "Acme Inc";
-const description = "My application.";
+const title = "Livepeer Pipelines ";
 
 export const metadata: Metadata = {
   title,
-  description,
 };
 
 const App = async ({
