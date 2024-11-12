@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 const Mixpanel = require("mixpanel");
-const mixpanel = Mixpanel.init(process.env.MIXPANEL_PROJECT_TOKEN);
 
 export async function POST(request: Request) {
+  const mixpanel = Mixpanel.init(process.env.MIXPANEL_PROJECT_TOKEN);
+
   const data = await request.json();
   try {
     const { event, properties } = data;
