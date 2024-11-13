@@ -17,7 +17,7 @@ export default function Header() {
     },
     {
       label: "Community",
-      href: "/community",
+      href: "https://discord.gg/livepeer",
     },
   ];
 
@@ -31,6 +31,7 @@ export default function Header() {
           {menuItems.map((item) => (
             <Link
               href={item.href}
+              target="_blank"
               key={item.label}
               className="text-muted-foreground text-sm"
             >

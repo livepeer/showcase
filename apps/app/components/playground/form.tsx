@@ -28,11 +28,11 @@ export default function Form({ tab }: { tab: string | string[] | undefined }) {
   }, [tab]);
 
   return (
-    <div className="h-full overflow-y-auto rounded-lg">
+    <div className="w-full h-full overflow-y-auto rounded-lg p-0.5 overflow-hidden z-10  pr-6 pt-6  ">
       <TabsC defaultValue={defaultTab}>
         <div className="flex flex-col md:flex-row md:justify-between md:items-center">
           <Tabs />
-          <div className="flex flex-row gap-2 mt-4 md:mt-0  md:w-auto self-end">
+          <div className="flex flex-row gap-2 mt-4 md:mt-0  md:w-auto self-end relative">
             <HeartButton />
             {tab === "try" && (
               <>
@@ -59,13 +59,6 @@ export default function Form({ tab }: { tab: string | string[] | undefined }) {
         </div>
         <TabsContent value={"try"}>
           <Try />
-        </TabsContent>
-        <TabsContent value={"build"}>
-          <div className="flex flex-col gap-6 my-6">
-            <p className="font-medium">
-              Todo: Include docs and CLI info here...
-            </p>
-          </div>
         </TabsContent>
         <TabsContent value="remix">
           <div className="flex flex-col gap-6 my-6">
@@ -115,7 +108,7 @@ const HeartButton = () => {
     <Button
       size="icon"
       variant="outline"
-      className="relative hover:bg-transparent group"
+      className=""
       onClick={() => setIsLiked(!isLiked)}
     >
       <motion.div

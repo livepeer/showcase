@@ -127,7 +127,7 @@ export default function Output({
           <Share className="mr-2" /> Share Pipeline
         </Button>
       </div>
-      <div className="flex-grow min-h-0 bg-muted rounded-2xl relative">
+      <div className="flex-grow min-h-0 bg-sidebar rounded-2xl relative">
         {tab === "remix" && pipelineData?.isComfyUI && (
           <iframe
             src="https://comfyui.alpha.fal.ai/"

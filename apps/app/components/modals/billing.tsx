@@ -42,7 +42,7 @@ export default function Billing() {
   };
 
   const handleBuyCredits = () => {
-    toast.success(`Purchased ${selectedCredits} credits`);
+    toast.success(`Added $${selectedCredits}`);
     setSelectedCredits(3000);
     handleClose();
   };

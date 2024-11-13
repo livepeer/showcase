@@ -54,65 +54,28 @@ export default function PipelineTile({
       <div className="relative z-10 flex h-full flex-col justify-between overflow-visible p-4">
         <div className="flex h-[2rem] items-center justify-between">
           {isComfyUI ? (
-            <Badge className="font-medium text-xs">Comfy UI supported</Badge>
+            <Badge className="bg-green-500/90 text-white font-medium text-xs">
+              Comfy UI
+            </Badge>
           ) : (
             <div>
               <div />
             </div>
           )}
+
           <div
-            className="relative flex items-center justify-end"
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+            className={cn(
+              "flex items-center gap-1 overflow-hidden rounded-full bg-white pr-2 py-0.5 text-black text-xs"
+            )}
           >
-            <motion.div
-              className="flex items-center justify-end"
-              animate={{
-                width: isHovering ? "auto" : "24px",
-              }}
-              transition={{
-                duration: 0.3,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              <motion.div
-                className={cn(
-                  "flex items-center gap-2 overflow-hidden rounded-full bg-white",
-                  isHovering ? "px-3 py-1" : "p-0"
-                )}
-                animate={{
-                  width: isHovering ? "auto" : "24px",
-                }}
-                transition={{
-                  duration: 0.3,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                <Image
-                  src="https://github.com/suhailkakar.png"
-                  alt="suhail"
-                  width={100}
-                  height={100}
-                  className="h-6 w-6 flex-shrink-0 rounded-full"
-                />
-                <AnimatePresence>
-                  {isHovering && (
-                    <motion.span
-                      initial={{ opacity: 0, width: 0 }}
-                      animate={{ opacity: 1, width: "auto" }}
-                      exit={{ opacity: 0, width: 0 }}
-                      transition={{
-                        duration: 0.2,
-                        ease: [0.16, 1, 0.3, 1],
-                      }}
-                      className="whitespace-nowrap text-black text-xs"
-                    >
-                      @{author}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            </motion.div>
+            <Image
+              src="https://github.com/suhailkakar.png"
+              alt="suhail"
+              width={100}
+              height={100}
+              className="h-5 w-5 flex-shrink-0 rounded-full"
+            />
+            @{author}
           </div>
         </div>
         <div className="flex flex-col gap-1">

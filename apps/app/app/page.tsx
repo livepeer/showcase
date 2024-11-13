@@ -28,7 +28,7 @@ const App = async ({
         </div>
       </header>
 
-      <div className="flex h-[calc(100vh-4rem)] flex-col overflow-y-auto px-6 py-4">
+      <div className="flex h-[calc(100vh-5rem)] flex-col overflow-y-auto px-6 py-4">
         <div className="flex-shrink-0">
           <Suspense>
             <Welcome />

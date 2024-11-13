@@ -108,7 +108,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
         icon: HeartIcon,
       },
       {
-        title: "My History",
+        title: "History",
         url: `?pipeline=${pipeline}&tab=history`,
         icon: Clock2Icon,
       },

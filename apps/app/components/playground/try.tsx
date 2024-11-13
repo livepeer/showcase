@@ -87,7 +87,7 @@ export default function Try(): JSX.Element {
   }, [source]);
 
   return (
-    <div className="flex flex-col gap-8 mt-5">
+    <div className="flex flex-col gap-4 mt-5">
       <div className="flex flex-col gap-1.5">
         <Label className="text-muted-foreground">Source</Label>
         <Select value={source} onValueChange={setSource}>
@@ -110,7 +110,7 @@ export default function Try(): JSX.Element {
 
       <div className="flex flex-col gap-1.5">
         <Label className="text-muted-foreground">Stream Source</Label>
-        <div className="flex flex-row h-[300px] w-full bg-muted rounded-2xl items-center justify-center overflow-hidden relative">
+        <div className="flex flex-row h-[300px] w-full bg-sidebar rounded-2xl items-center justify-center overflow-hidden relative">
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/10">
               <p className="text-muted-foreground">Loading camera...</p>
