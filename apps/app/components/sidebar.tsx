@@ -123,7 +123,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
     ],
     navSettings: [
       {
-        title: "Credits & Billing",
+        title: "Billing",
         url: `?pipeline=${pipeline}&activeTab=${tab}&billing=true`,
         icon: DollarSignIcon,
       },

@@ -56,7 +56,7 @@ const Filter = () => {
     <div className="w-[17%] flex flex-col space-y-4 ">
       <div>
         <Label>Filter</Label>
-        <Input placeholder="Search" />
+        <Input className="mt-2" placeholder="Search" />
       </div>
       <div>
         <Label>Pipeline Type</Label>
