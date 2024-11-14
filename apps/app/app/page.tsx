@@ -1,9 +1,5 @@
 import Modals from "@/components/modals";
-import Header from "@/components/header/index";
-import Playground from "@/components/playground";
 import Welcome from "@/components/welcome";
-import { Separator } from "@repo/design-system/components/ui/separator";
-import { SidebarTrigger } from "@repo/design-system/components/ui/sidebar";
 import type { Metadata } from "next";
 import { type ReactElement, Suspense } from "react";
 import FeaturedPipelines from "@/components/welcome/featured";
