@@ -44,6 +44,7 @@ type NavItem = {
   title: string;
   url: string;
   icon: React.ComponentType;
+  external?: boolean;
   isActive?: boolean;
   items?: { title: string; url: string }[];
 };
@@ -89,6 +90,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pipeline = searchParams.get("pipeline");
+  const tab = searchParams.get("activeTab") || "try";
 
   const data: {
     navMain: NavItem[];
@@ -98,52 +100,54 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
     navMain: [
       {
         title: "Create Pipeline",
-        url: `?pipeline=${pipeline}&tab=create`,
+        url: `?pipeline=${pipeline}&activeTab=${tab}&tab=create`,
         icon: SquareTerminalIcon,
         isActive: true,
       },
       {
         title: "Liked Pipelines",
-        url: `?pipeline=${pipeline}&tab=liked`,
+        url: `?pipeline=${pipeline}&activeTab=${tab}&tab=liked`,
         icon: HeartIcon,
       },
       {
         title: "History",
-        url: `?pipeline=${pipeline}&tab=history`,
+        url: `?pipeline=${pipeline}&activeTab=${tab}&tab=history`,
         icon: Clock2Icon,
       },
       {
         title: "My Pipelines",
-        url: `?pipeline=${pipeline}&tab=my`,
+        url: `?pipeline=${pipeline}&activeTab=${tab}&tab=my`,
         icon: LibraryIcon,
       },
     ],
     navSettings: [
       {
         title: "Credits & Billing",
-        url: `?pipeline=${pipeline}&billing=true`,
+        url: `?pipeline=${pipeline}&activeTab=${tab}&billing=true`,
         icon: DollarSignIcon,
       },
       {
         title: "Gateway",
-        url: `?pipeline=${pipeline}&gateway=true`,
+        url: `?pipeline=${pipeline}&activeTab=${tab}&gateway=true`,
         icon: DoorOpenIcon,
       },
       {
         title: "API Keys",
-        url: `?pipeline=${pipeline}&tab=api-keys`,
+        url: `?pipeline=${pipeline}&activeTab=${tab}&tab=api-keys`,
         icon: KeyIcon,
       },
     ],
     navSecondary: [
       {
         title: "Support",
-        url: "#",
+        url: "https://discord.gg/livepeer",
+        external: true,
         icon: LifeBuoyIcon,
       },
       {
         title: "Feedback",
-        url: "#",
+        url: "https://portal.productboard.com/7xxzmv8xwccfdtkvq3akmf4i",
+        external: true,
         icon: SendIcon,
       },
     ],
@@ -238,7 +242,11 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
                   <SidebarMenuItem>
                     <SidebarMenuButton
                       onClick={() => {
-                        router.replace(item.url);
+                        if (item.external) {
+                          window.open(item.url, "_blank");
+                        } else {
+                          router.replace(item.url);
+                        }
                       }}
                       asChild
                       tooltip={item.title}
@@ -288,7 +296,11 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
                   <SidebarMenuItem>
                     <SidebarMenuButton
                       onClick={() => {
-                        router.replace(item.url);
+                        if (item.external) {
+                          window.open(item.url, "_blank");
+                        } else {
+                          router.replace(item.url);
+                        }
                       }}
                       asChild
                       tooltip={item.title}
@@ -331,11 +343,20 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
               <SidebarMenu>
                 {data.navSecondary.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.url}>
+                    <SidebarMenuButton
+                      asChild
+                      onClick={() => {
+                        if (item.external) {
+                          window.open(item.url, "_blank");
+                        } else {
+                          router.replace(item.url);
+                        }
+                      }}
+                    >
+                      <div>
                         <item.icon />
                         <span>{item.title}</span>
-                      </a>
+                      </div>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

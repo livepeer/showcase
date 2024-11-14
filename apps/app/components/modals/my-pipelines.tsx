@@ -33,9 +33,12 @@ export const MyPipelines = ({ open }: { open: boolean }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pipeline = searchParams.get("pipeline");
+  const tab = searchParams.get("activeTab");
 
   const closeModal = () => {
-    router.replace(window.location.pathname);
+    const { tab, ...params } = Object.fromEntries(searchParams.entries());
+    const newParams = new URLSearchParams(params).toString();
+    router.replace(`${window.location.pathname}?${newParams}`);
   };
 
   const EmptyState = () => (
@@ -46,7 +49,9 @@ export const MyPipelines = ({ open }: { open: boolean }) => {
           Create your first pipeline!
         </p>
         <Button
-          onClick={() => router.replace(`/?pipeline=${pipeline}&tab=create`)}
+          onClick={() =>
+            router.replace(`/?pipeline=${pipeline}&activeTab=${tab}&tab=create`)
+          }
           className="mt-4"
         >
           Create Pipeline

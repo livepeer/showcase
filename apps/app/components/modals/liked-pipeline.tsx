@@ -5,7 +5,7 @@ import { XIcon } from "lucide-react";
 import { Label } from "@repo/design-system/components/ui/label";
 import LoggedOutComponent from "./logged-out";
 import { usePrivy } from "@privy-io/react-auth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import track from "@/lib/track";
 
 const PIPELINE_ICONS = {
@@ -121,8 +121,12 @@ export const LikedPipelines = ({ open }: { open: boolean }) => {
   const { authenticated } = usePrivy();
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+
   const closeModal = () => {
-    router.replace(window.location.pathname);
+    const { tab, ...params } = Object.fromEntries(searchParams.entries());
+    const newParams = new URLSearchParams(params).toString();
+    router.replace(`${window.location.pathname}?${newParams}`);
   };
 
   if (!authenticated) {

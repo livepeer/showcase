@@ -34,10 +34,11 @@ export const APIKeys = ({ open }: { open: boolean }) => {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pipeline = searchParams.get("pipeline");
 
   const closeModal = () => {
-    router.replace(window.location.pathname);
+    const { tab, ...params } = Object.fromEntries(searchParams.entries());
+    const newParams = new URLSearchParams(params).toString();
+    router.replace(`${window.location.pathname}?${newParams}`);
   };
 
   const EmptyState = () => (

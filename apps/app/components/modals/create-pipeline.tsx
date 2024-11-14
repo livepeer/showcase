@@ -21,7 +21,7 @@ import {
 } from "@repo/design-system/components/ui/select";
 import { usePrivy } from "@privy-io/react-auth";
 import LoggedOut from "./logged-out";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import track from "@/lib/track";
 import {
   ScrollArea,
@@ -228,9 +228,12 @@ export default function CreatePipeline({ open }: { open: boolean }) {
 
   const { authenticated } = usePrivy();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const closeModal = () => {
-    router.replace(window.location.pathname);
+    const { tab, ...params } = Object.fromEntries(searchParams.entries());
+    const newParams = new URLSearchParams(params).toString();
+    router.replace(`${window.location.pathname}?${newParams}`);
   };
 
   if (!authenticated) {

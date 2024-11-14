@@ -28,7 +28,7 @@ export default function PipelineTile({
   const router = useRouter();
   const [isHovering, setIsHovering] = useState(false);
 
-  const tab = searchParams.get("tab");
+  const tab = searchParams.get("activeTab");
   const pipeline = searchParams.get("pipeline");
 
   const isSelected = pipeline === id;
@@ -36,7 +36,7 @@ export default function PipelineTile({
   return (
     <motion.div
       onClick={() => {
-        router.replace(`?pipeline=${id}`);
+        router.replace(`?pipeline=${id}&activeTab=${tab}`);
       }}
       animate={{
         scale: isSelected ? 1.05 : 1,

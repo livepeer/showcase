@@ -34,7 +34,9 @@ export default function Gateway() {
 
   const handleClose = () => {
     setShowGateway(false);
-    router.replace(window.location.pathname);
+    const { gateway, ...params } = Object.fromEntries(searchParams.entries());
+    const newParams = new URLSearchParams(params).toString();
+    router.replace(`${window.location.pathname}?${newParams}`);
   };
 
   const handleSave = () => {

@@ -12,7 +12,8 @@ import {
 import { Input } from "@repo/design-system/components/ui/input";
 import { useState } from "react";
 import track from "@/lib/track";
-export default function Search() {
+import { cn } from "@repo/design-system/lib/utils";
+export default function Search({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
   return (
     <div>
@@ -22,7 +23,7 @@ export default function Search() {
           track("search_clicked");
           setOpen(true);
         }}
-        className="hidden w-80 md:block"
+        className={cn("hidden w-80 md:block", className)}
       />
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="I want to build..." />

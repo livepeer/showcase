@@ -38,7 +38,9 @@ export default function Billing() {
 
   const handleClose = () => {
     setShowBilling(false);
-    router.replace(window.location.pathname);
+    const { billing, ...params } = Object.fromEntries(searchParams.entries());
+    const newParams = new URLSearchParams(params).toString();
+    router.replace(`${window.location.pathname}?${newParams}`);
   };
 
   const handleBuyCredits = () => {

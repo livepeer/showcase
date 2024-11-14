@@ -12,23 +12,23 @@ export default function Playground() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const tab = searchParams.get("tab");
+  const tab = searchParams.get("activeTab") || "try";
   const pipeline = searchParams.get("pipeline");
   const pipelineData = pipelines.find((p) => p.id === pipeline);
 
   useEffect(() => {
     if (!pipeline) {
-      router.replace(`?pipeline=${pipelines[0].id}`);
+      router.replace(`?pipeline=${pipelines[0].id}&activeTab=${tab}`);
     }
   }, [pipeline, tab]);
 
   return (
     <div className="flex flex-col h-[calc(100%-1.5rem)] mt-6  border border-border rounded-2xl p-4">
       <ScrollArea className="h-full">
-        <div className="flex-shrink-0 flex flex-row justify-between items-center w-full md:w-[27.5%] h-10">
+        <div className="flex-shrink-0 flex flex-row justify-between  w-full items-center  md:w-[33%] h-10">
           <h3 className="text-lg font-medium">{pipelineData?.title}</h3>
           {tab === "remix" && (
-            <>
+            <div>
               {pipelineData?.isComfyUI ? (
                 <Badge className="font-medium text-sm px-4 rounded-full bg-[#04FF00]/40 text-foreground hover:bg-[#04FF00]/60">
                   Comfy UI supported
@@ -38,14 +38,14 @@ export default function Playground() {
                   Comfy UI not supported
                 </Badge>
               )}
-            </>
+            </div>
           )}
         </div>
         <div className="flex-grow flex flex-col md:flex-row gap-14 h-full ">
           <div className="w-[35%] flex-shrink-0 overflow-hidden flex flex-col ">
             <Form tab={tab as string} />
           </div>
-          <div className="flex-grow overflow-hidden">
+          <div className="flex-grow overflow-hidden ">
             <Output tab={tab as string} />
           </div>
         </div>

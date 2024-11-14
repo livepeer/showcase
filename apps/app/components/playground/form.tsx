@@ -9,27 +9,42 @@ import {
 } from "@repo/design-system/components/ui/tabs";
 import Tabs from "./tab";
 import Try from "./try";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { pipelines } from "../welcome/featured/index";
-
 export default function Form({ tab }: { tab: string | string[] | undefined }) {
   const [isRunPipelineLoading, setIsRunPipelineLoading] = useState(false);
-  const router = useRouter();
-  const [defaultTab, setDefaultTab] = useState("try");
-
   const searchParams = useSearchParams();
-  const pipeline = searchParams.get("pipeline");
 
+  const initialTab = searchParams.get("activeTab") || "try";
+
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const pipeline = searchParams.get("pipeline");
   const pipelineData = pipelines.find((p) => p.id === pipeline);
 
+  const handleValueChange = (value: string) => {
+    setActiveTab(value);
+    router.replace(`${pathname}?pipeline=${pipeline ?? ""}&activeTab=${value}`);
+  };
+
   useEffect(() => {
-    setDefaultTab(tab as string);
-  }, [tab]);
+    if (searchParams.get("activeTab")) {
+      setActiveTab(searchParams.get("activeTab") || "try");
+    }
+  }, [searchParams]);
 
   return (
     <div className="w-full h-full overflow-y-auto rounded-lg p-0.5 overflow-hidden z-10  pr-6 pt-6  ">
-      <TabsC defaultValue={defaultTab}>
+      <TabsC
+        onValueChange={handleValueChange}
+        value={activeTab}
+        defaultValue="try"
+        className="h-full"
+      >
         <div className="flex flex-col md:flex-row md:justify-between md:items-center">
           <Tabs />
           <div className="flex flex-row gap-2 mt-4 md:mt-0  md:w-auto self-end relative">
@@ -61,7 +76,7 @@ export default function Form({ tab }: { tab: string | string[] | undefined }) {
           <Try />
         </TabsContent>
         <TabsContent value="remix">
-          <div className="flex flex-col gap-6 my-6">
+          <div className="flex flex-col gap-6 my-6 h-full">
             {pipelineData?.isComfyUI ? (
               <p className="font-medium">
                 Inspired by this pipeline?

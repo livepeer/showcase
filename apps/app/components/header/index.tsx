@@ -13,7 +13,7 @@ export default function Header() {
     },
     {
       label: "Learn",
-      href: "/learn",
+      href: "https://livepeer2.mintlify.app/",
     },
     {
       label: "Community",
