@@ -27,81 +27,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Search from "../header/search";
 
 export default function Head() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const { authenticated } = usePrivy();
-
-  const contentVariants = {
-    expanded: {
-      height: "auto",
-      opacity: 1,
-      transition: {
-        height: {
-          duration: 0.5,
-          ease: [0.32, 0.72, 0, 1], // Custom easing for smoother motion
-        },
-        opacity: {
-          duration: 0.4,
-          delay: 0.1,
-        },
-      },
-    },
-    collapsed: {
-      height: "64px", // Match the height of the header when collapsed
-      opacity: 0,
-      transition: {
-        height: {
-          duration: 0.5,
-          ease: [0.32, 0.72, 0, 1],
-        },
-        opacity: {
-          duration: 0.3,
-        },
-      },
-    },
-  };
 
   return (
     <div className="relative rounded-2xl border pr-4">
-      {isCollapsed && (
-        <div className="absolute top-0 left-0 p-4">
-          <h3 className="font-medium text-lg">Featured Pipelines</h3>
-        </div>
-      )}
-
-      <motion.div
-        className="absolute top-1 right-0 z-10 cursor-pointer p-4"
-        onClick={() => {
-          track("welcome_collapse_clicked");
-          setIsCollapsed(!isCollapsed);
-        }}
-      >
-        <div className="flex items-center gap-2 text-muted-foreground text-sm">
-          <span>{isCollapsed ? "Expand" : "Collapse"}</span>
-          <ChevronRight className="h-4 w-4" />
-        </div>
-      </motion.div>
-
-      <AnimatePresence initial={false}>
-        <motion.div
-          variants={contentVariants}
-          initial="expanded"
-          animate={isCollapsed ? "collapsed" : "expanded"}
-          exit="collapsed"
-          className="overflow-hidden"
-        >
-          <ScrollArea className="">
-            <div className="grid grid-cols-4 gap-10 rounded-2xl p-4 ">
-              <Intro />
-              {authenticated && <MyStats />}
-              <Leaderboard />
-              <div className={cn(authenticated ? "col-span-1" : "col-span-2")}>
-                <FeaturedPipelines />
-              </div>
-            </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-        </motion.div>
-      </AnimatePresence>
+      <div className="grid grid-cols-3 gap-10 rounded-2xl p-4">
+        <Intro />
+        {authenticated && <MyStats />}
+        <Leaderboard />
+      </div>
     </div>
   );
 }
@@ -120,8 +54,9 @@ const Intro = () => {
         Welcome {name ? `back, ${name}` : "to Livepeer"}
       </h3>
       <p className="mt-3 text-muted-foreground text-sm">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ut
+        fermentum dui, sed luctus purus. Quisque eros massa, dictum gravida
+        varius non, feugiat vel tortor.
       </p>
       <div className="mt-5">
         <Search className="h-11" />
@@ -130,9 +65,7 @@ const Intro = () => {
       <div className="flex">
         <Button
           onClick={() => {
-            router.replace(
-              `/?pipeline=${pipeline}&activeTab=${tab}&tab=create`
-            );
+            router.replace(`/?tab=create`);
             track("create_pipeline_clicked");
           }}
           className="mt-5 w-auto"

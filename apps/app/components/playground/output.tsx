@@ -19,11 +19,13 @@ import {
 
 export default function Output({
   tab,
+  isRunning,
+  pipeline,
 }: {
   tab: string | string[] | undefined;
+  isRunning: boolean;
+  pipeline: string;
 }) {
-  const searchParams = useSearchParams();
-
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success("Link copied to clipboard");
@@ -36,7 +38,6 @@ export default function Output({
 
   useEffect(() => {
     if (tab === "try") {
-      const isRunning = searchParams.get("isRunning");
       if (isRunning) {
         const timer = setInterval(() => {
           setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
@@ -45,7 +46,7 @@ export default function Output({
         return () => clearInterval(timer);
       }
     }
-  }, [tab, searchParams]);
+  }, [tab, isRunning]);
 
   const showCamera = async () => {
     const constraints: MediaStreamConstraints = {
@@ -74,10 +75,10 @@ export default function Output({
   };
 
   useEffect(() => {
-    if (tab === "try" && searchParams.get("isRunning")) {
+    if (tab === "try" && isRunning) {
       showCamera();
     }
-  }, [tab, searchParams]);
+  }, [tab, isRunning]);
 
   const formatTime = (seconds: number) => {
     const hrs = Math.floor(seconds / 3600);
@@ -88,7 +89,6 @@ export default function Output({
       .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const pipeline = searchParams.get("pipeline");
   const pipelineData = pipelines.find((p) => p.id === pipeline);
 
   const modelInfo = [
@@ -115,7 +115,7 @@ export default function Output({
   ];
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full relative">
       <div className="flex-shrink-0 flex justify-end mb-4 space-x-4">
         <Button
           variant="outline"
@@ -127,14 +127,14 @@ export default function Output({
           <Share className="mr-2" /> Share Pipeline
         </Button>
       </div>
-      <div className="flex-grow min-h-0 bg-sidebar rounded-2xl relative">
+      <div className="bg-sidebar rounded-2xl relative h-[calc(100vh-16rem)] w-full">
         {tab === "remix" && pipelineData?.isComfyUI && (
           <iframe
             src="https://comfyui.alpha.fal.ai/"
             className="w-full h-full rounded-2xl"
           />
         )}
-        {tab === "try" && searchParams.get("isRunning") && (
+        {tab === "try" && isRunning && (
           <div className="w-full h-full">
             <video
               className="w-full h-full rounded-2xl object-cover"
@@ -143,7 +143,7 @@ export default function Output({
               loop
               ref={videoRef}
             />
-            <div className="absolute bottom-4 right-4 text-xl px-2 py-1 font-medium bg-white rounded-md">
+            <div className="absolute bottom-4 right-4 text-xl px-2 py-1 font-medium bg-white rounded-md text-black">
               {formatTime(timeLeft)}
             </div>
           </div>

@@ -101,40 +101,40 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
     navMain: [
       {
         title: "Create Pipeline",
-        url: `?pipeline=${pipeline}&activeTab=${tab}&tab=create`,
+        url: `?tab=create`,
         icon: SquareTerminalIcon,
         isActive: true,
       },
       {
         title: "Liked Pipelines",
-        url: `?pipeline=${pipeline}&activeTab=${tab}&tab=liked`,
+        url: `?tab=liked`,
         icon: HeartIcon,
       },
       {
         title: "History",
-        url: `?pipeline=${pipeline}&activeTab=${tab}&tab=history`,
+        url: `?tab=history`,
         icon: Clock2Icon,
       },
       {
         title: "My Pipelines",
-        url: `?pipeline=${pipeline}&activeTab=${tab}&tab=my`,
+        url: `?tab=my`,
         icon: LibraryIcon,
       },
     ],
     navSettings: [
       {
         title: "Billing",
-        url: `?pipeline=${pipeline}&activeTab=${tab}&billing=true`,
+        url: `?billing=true`,
         icon: DollarSignIcon,
       },
       {
         title: "Gateway",
-        url: `?pipeline=${pipeline}&activeTab=${tab}&gateway=true`,
+        url: `?gateway=true`,
         icon: DoorOpenIcon,
       },
       {
         title: "API Keys",
-        url: `?pipeline=${pipeline}&activeTab=${tab}&tab=api-keys`,
+        url: `?tab=api-keys`,
         icon: KeyIcon,
       },
     ],

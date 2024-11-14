@@ -1,5 +1,6 @@
-"use client";
 import PipelineTile from "./tile";
+import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export const pipelines = [
   {
@@ -13,6 +14,7 @@ export const pipelines = [
     docs: "https://docs.livepeer.org/api-reference/generate/text-to-image",
     lightning: true,
     isComfyUI: true,
+    isFeatured: true,
   },
   {
     id: "instruct-pix2pix",
@@ -34,7 +36,9 @@ export const pipelines = [
     huggingFaceId: "stabilityai/stable-video-diffusion-img2vid-xt-1-1",
     docs: "https://docs.livepeer.org/api-reference/generate/image-to-video",
     isComfyUI: false,
+    isFeatured: true,
   },
+
   {
     id: "stable-diffusion-x4-upscaler",
     title: "Stable Diffusion Upscaler",
@@ -45,6 +49,18 @@ export const pipelines = [
     huggingFaceId: "stabilityai/stable-diffusion-x4-upscaler",
     docs: "https://docs.livepeer.org/api-reference/generate/upscale",
     isComfyUI: true,
+    isFeatured: true,
+  },
+  {
+    id: "sam2-hiera-large",
+    title: "Segment Anything 2",
+    description:
+      "SAM 2 is a segmentation model that enables precise selection of objects in image",
+    pipeline: "Segmentation",
+    image: "sam2-hiera-large.png",
+    huggingFaceId: "facebook/sam2-hiera-large",
+    docs: "https://docs.livepeer.org/api-reference/generate/segment-anything-2",
+    isComfyUI: false,
   },
   {
     id: "sam2-hiera-large",
@@ -67,6 +83,19 @@ export const pipelines = [
     huggingFaceId: "timbrooks/instruct-pix2pix",
     docs: "https://docs.livepeer.org/api-reference/generate/image-to-image",
     isComfyUI: true,
+    isFeatured: true,
+  },
+  {
+    id: "instruct-pix2pix",
+    title: "Instruct Pix2Pix",
+    description:
+      "A  model that edits images based on human-written instructions.",
+    pipeline: "Image to Image",
+    image: "instruct-pix2pix.jpg",
+    huggingFaceId: "timbrooks/instruct-pix2pix",
+    docs: "https://docs.livepeer.org/api-reference/generate/image-to-image",
+    isComfyUI: true,
+    isFeatured: true,
   },
   {
     id: "stable-diffusion-x4-upscaler",
@@ -82,13 +111,26 @@ export const pipelines = [
 ];
 
 export default function FeaturedPipelines() {
+  const featuredPipelines = pipelines.filter((pipeline) => pipeline.isFeatured);
   return (
-    <div className="col-span-3 w-full ">
+    <div className="relative rounded-2xl border p-4 mt-4 h-[calc(100vh-24rem)]">
       <div className="flex flex-row items-center justify-between">
-        <h3 className="font-medium text-lg">Featured Pipelines</h3>
+        <div>
+          <h3 className="font-medium text-lg">Featured Pipelines</h3>
+          <p className="text-muted-foreground text-sm">
+            Here are some of our hand-picked pipelines, curated to help you get
+            started with Livepeer AI pipelines.
+          </p>
+        </div>
+        <div>
+          <Link href={"/explore"} className="text-sm gap-1 flex items-center ">
+            View All
+            <ArrowTopRightIcon className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
-      <div className="flex w-full space-x-4 py-2">
-        {pipelines.map((pipeline, index) => (
+      <div className="grid grid-cols-4 gap-6 mt-4">
+        {featuredPipelines.map((pipeline, index) => (
           <PipelineTile
             key={index}
             id={pipeline.id}

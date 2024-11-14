@@ -48,12 +48,7 @@ export const MyPipelines = ({ open }: { open: boolean }) => {
         <p className="text-sm text-muted-foreground mt-1">
           Create your first pipeline!
         </p>
-        <Button
-          onClick={() =>
-            router.replace(`/?pipeline=${pipeline}&activeTab=${tab}&tab=create`)
-          }
-          className="mt-4"
-        >
+        <Button onClick={() => router.replace(`/?tab=create`)} className="mt-4">
           Create Pipeline
         </Button>
       </div>

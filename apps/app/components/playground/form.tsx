@@ -12,30 +12,27 @@ import Try from "./try";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { pipelines } from "../welcome/featured/index";
-export default function Form({ tab }: { tab: string | string[] | undefined }) {
+export default function Form({
+  tab,
+  onTabChange,
+  onRunClick,
+  pipeline,
+}: {
+  tab: string;
+  onTabChange: (tab: string) => void;
+  onRunClick: (isRunning: boolean) => void;
+  pipeline: string;
+}) {
   const [isRunPipelineLoading, setIsRunPipelineLoading] = useState(false);
-  const searchParams = useSearchParams();
 
-  const initialTab = searchParams.get("activeTab") || "try";
+  const [activeTab, setActiveTab] = useState(tab);
 
-  const [activeTab, setActiveTab] = useState(initialTab);
-
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const pipeline = searchParams.get("pipeline");
   const pipelineData = pipelines.find((p) => p.id === pipeline);
 
   const handleValueChange = (value: string) => {
     setActiveTab(value);
-    router.replace(`${pathname}?pipeline=${pipeline ?? ""}&activeTab=${value}`);
+    onTabChange(value);
   };
-
-  useEffect(() => {
-    if (searchParams.get("activeTab")) {
-      setActiveTab(searchParams.get("activeTab") || "try");
-    }
-  }, [searchParams]);
 
   return (
     <div className="w-full h-full overflow-y-auto rounded-lg p-0.5 overflow-hidden z-10  pr-6 pt-6  ">
@@ -52,7 +49,12 @@ export default function Form({ tab }: { tab: string | string[] | undefined }) {
             {tab === "try" && (
               <>
                 {isRunPipelineLoading ? (
-                  <Button disabled>
+                  <Button
+                    onClick={() => {
+                      setIsRunPipelineLoading(false);
+                      onRunClick(false);
+                    }}
+                  >
                     <Loader2 className="animate-spin" />
                     Running...
                   </Button>
@@ -60,9 +62,7 @@ export default function Form({ tab }: { tab: string | string[] | undefined }) {
                   <Button
                     onClick={() => {
                       setIsRunPipelineLoading(true);
-                      router.replace(
-                        "?pipeline=" + pipeline + "&isRunning=true"
-                      );
+                      onRunClick(true);
                     }}
                   >
                     Run Pipeline

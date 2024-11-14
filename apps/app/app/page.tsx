@@ -6,6 +6,7 @@ import { Separator } from "@repo/design-system/components/ui/separator";
 import { SidebarTrigger } from "@repo/design-system/components/ui/sidebar";
 import type { Metadata } from "next";
 import { type ReactElement, Suspense } from "react";
+import FeaturedPipelines from "@/components/welcome/featured";
 
 const title = "Livepeer Pipelines ";
 
@@ -27,7 +28,7 @@ const App = async ({
       </div>
       <div className="min-h-0 flex-grow">
         <Suspense>
-          <Playground />
+          <FeaturedPipelines />
         </Suspense>
       </div>
       <Modals searchParams={searchParams} />

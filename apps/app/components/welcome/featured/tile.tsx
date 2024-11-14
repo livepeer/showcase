@@ -1,13 +1,8 @@
-"use client";
-
 import { Badge } from "@repo/design-system/components/ui/badge";
 import { Label } from "@repo/design-system/components/ui/label";
 import { cn } from "@repo/design-system/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import Link from "next/link";
 
 export default function PipelineTile({
   title,
@@ -16,6 +11,7 @@ export default function PipelineTile({
   isComfyUI,
   author,
   id,
+  isFeatured = false,
 }: {
   title: string;
   description: string;
@@ -23,32 +19,14 @@ export default function PipelineTile({
   isComfyUI: boolean;
   author: string;
   id: string;
+  isFeatured?: boolean;
 }) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [isHovering, setIsHovering] = useState(false);
-
-  const tab = searchParams.get("activeTab");
-  const pipeline = searchParams.get("pipeline");
-
-  const isSelected = pipeline === id;
-
   return (
-    <motion.div
-      onClick={() => {
-        router.replace(`?pipeline=${id}&activeTab=${tab}`);
-      }}
-      animate={{
-        scale: isSelected ? 1.05 : 1,
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      }}
+    <Link
+      href={`/playground/${id}`}
       className={cn(
-        "relative ml-2 h-48 min-w-[20rem] cursor-pointer rounded-xl",
-        isSelected && "border-2 border-foreground"
+        "relative min-w-[20rem] cursor-pointer rounded-xl",
+        isFeatured ? "h-48" : "h-52"
       )}
     >
       <div className="relative z-10 flex h-full flex-col justify-between overflow-visible p-4">
@@ -64,9 +42,9 @@ export default function PipelineTile({
           )}
 
           <div
-            className={cn(
+            className={
               "flex items-center gap-1 overflow-hidden rounded-full bg-white pr-2 py-0.5 text-black text-xs"
-            )}
+            }
           >
             <Image
               src="https://github.com/suhailkakar.png"
@@ -91,6 +69,6 @@ export default function PipelineTile({
         height={500}
       />
       <div className="absolute bottom-0 left-0 h-1/2 w-full rounded-b-[10px] bg-gradient-to-t from-black/60 via-black/60 to-transparent" />
-    </motion.div>
+    </Link>
   );
 }
