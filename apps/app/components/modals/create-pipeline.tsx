@@ -238,7 +238,7 @@ export default function CreatePipeline({ open }: { open: boolean }) {
 
   if (!authenticated) {
     return (
-      <div className="px-6 py-2">
+      <div className="p-4">
         <div className="flex items-center justify-between">
           <div>
             <h4 className="text-lg font-medium">Create a pipeline</h4>
@@ -274,7 +274,7 @@ export default function CreatePipeline({ open }: { open: boolean }) {
   }, []);
 
   return (
-    <div className="px-6 ">
+    <div className="p-4">
       <div className="flex items-center justify-between relative">
         <div>
           <h4 className="text-lg font-medium">Create a pipeline</h4>

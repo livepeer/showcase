@@ -61,7 +61,7 @@ export default function Head() {
   };
 
   return (
-    <div className="relative rounded-2xl border">
+    <div className="relative rounded-2xl border pr-4">
       {isCollapsed && (
         <div className="absolute top-0 left-0 p-4">
           <h3 className="font-medium text-lg">Featured Pipelines</h3>
@@ -90,7 +90,7 @@ export default function Head() {
           className="overflow-hidden"
         >
           <ScrollArea className="">
-            <div className="grid grid-cols-4 gap-10 rounded-2xl p-4">
+            <div className="grid grid-cols-4 gap-10 rounded-2xl p-4 ">
               <Intro />
               {authenticated && <MyStats />}
               <Leaderboard />

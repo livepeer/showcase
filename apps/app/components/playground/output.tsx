@@ -121,7 +121,7 @@ export default function Output({
           variant="outline"
           onClick={() => setShowModelInfo(!showModelInfo)}
         >
-          <Info className="mr-2" /> View model info
+          <Info className="mr-2" /> View pipeline info
         </Button>
         <Button variant="outline" onClick={copyLink}>
           <Share className="mr-2" /> Share Pipeline
