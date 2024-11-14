@@ -2,6 +2,20 @@ import { Input } from "@repo/design-system/components/ui/input";
 import { Label } from "@repo/design-system/components/ui/label";
 import React from "react";
 import { Checkbox } from "@repo/design-system/components/ui/checkbox";
+import { availableModels } from "@/constants";
+import ModelTile from "@/components/explore/mode-tile";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+  CardFooter,
+} from "@repo/design-system/components/ui/card";
+import { Button } from "@repo/design-system/components/ui/button";
+import Link from "next/link";
+import Image from "next/image";
+import { ScrollArea } from "@repo/design-system/components/ui/scroll-area";
 
 export default function Explore() {
   return (
@@ -11,8 +25,18 @@ export default function Explore() {
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
       </p>
 
-      <div className="flex flex-row gap-2 mt-6">
+      <div className="flex gap-[8rem] mt-8">
         <Filter />
+        <div className="w-3/4">
+          <ScrollArea className="h-[90vh] ">
+            <CustomModelBanner />
+            <div className="mt-6 grid grid-cols-3 gap-6 grid-rows-3 w-full   ">
+              {availableModels.map((model, i) => (
+                <ModelTile key={i} model={model} />
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
       </div>
     </div>
   );
@@ -29,7 +53,7 @@ const Filter = () => {
     "Text to video",
   ];
   return (
-    <div className="w-[15%] flex flex-col space-y-4">
+    <div className="w-[17%] flex flex-col space-y-4 ">
       <div>
         <Label>Filter</Label>
         <Input placeholder="Search" />
@@ -68,5 +92,40 @@ const Filter = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const CustomModelBanner = () => {
+  return (
+    <Card className="relative ">
+      <CardHeader>
+        <CardTitle>Bring Your Custom AI Models to Livepeer</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <CardDescription className="w-3/5">
+          Leverage Livepeer's decentralized infrastructure to run AI models at
+          scale: open-source, LoRA fine-tuned, custom ML, and proprietary
+          solutions. Our network supports diverse architectures, delivers
+          high-performance inference, and offers seamless API integration.
+        </CardDescription>
+      </CardContent>
+      <CardFooter className="flex flex-row gap-4">
+        <Button>Request custom model</Button>
+        <Button asChild variant="outline">
+          <Link target="_blank" href="https://discord.gg/livepeer">
+            Join Livepeer Community
+          </Link>
+        </Button>
+      </CardFooter>
+      <div className="absolute top-0 right-0 w-2/5 h-full">
+        <Image
+          src="/ai/banner.webp"
+          className="w-full h-full object-cover"
+          alt="Custom Model"
+          width={500}
+          height={500}
+        />
+      </div>
+    </Card>
   );
 };

@@ -33,6 +33,7 @@ import {
   SendIcon,
   SquareTerminalIcon,
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -157,7 +158,10 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
     <>
       <Sidebar variant="inset" collapsible="icon">
         <SidebarHeader>
-          <div className="flex items-center justify-between mt-4 ml-2">
+          <Link
+            href="/"
+            className="flex items-center justify-between mt-4 ml-2"
+          >
             {_sidebar.open ? (
               <svg
                 width="112"
@@ -227,7 +231,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
             ) : (
               <Logo />
             )}
-          </div>
+          </Link>
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
