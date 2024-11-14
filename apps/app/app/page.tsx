@@ -20,25 +20,15 @@ const App = async ({
 }): Promise<ReactElement> => {
   return (
     <div>
-      <header className="flex h-16 shrink-0 items-center gap-2">
-        <div className="flex w-screen items-center gap-2 border-border border-b px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Header />
-        </div>
-      </header>
-
-      <div className="flex h-[calc(100vh-5rem)] flex-col overflow-y-auto px-6 py-4">
-        <div className="flex-shrink-0">
-          <Suspense>
-            <Welcome />
-          </Suspense>
-        </div>
-        <div className="min-h-0 flex-grow">
-          <Suspense>
-            <Playground />
-          </Suspense>
-        </div>
+      <div className="flex-shrink-0">
+        <Suspense>
+          <Welcome />
+        </Suspense>
+      </div>
+      <div className="min-h-0 flex-grow">
+        <Suspense>
+          <Playground />
+        </Suspense>
       </div>
       <Modals searchParams={searchParams} />
     </div>

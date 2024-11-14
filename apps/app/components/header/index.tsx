@@ -13,10 +13,12 @@ export default function Header() {
     },
     {
       label: "Learn",
+      external: true,
       href: "https://livepeer2.mintlify.app/",
     },
     {
       label: "Community",
+      external: true,
       href: "https://discord.gg/livepeer",
     },
   ];
@@ -31,7 +33,7 @@ export default function Header() {
           {menuItems.map((item) => (
             <Link
               href={item.href}
-              target="_blank"
+              target={item.external ? "_blank" : undefined}
               key={item.label}
               className="text-muted-foreground text-sm"
             >

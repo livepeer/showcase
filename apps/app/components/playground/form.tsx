@@ -123,7 +123,7 @@ const HeartButton = () => {
     <Button
       size="icon"
       variant="outline"
-      className=""
+      className="max-w-10 max-h-10 relative"
       onClick={() => setIsLiked(!isLiked)}
     >
       <motion.div

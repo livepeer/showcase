@@ -67,7 +67,6 @@ export const MyPipelines = ({ open }: { open: boolean }) => {
   return (
     <div className="p-4">
       <Header onClick={closeModal} />
-
       {authenticated ? (
         <EmptyState />
       ) : (
