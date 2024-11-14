@@ -86,7 +86,7 @@ const Filter = () => {
   );
 };
 
-export function FeaturedPipelines() {
+const FeaturedPipelines = () => {
   const featuredPipelines = pipelines.filter((pipeline) => pipeline.isFeatured);
   return (
     <ScrollArea className="border p-4 rounded-xl">
@@ -117,4 +117,4 @@ export function FeaturedPipelines() {
       <ScrollBar orientation="horizontal" />
     </ScrollArea>
   );
-}
+};
