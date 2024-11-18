@@ -25,7 +25,7 @@ export default function Explore({
 
       <div className="flex  mt-8">
         <Filter />
-        <div className="w-3/4 border-l border-border/50 ml-[3rem] pl-[3rem]">
+        <div className="w-full md:w-3/4 md:border-l border-border/50 md:ml-[3rem] md:pl-[3rem]">
           <FeaturedPipelines />
           <div className="border p-4 rounded-xl mt-6">
             <div>
@@ -34,7 +34,7 @@ export default function Explore({
                 Browse through all the pipelines available
               </p>
             </div>
-            <div className="mt-6 grid grid-cols-3 gap-6 grid-rows-3 w-full">
+            <div className="mt-6 grid md:grid-cols-3 gap-6 grid-rows-3 w-full">
               {pipelines.map((pipeline, index) => (
                 <PipelineTile
                   key={index}
@@ -57,7 +57,7 @@ export default function Explore({
 
 const Filter = () => {
   return (
-    <div className="w-[17%] flex flex-col space-y-4 ">
+    <div className="hidden md:flex w-[17%] flex-col space-y-4 ">
       <div>
         <Label>Filter</Label>
         <Input className="mt-2" placeholder="Search" />
@@ -88,33 +88,32 @@ const Filter = () => {
 
 const FeaturedPipelines = () => {
   const featuredPipelines = pipelines.filter((pipeline) => pipeline.isFeatured);
-  return (
-    <ScrollArea className="border p-4 rounded-xl">
-      <div className="">
-        <div>
-          <h3 className="font-medium text-lg">Featured Pipelines</h3>
-          <p className="text-muted-foreground text-sm">
-            Here are some of our hand-picked pipelines, curated to help you get
-            started with Livepeer AI pipelines.
-          </p>
-        </div>
+  const featuredPipelinesLimited = featuredPipelines.slice(0, 3);
 
-        <div className="flex flex-row space-x-4 mt-2">
-          {featuredPipelines.map((pipeline, index) => (
-            <PipelineTile
-              key={index}
-              id={pipeline.id}
-              isFeatured={true}
-              title={pipeline.title}
-              description={pipeline.description}
-              image={`/images/${pipeline.image}`}
-              isComfyUI={pipeline.isComfyUI || false}
-              author="Suhail"
-            />
-          ))}
-        </div>
+  return (
+    <div className="border p-4 rounded-xl">
+      <div>
+        <h3 className="font-medium text-lg">Featured Pipelines</h3>
+        <p className="text-muted-foreground text-sm">
+          Here are some of our hand-picked pipelines, curated to help you get
+          started with Livepeer AI pipelines.
+        </p>
       </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+
+      <div className="flex md:flex-row flex-col md:space-x-4 space-y-4 mt-2">
+        {featuredPipelinesLimited.map((pipeline, index) => (
+          <PipelineTile
+            key={index}
+            id={pipeline.id}
+            isFeatured={true}
+            title={pipeline.title}
+            description={pipeline.description}
+            image={`/images/${pipeline.image}`}
+            isComfyUI={pipeline.isComfyUI || false}
+            author="Suhail"
+          />
+        ))}
+      </div>
+    </div>
   );
 };

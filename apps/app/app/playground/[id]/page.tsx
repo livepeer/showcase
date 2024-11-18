@@ -40,7 +40,7 @@ export default function Playground({
           )}
         </div>
         <div className="flex-grow flex flex-col md:flex-row gap-14 h-full ">
-          <div className="w-[35%] flex-shrink-0 overflow-hidden flex flex-col ">
+          <div className="w-full md:w-[35%] flex-shrink-0 overflow-hidden flex flex-col ">
             <Form
               tab={tab}
               onTabChange={setTab}

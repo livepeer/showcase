@@ -25,7 +25,7 @@ export default function PipelineTile({
     <Link
       href={`/playground/${id}`}
       className={cn(
-        "relative min-w-[20rem] cursor-pointer rounded-xl",
+        "relative min-w-[20rem] cursor-pointer rounded-xl border-2",
         isFeatured ? "h-48" : "h-52"
       )}
     >
@@ -51,7 +51,7 @@ export default function PipelineTile({
               alt="suhail"
               width={100}
               height={100}
-              className="h-5 w-5 flex-shrink-0 rounded-full"
+              className="h-5 w-5 flex-shrink-0 rounded-full "
             />
             @{author}
           </div>
@@ -63,12 +63,16 @@ export default function PipelineTile({
       </div>
       <Image
         className="absolute top-0 left-0 h-full w-full rounded-[10px] object-cover"
+        // just a little blur to light blur over the image to make it less visually busy
+        style={{
+          filter: "blur(0.5px)",
+        }}
         src={image}
         alt="pipeline"
         width={500}
         height={500}
       />
-      <div className="absolute bottom-0 left-0 h-1/2 w-full rounded-b-[10px] bg-gradient-to-t from-black/60 via-black/60 to-transparent" />
+      <div className="absolute bottom-0 left-0 h-full w-full rounded-b-[10px] bg-gradient-to-t from-black/50 via-black/50 to-transparent" />
     </Link>
   );
 }

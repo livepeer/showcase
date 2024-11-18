@@ -27,6 +27,7 @@ import {
   ScrollArea,
   ScrollBar,
 } from "@repo/design-system/components/ui/scroll-area";
+import { Checkbox } from "@repo/design-system/components/ui/checkbox";
 
 const FORM_FIELDS = {
   BASIC: [
@@ -45,6 +46,12 @@ const FORM_FIELDS = {
           type: "textarea",
           placeholder: "Describe what your pipeline does and its use cases",
           className: "h-24",
+        },
+        {
+          id: "isPrivate",
+          label: "Make this pipeline private",
+          type: "checkbox",
+          defaultValue: true,
         },
         {
           id: "coverImage",
@@ -83,6 +90,17 @@ const FORM_FIELDS = {
           label: "Sample Code Repository",
           type: "input",
           placeholder: "GitHub repository URL",
+        },
+      ],
+    },
+    {
+      section: "Sample Input",
+      fields: [
+        {
+          id: "video",
+          label: "Sample Input Video",
+          type: "upload",
+          placeholder: "Upload a sample input video",
         },
       ],
     },
@@ -206,17 +224,26 @@ const FormField = ({ field }: { field: any }) => {
           <p className="text-sm text-muted-foreground">{field.placeholder}</p>
         </div>
       );
+    case "checkbox":
+      return (
+        <div className="flex items-center justify-between space-x-2">
+          <Label className="text-muted-foreground">{field.label}</Label>
+          <Checkbox {...commonProps} defaultChecked={field.defaultValue} />
+        </div>
+      );
     default:
       return null;
   }
 };
 
 const FormSection = ({ section, fields }: { section: string; fields: any }) => (
-  <div className="space-y-4">
+  <div className="space-y-4 p-0.5">
     <h5 className="font-medium">{section}</h5>
     {fields.map((field: any) => (
       <div key={field.id} className="space-y-1.5">
-        <Label className="text-muted-foreground">{field.label}</Label>
+        {field.type !== "checkbox" && (
+          <Label className="text-muted-foreground">{field.label}</Label>
+        )}
         <FormField field={field} />
       </div>
     ))}

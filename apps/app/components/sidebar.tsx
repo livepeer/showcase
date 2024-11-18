@@ -21,6 +21,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@repo/design-system/components/ui/sidebar";
+import { useIsMobile } from "@repo/design-system/hooks/use-mobile";
 import {
   ChevronRightIcon,
   Clock2Icon,
@@ -89,9 +90,7 @@ const Logo = () => (
 export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   const _sidebar = useSidebar();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const pipeline = searchParams.get("pipeline");
-  const tab = searchParams.get("activeTab") || "try";
+  const isMobile = useIsMobile();
 
   const data: {
     navMain: NavItem[];
@@ -251,6 +250,9 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
                         } else {
                           router.replace(item.url);
                         }
+                        if (isMobile) {
+                          _sidebar.setOpenMobile(false);
+                        }
                       }}
                       asChild
                       tooltip={item.title}
@@ -304,6 +306,9 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
                           window.open(item.url, "_blank");
                         } else {
                           router.replace(item.url);
+                        }
+                        if (isMobile) {
+                          _sidebar.setOpenMobile(false);
                         }
                       }}
                       asChild

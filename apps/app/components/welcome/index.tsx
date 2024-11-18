@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "@repo/design-system/components/ui/table";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
 import { useState } from "react";
 import FeaturedPipelines from "./featured";
 import { usePrivy } from "@privy-io/react-auth";
@@ -31,7 +31,7 @@ export default function Head() {
 
   return (
     <div className="relative rounded-2xl border pr-4">
-      <div className="grid grid-cols-3 gap-10 rounded-2xl p-4">
+      <div className="grid md:grid-cols-3 gap-4 md:gap-10 rounded-2xl p-4">
         <Intro />
         {authenticated && <MyStats />}
         <Leaderboard />
@@ -44,8 +44,6 @@ const Intro = () => {
   const { user } = usePrivy();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pipeline = searchParams.get("pipeline");
-  const tab = searchParams.get("activeTab");
   const name = user?.github?.name || user?.discord?.username;
 
   return (
@@ -53,31 +51,25 @@ const Intro = () => {
       <h3 className="font-medium text-lg">
         Welcome {name ? `back, ${name}` : "to Livepeer"}
       </h3>
-      <p className="mt-3 text-muted-foreground text-sm">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ut
-        fermentum dui, sed luctus purus. Quisque eros massa, dictum gravida
-        varius non, feugiat vel tortor.
-      </p>
-      <div className="mt-5">
-        <Search className="h-11" />
+      <div
+        onClick={() => {
+          router.replace("?tab=create");
+        }}
+        className="
+      hover:border-primary/60 hover:text-primary/60 transition-all duration-200
+      cursor-pointer
+      mt-3 text-muted-foreground text-md border border-dashed rounded-lg h-32 flex items-center justify-center"
+      >
+        <Plus className="h-7 w-7 mr-2" />
+        Create a pipeline
       </div>
-
       <div className="flex">
         <Button
           onClick={() => {
-            router.replace(`/?tab=create`);
-            track("create_pipeline_clicked");
-          }}
-          className="mt-5 w-auto"
-        >
-          Create a pipeline
-        </Button>
-        <Button
-          onClick={() => {
-            track("what_is_a_pipeline_clicked");
+            window.open("https://livepeer2.mintlify.app", "_blank");
           }}
           variant="ghost"
-          className="mt-5 ml-2 w-auto"
+          className="mt-3  w-auto"
         >
           What is a pipeline? <ArrowTopRightIcon className="ml-1 h-4 w-4" />
         </Button>
@@ -146,7 +138,7 @@ const MyStats = () => {
         <TableHeader>
           <TableRow>
             <TableHead>Pipeline</TableHead>
-            <TableHead>Author</TableHead>
+            <TableHead>Users</TableHead>
             <TableHead>Usage</TableHead>
           </TableRow>
         </TableHeader>

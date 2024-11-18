@@ -117,19 +117,22 @@ export default function FeaturedPipelines() {
       <div className="flex flex-row items-center justify-between">
         <div>
           <h3 className="font-medium text-lg">Featured Pipelines</h3>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground text-sm w-full">
             Here are some of our hand-picked pipelines, curated to help you get
             started with Livepeer AI pipelines.
           </p>
         </div>
         <div>
-          <Link href={"/explore"} className="text-sm gap-1 flex items-center ">
+          <Link
+            href={"/explore"}
+            className="text-sm gap-1 flex items-center -ml-20 -mt-8 md:-ml-0 md:-mt-0"
+          >
             View All
             <ArrowTopRightIcon className="h-4 w-4" />
           </Link>
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-6 mt-4">
+      <div className="grid md:grid-cols-4 gap-6 mt-4">
         {featuredPipelines.map((pipeline, index) => (
           <PipelineTile
             key={index}

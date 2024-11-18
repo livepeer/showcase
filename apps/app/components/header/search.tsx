@@ -18,15 +18,14 @@ export default function Search({ className }: { className?: string }) {
   return (
     <div>
       <Input
-        placeholder="I want to build..."
+        placeholder="Search Pipelines"
         onClick={() => {
           track("search_clicked");
           setOpen(true);
         }}
-        className={cn("hidden w-80 md:block", className)}
       />
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="I want to build..." />
+        <CommandInput placeholder="Search Pipelines..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Suggestions">
