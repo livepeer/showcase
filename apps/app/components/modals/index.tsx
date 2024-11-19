@@ -22,7 +22,7 @@ export default function Modals({
           style={{
             boxShadow: "20px 0px 30px -15px rgba(0, 0, 0, 0.1)",
           }}
-          className="fixed bg-background left-0 top-[4rem] md:left-[15rem] md:top-[4.4rem] w-full md:w-[27rem] h-full bg-background border-r border-border overflow-y-auto z-20"
+          className="fixed  left-0 top-[4rem] md:left-[15rem] md:top-[4.4rem] w-full md:w-[27rem] h-full bg-background border-r border-border overflow-y-auto z-20"
         >
           <CreatePipeline open={tab === "create"} />
           <LikedPipelines open={tab === "liked"} />

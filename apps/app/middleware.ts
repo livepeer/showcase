@@ -1,16 +1,15 @@
 import { NextResponse, NextRequest } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { compareSync } from "bcrypt-edge";
+import { createAdminServerClient } from "@repo/supabase";
 
 export const config = {
   matcher: "/api/:path*",
 };
+
 export async function middleware(request: NextRequest) {
   const apiKey = request.headers.get("x-api-key");
+
+  const supabase = await createAdminServerClient();
 
   if (!apiKey) {
     return NextResponse.json(
@@ -21,19 +20,35 @@ export async function middleware(request: NextRequest) {
 
   const { data: apiKeyRecord, error } = await supabase
     .from("api_keys")
-    .select("user_id, isActive")
-    .eq("api_key", apiKey)
-    .single();
+    .select("user_id, api_key")
+    .eq("is_active", true);
 
-  if (error || !apiKeyRecord || !apiKeyRecord.isActive) {
+  console.log(apiKeyRecord);
+
+  if (error || apiKeyRecord.length === 0) {
     return NextResponse.json(
-      { message: "Invalid or inactive API key" },
+      { message: "The API doesn't not invalid" },
       { status: 403 }
     );
   }
 
+  let isValid = false;
+  let userId = null;
+
+  for (const keyRecord of apiKeyRecord) {
+    isValid = compareSync(apiKey, keyRecord.api_key);
+    if (isValid) {
+      userId = keyRecord.user_id;
+      break;
+    }
+  }
+
+  if (!isValid) {
+    return NextResponse.json({ message: "Invalid API key" }, { status: 403 });
+  }
+
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-user-id", apiKeyRecord.user_id);
+  requestHeaders.set("x-user-id", userId);
 
   return NextResponse.next({
     request: {

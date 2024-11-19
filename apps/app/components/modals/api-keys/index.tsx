@@ -3,12 +3,13 @@
 import React, { useState } from "react";
 import { XIcon } from "lucide-react";
 import { Button } from "@repo/design-system/components/ui/button";
-import LoggedOutComponent from "./logged-out";
+import LoggedOutComponent from "../logged-out";
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import track from "@/lib/track";
 import { useEffect } from "react";
 import { Input } from "@repo/design-system/components/ui/input";
+import { createAPIKey } from "./action";
 
 const Header = ({ onClick }: { onClick: () => void }) => (
   <div className="flex items-center justify-between">
@@ -29,8 +30,10 @@ const Header = ({ onClick }: { onClick: () => void }) => (
 export const APIKeys = ({ open }: { open: boolean }) => {
   if (!open) return null;
 
-  const { authenticated } = usePrivy();
+  const { authenticated, user } = usePrivy();
   const [showCreateAPIKey, setShowCreateAPIKey] = useState(false);
+
+  const [apiKeyName, setApiKeyName] = useState("");
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -55,12 +58,26 @@ export const APIKeys = ({ open }: { open: boolean }) => {
     </div>
   );
 
+  const handleCreateAPIKey = async () => {
+    const apiKey = await createAPIKey(apiKeyName, user?.id);
+    console.log(apiKey);
+  };
+
   const CreateAPIKey = () => (
     <div className="mt-6 ">
       <h5 className="font-medium">Create API Key</h5>
-      <Input className="mt-2" placeholder="API Key Name" />
+      <Input
+        className="mt-2"
+        placeholder="API Key Name"
+        value={apiKeyName}
+        onChange={(e) => setApiKeyName(e.target.value)}
+      />
       <div className="flex gap-2">
-        <Button disabled className="mt-4">
+        <Button
+          onClick={handleCreateAPIKey}
+          disabled={!apiKeyName}
+          className="mt-4"
+        >
           Create API Key
         </Button>
         <Button
