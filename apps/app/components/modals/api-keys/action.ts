@@ -3,6 +3,7 @@
 import { createServerClient } from "@repo/supabase";
 import crypto from "crypto";
 import { hashSync } from "bcrypt-edge";
+import { newId } from "@/lib/generate-id";
 
 export async function createAPIKey(
   apiKeyName: string,
@@ -14,7 +15,7 @@ export async function createAPIKey(
     return;
   }
 
-  const apiKey = crypto.randomBytes(32).toString("hex"); // 64-character API key
+  const apiKey = newId("api_key");
 
   const hashedApiKey = await hashSync(apiKey, 10);
 

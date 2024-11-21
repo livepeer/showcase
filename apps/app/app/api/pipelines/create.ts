@@ -1,5 +1,6 @@
 "use server";
 
+import { newId } from "@/lib/generate-id";
 import { createServerClient } from "@repo/supabase";
 import { z } from "zod";
 
@@ -15,7 +16,6 @@ const modelCardSchema = z
   .optional();
 
 const pipelineSchema = z.object({
-  id: z.string().uuid().optional(),
   created_at: z.date().optional(),
   updated_at: z.date().optional(),
   last_used: z.date().nullable().optional(),
@@ -28,6 +28,7 @@ const pipelineSchema = z.object({
   sample_code_repo: z.string().url().nullable().optional(),
   is_featured: z.boolean().default(false),
   sample_input_video: z.string().url().nullable().optional(),
+  key: z.string(),
   author: z.string(),
   model_card: modelCardSchema,
 });
@@ -39,13 +40,17 @@ export async function createPipeline(body: any, userId: string) {
     ...body,
     author: userId,
   });
+
   if (!validationResult.success) {
     throw new z.ZodError(validationResult.error.errors);
   }
 
   const { data, error } = await supabase
     .from("pipelines")
-    .insert(validationResult.data)
+    .insert({
+      id: newId("pipeline"),
+      ...validationResult.data,
+    })
     .select();
 
   if (error) throw new Error(error.message);
