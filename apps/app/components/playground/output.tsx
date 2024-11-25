@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@repo/design-system/components/ui/button";
-import { Info, Share } from "lucide-react";
+import { Info, PauseIcon, PlayIcon, Share } from "lucide-react";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { pipelines } from "../welcome/featured/index";
@@ -16,14 +16,20 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@repo/design-system/components/ui/alert-dialog";
+import { Livepeer } from "livepeer";
+import { getSrc } from "@livepeer/react/external";
+import * as Player from "@livepeer/react/player";
+import { LPPLayer } from "./player";
 
 export default function Output({
   tab,
   isRunning,
   pipeline,
+  streamInfo,
 }: {
   tab: string | string[] | undefined;
   isRunning: boolean;
+  streamInfo: any;
   pipeline: string;
 }) {
   const copyLink = () => {
@@ -31,8 +37,13 @@ export default function Output({
     toast.success("Link copied to clipboard");
   };
 
+  const livepeer = new Livepeer({
+    apiKey: process.env.LIVEPEER_STUDIO_API_KEY,
+  });
+
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const [playbackInfo, setPlaybackInfo] = useState<any>(null);
   const [showModelInfo, setShowModelInfo] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -45,38 +56,6 @@ export default function Output({
 
         return () => clearInterval(timer);
       }
-    }
-  }, [tab, isRunning]);
-
-  const showCamera = async () => {
-    const constraints: MediaStreamConstraints = {
-      video: {
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
-        facingMode: "user",
-      },
-      audio: false,
-    };
-
-    const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
-
-    if (videoRef.current) {
-      videoRef.current.srcObject = mediaStream;
-      // Ensure video plays after loading
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.error("Error playing video:", error);
-        });
-      }
-    }
-
-    setStream(mediaStream);
-  };
-
-  useEffect(() => {
-    if (tab === "try" && isRunning) {
-      showCamera();
     }
   }, [tab, isRunning]);
 
@@ -114,6 +93,20 @@ export default function Output({
     },
   ];
 
+  const handleGetPlaybackInfo = async () => {
+    const { playbackInfo } = await livepeer.playback.get(
+      streamInfo.output_playback_id
+    );
+    setPlaybackInfo(playbackInfo);
+    console.log("playbackInfo", playbackInfo);
+  };
+
+  useEffect(() => {
+    if (streamInfo) {
+      handleGetPlaybackInfo();
+    }
+  }, [streamInfo]);
+
   return (
     <div className="flex flex-col h-full relative">
       <div className="flex-shrink-0 flex justify-end mb-4 space-x-4">
@@ -134,18 +127,9 @@ export default function Output({
             className="w-full h-full rounded-2xl"
           />
         )}
-        {tab === "try" && isRunning && (
-          <div className="w-full h-full">
-            <video
-              className="w-full h-full rounded-2xl object-cover"
-              autoPlay
-              muted
-              loop
-              ref={videoRef}
-            />
-            <div className="absolute bottom-4 right-4 text-xl px-2 py-1 font-medium bg-white rounded-md text-black">
-              {formatTime(timeLeft)}
-            </div>
+        {playbackInfo && (
+          <div className="w-full h-full  relative overflow-hidden z-10">
+            <LPPLayer src={getSrc(playbackInfo)} />
           </div>
         )}
       </div>

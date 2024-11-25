@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import { SidebarTrigger } from "@repo/design-system/components/ui/sidebar";
 import Header from "@/components/header/index";
 import { Separator } from "@repo/design-system/components/ui/separator";
+import Intercom from "@/components/intercom";
 
 type RootLayoutProperties = {
   readonly children: ReactNode;
@@ -26,13 +27,13 @@ const RootLayout = ({ children }: RootLayoutProperties) => (
                   <Header />
                 </div>
               </header>
-
               <div className="flex h-[calc(100vh-5rem)] flex-col overflow-y-auto px-6 py-4">
                 {children}
               </div>
             </div>
           </GlobalSidebar>
         </SidebarProvider>
+        <Intercom />
       </DesignSystemProvider>
     </body>
   </html>

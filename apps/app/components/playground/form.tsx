@@ -16,11 +16,13 @@ export default function Form({
   tab,
   onTabChange,
   onRunClick,
+  setStreamInfo,
   pipeline,
 }: {
   tab: string;
   onTabChange: (tab: string) => void;
   onRunClick: (isRunning: boolean) => void;
+  setStreamInfo: (streamInfo: any) => void;
   pipeline: string;
 }) {
   const [isRunPipelineLoading, setIsRunPipelineLoading] = useState(false);
@@ -62,7 +64,6 @@ export default function Form({
                   <Button
                     onClick={() => {
                       setIsRunPipelineLoading(true);
-                      onRunClick(true);
                     }}
                   >
                     Run Pipeline
@@ -73,7 +74,7 @@ export default function Form({
           </div>
         </div>
         <TabsContent value={"try"}>
-          <Try />
+          <Try setStreamInfo={setStreamInfo} isRunning={isRunPipelineLoading} />
         </TabsContent>
         <TabsContent value="remix">
           <div className="flex flex-col gap-6 my-6 h-full">

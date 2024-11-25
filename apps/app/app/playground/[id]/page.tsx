@@ -18,6 +18,7 @@ export default function Playground({
 }) {
   const [tab, setTab] = useState<string>("try");
   const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [streamInfo, setStreamInfo] = useState<any>(null);
   const pipelineData = pipelines.find((p) => p.id === params.id);
 
   return (
@@ -45,6 +46,7 @@ export default function Playground({
               tab={tab}
               onTabChange={setTab}
               onRunClick={(isRunning) => setIsRunning(isRunning)}
+              setStreamInfo={setStreamInfo}
               pipeline={params.id}
             />
           </div>
@@ -53,6 +55,7 @@ export default function Playground({
               tab={tab as string}
               isRunning={isRunning}
               pipeline={params.id}
+              streamInfo={streamInfo}
             />
           </div>
         </div>

@@ -7,6 +7,10 @@ export const config = {
 };
 
 export async function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname.includes("/api/streams/webhook")) {
+    return NextResponse.next();
+  }
+
   const apiKey = request.headers.get("x-api-key");
 
   const supabase = await createAdminServerClient();

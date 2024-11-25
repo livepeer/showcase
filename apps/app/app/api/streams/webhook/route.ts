@@ -6,29 +6,34 @@ const ERROR_MESSAGES = {
   UNAUTHORIZED: "Authentication required",
   INVALID_INPUT: "Invalid pipeline configuration",
   INTERNAL_ERROR: "An unexpected error occurred",
+  NOT_FOUND: "Stream not found",
 } as const;
 
 export async function POST(request: Request) {
   const supabase = await createServerClient();
 
   try {
-    const userId = request.headers.get("x-user-id");
-    if (!userId) {
-      return createErrorResponse(401, ERROR_MESSAGES.UNAUTHORIZED);
-    }
+    // const userId = request.headers.get("x-user-id");
+    // if (!userId) {
+    //   return createErrorResponse(401, ERROR_MESSAGES.UNAUTHORIZED);
+    // }
 
     const body = await request.json().catch(() => null);
     if (!body) {
       return createErrorResponse(400, ERROR_MESSAGES.INVALID_INPUT);
     }
 
-    const stream_key = body.stream_key;
+    const stream_key = body.stream;
 
     const { data, error } = await supabase
       .from("streams")
       .select("*, pipeline_id(key)")
       .eq("stream_key", stream_key)
       .single();
+
+    if (!data) {
+      return createErrorResponse(404, ERROR_MESSAGES.NOT_FOUND);
+    }
 
     const response = {
       rtmp_output_url: data?.output_stream_url,

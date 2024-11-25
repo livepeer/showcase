@@ -29,13 +29,15 @@ export async function createStream(body: any, userId: string) {
     ...validationResult.data,
     id: newId("stream"),
     stream_key: newId("stream_key"),
+    output_playback_id: livepeerStream?.playbackId,
     output_stream_url: `${process.env.LIVEPEER_STUDIO_RTMP_URL}/${livepeerStream?.streamKey}`,
   };
 
   const { data, error } = await supabase
     .from("streams")
     .insert(streamData)
-    .select();
+    .select()
+    .single();
 
   if (error) throw new Error(error.message);
   return data;

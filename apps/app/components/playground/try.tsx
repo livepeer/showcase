@@ -10,18 +10,29 @@ import {
   SelectValue,
 } from "@repo/design-system/components/ui/select";
 import { Textarea } from "@repo/design-system/components/ui/textarea";
+import { createStream } from "@/app/api/streams/create";
+import { usePrivy } from "@privy-io/react-auth";
 
 interface MediaStreamState {
   active: boolean;
   id: string;
 }
 
-export default function Try(): JSX.Element {
+export default function Try({
+  isRunning,
+  setStreamInfo,
+}: {
+  isRunning: boolean;
+  setStreamInfo: (streamInfo: any) => void;
+}): JSX.Element {
   const [source, setSource] = useState<string>("");
   const [stream, setStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [prompt, setPrompt] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [streamId, setStreamId] = useState<string | null>(null);
+  const { user } = usePrivy();
 
   const startWebcam = async (): Promise<void> => {
     setIsLoading(true);
@@ -86,6 +97,29 @@ export default function Try(): JSX.Element {
     };
   }, [source]);
 
+  const handleRun = async (): Promise<void> => {
+    // Step 1: Create a stream
+    const stream = await createStream(
+      {
+        pipeline_id: "pip_fPJPE3QdSw2SrF6W",
+        pipeline_params: {
+          prompt,
+        },
+      },
+      user?.id ?? ""
+    );
+
+    setStreamId(stream.id);
+    setStreamInfo(stream);
+    // Step 2: Broadcast the webcam to the streamKey and RTMP URL
+  };
+
+  useEffect(() => {
+    if (isRunning && !streamId) {
+      handleRun();
+    }
+  }, [isRunning]);
+
   return (
     <div className="flex flex-col gap-4 mt-5">
       <div className="flex flex-col gap-1.5">
@@ -105,6 +139,8 @@ export default function Try(): JSX.Element {
         <Textarea
           className="h-44"
           placeholder="a cat in a business suit sitting in a crowded subway train during rush hour, commuting, sad expressions. intricate details, photo taken on Hasselblad, creative photoshoot, unreal render 8k"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
         />
       </div>
 
