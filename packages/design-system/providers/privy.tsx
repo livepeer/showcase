@@ -3,7 +3,7 @@
 import { PrivyProvider as PrivyProviderRaw } from "@privy-io/react-auth";
 
 export const PrivyProvider = ({ children }: { children: React.ReactNode }) => (
-  <PrivyProviderRaw appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}>
+  <PrivyProviderRaw appId={"cm2xth5uy0acgf4dk18qfg2vq"}>
     {children}
   </PrivyProviderRaw>
 );
