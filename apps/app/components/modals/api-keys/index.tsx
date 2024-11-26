@@ -9,7 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import track from "@/lib/track";
 import { useEffect } from "react";
 import { Input } from "@repo/design-system/components/ui/input";
-import { createAPIKey } from "./action";
+import { createAPIKey, getAPIKeys } from "./action";
 
 const Header = ({ onClick }: { onClick: () => void }) => (
   <div className="flex items-center justify-between">
@@ -32,6 +32,7 @@ export const APIKeys = ({ open }: { open: boolean }) => {
 
   const { authenticated, user } = usePrivy();
   const [showCreateAPIKey, setShowCreateAPIKey] = useState(false);
+  const [apiKeys, setApiKeys] = useState<any[]>([]);
 
   const [apiKeyName, setApiKeyName] = useState("");
 
@@ -93,14 +94,44 @@ export const APIKeys = ({ open }: { open: boolean }) => {
 
   useEffect(() => {
     track("my_pipelines_modal_opened");
+    fetchAPIKeys();
   }, []);
+
+  const fetchAPIKeys = async () => {
+    const apiKeys = await getAPIKeys(user?.id);
+    setApiKeys(apiKeys);
+  };
+
+  const RenderAPIKeys = () => (
+    <div className="mt-2">
+      {apiKeys.map((apiKey) => (
+        <div className="flex items-center justify-between">
+          <div>{apiKey.name}</div>
+          <div className="text-sm text-muted-foreground">********</div>
+        </div>
+      ))}
+      <div className="flex space-y-3 flex-col">
+        <div className="text-sm text-muted-foreground mt-2">
+          You can only copy the API key at the time of creation.
+        </div>
+        <Button onClick={() => setShowCreateAPIKey(true)} className="w-full">
+          Create API Key
+        </Button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="p-4">
       <Header onClick={closeModal} />
-
       {authenticated ? (
-        <>{showCreateAPIKey ? <CreateAPIKey /> : <EmptyState />}</>
+        <>
+          {showCreateAPIKey ? (
+            <CreateAPIKey />
+          ) : (
+            <>{apiKeys.length > 0 ? <RenderAPIKeys /> : <EmptyState />}</>
+          )}
+        </>
       ) : (
         <LoggedOutComponent text="Sign in to create API keys" />
       )}

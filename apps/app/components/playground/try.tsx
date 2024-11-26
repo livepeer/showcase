@@ -12,6 +12,10 @@ import {
 import { Textarea } from "@repo/design-system/components/ui/textarea";
 import { createStream } from "@/app/api/streams/create";
 import { usePrivy } from "@privy-io/react-auth";
+import { Client } from "@livepeer/webrtmp-sdk";
+import { EnableVideoIcon, StopIcon } from "@livepeer/react/assets";
+import { getIngest } from "@livepeer/react/external";
+import { BroadcastWithControls } from "./broadcast";
 
 interface MediaStreamState {
   active: boolean;
@@ -32,6 +36,7 @@ export default function Try({
   const [prompt, setPrompt] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [streamId, setStreamId] = useState<string | null>(null);
+  const [streamUrl, setStreamUrl] = useState<string | null>(null);
   const { user } = usePrivy();
 
   const startWebcam = async (): Promise<void> => {
@@ -97,6 +102,39 @@ export default function Try({
     };
   }, [source]);
 
+  const client = new Client({
+    baseUrl: "rtmp://rtmp.livepeer.monster:1945",
+  });
+
+  const startStreaming = async (streamKey: string): Promise<void> => {
+    if (!stream) {
+      setError("Video stream was not started.");
+      return;
+    }
+
+    try {
+      const session = client.cast(stream, streamKey);
+
+      session.on("open", () => {
+        console.log("Stream started");
+      });
+
+      session.on("close", () => {
+        console.log("Stream stopped");
+      });
+
+      session.on("error", (err) => {
+        console.log("Stream error:", err.message);
+        setError(`Streaming error: ${err.message}`);
+      });
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to start streaming";
+      console.error("Error starting stream:", errorMessage);
+      setError(errorMessage);
+    }
+  };
+
   const handleRun = async (): Promise<void> => {
     // Step 1: Create a stream
     const stream = await createStream(
@@ -111,7 +149,16 @@ export default function Try({
 
     setStreamId(stream.id);
     setStreamInfo(stream);
+    setStreamUrl(
+      `https://origin.livepeer.monster/mediamtx/${stream.stream_key}/whip`
+    );
+
     // Step 2: Broadcast the webcam to the streamKey and RTMP URL
+    if (stream.stream_key) {
+      await startStreaming(stream.stream_key);
+    } else {
+      setError("No stream key received from server");
+    }
   };
 
   useEffect(() => {
@@ -153,24 +200,12 @@ export default function Try({
             </div>
           )}
 
-          {error && (
-            <div className="absolute inset-0 flex items-center justify-center bg-red-50">
-              <p className="text-red-500">Error: {error}</p>
-            </div>
-          )}
+          {streamUrl && <BroadcastWithControls ingestUrl={streamUrl} />}
 
-          {source === "webcam" && (
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              muted
-              className="h-full w-full object-cover"
-            />
-          )}
-
-          {!source && !error && !isLoading && (
-            <p className="text-muted-foreground">Select a source to begin</p>
+          {!error && !isLoading && (
+            <p className="text-muted-foreground">
+              Click on the "Run" button to begin
+            </p>
           )}
         </div>
       </div>

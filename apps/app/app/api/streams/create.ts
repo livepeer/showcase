@@ -9,11 +9,18 @@ import { newId } from "@/lib/generate-id";
 
 const streamSchema = z.object({
   pipeline_id: z.string(),
-  pipeline_params: z.object({}).optional(),
+  pipeline_params: z
+    .object({
+      prompt: z.string().optional(),
+    })
+    .optional()
+    .default({}),
 });
 
 export async function createStream(body: any, userId: string) {
   const supabase = await createServerClient();
+
+  console.log("Received body:", body); // Debug log
 
   const validationResult = streamSchema.safeParse({
     ...body,
@@ -29,6 +36,7 @@ export async function createStream(body: any, userId: string) {
     ...validationResult.data,
     id: newId("stream"),
     stream_key: newId("stream_key"),
+    pipeline_params: validationResult.data.pipeline_params,
     output_playback_id: livepeerStream?.playbackId,
     output_stream_url: `${process.env.LIVEPEER_STUDIO_RTMP_URL}/${livepeerStream?.streamKey}`,
   };

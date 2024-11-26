@@ -32,3 +32,18 @@ export async function createAPIKey(
 
   return apiKey;
 }
+
+export async function getAPIKeys(userId: string | undefined) {
+  const supabase = await createServerClient();
+  const { data, error } = await supabase
+    .from("api_keys")
+    .select("*")
+    .eq("user_id", userId);
+
+  if (error) {
+    console.error("Error fetching API keys:", error);
+    throw new Error("Could not fetch API keys");
+  }
+
+  return data;
+}
