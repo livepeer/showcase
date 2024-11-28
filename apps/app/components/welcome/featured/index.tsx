@@ -15,6 +15,18 @@ export const pipelines = [
     isComfyUI: true,
     isFeatured: true,
   },
+  {
+    id: "streamdiffusion",
+    title: "Stream Diffusion",
+    description:
+      "A real-time video to video model that can generate videos from text prompts.",
+    pipeline: "Video to Video",
+    image: "streamdiffusion.gif",
+    huggingFaceId: "",
+    docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
+    isComfyUI: true,
+    isFeatured: true,
+  },
 ];
 
 export default function FeaturedPipelines() {

@@ -42,6 +42,7 @@ export function BroadcastWithControls({
             : null
         }
         forceEnabled={true}
+        audio={false}
         aspectRatio={16 / 9}
         ingestUrl={ingestUrl}
       >
@@ -69,7 +70,6 @@ export function BroadcastWithControls({
               </div>
             </div>
           </Broadcast.ErrorIndicator>
-
           <Broadcast.Controls className="bg-gradient-to-b gap-1 px-3 md:px-3 py-1.5 flex-col-reverse flex from-black/20 via-80% via-black/30 duration-1000 to-black/60 data-[visible=true]:animate-in data-[visible=false]:animate-out data-[visible=false]:fade-out-0 data-[visible=true]:fade-in-0">
             <div className="flex justify-between gap-4">
               <div className="flex flex-1 items-center gap-3">
