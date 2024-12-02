@@ -101,8 +101,8 @@ importers:
         specifier: ^0.0.14
         version: 0.0.14
       '@livepeer/react':
-        specifier: ^4.2.8
-        version: 4.2.8(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^4.2.9
+        version: 4.2.9(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
       '@livepeer/webrtmp-sdk':
         specifier: ^0.2.5
         version: 0.2.5
@@ -2730,8 +2730,8 @@ packages:
       - immer
     dev: false
 
-  /@livepeer/core-web@4.2.8(@types/react@18.3.12)(react@18.3.1):
-    resolution: {integrity: sha512-xYyzEzMce9HBj9AVuzLqS4TWqyZZwvOVO231tY7TArhhVEFSQNvNRr4bu51meCtp4kpGb3TgnPuaWrBL8sUMZA==}
+  /@livepeer/core-web@5.0.0(@types/react@18.3.12)(react@18.3.1):
+    resolution: {integrity: sha512-Tdb0iadeSHZq5eJ5IN3rNArjoVa0bW/f5s+rWZk8qH+bFkot/RCkbCTBWG0PRVm3C1TSqrKutV+T+Keim+cNUg==}
     dependencies:
       '@livepeer/core': 3.2.7(@types/react@18.3.12)(react@18.3.1)
       hls.js: 1.5.17
@@ -2754,8 +2754,8 @@ packages:
       - react
     dev: false
 
-  /@livepeer/react@4.2.8(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-mlYxLk1+nRNwIxpkLTEk4o9MiZL/2Tz9CpPzT6OEbQ5ZzSy/D/013fE1YsLiTLFmDco8gpB/jHg6+vywDFVgMQ==}
+  /@livepeer/react@4.2.9(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-SFxy5bMGnUmYqH5offn36WPfV8agBgAzpc3UtZJ1tYrBNIdhZxVto8FnKVeW7HHBy3z+0RdUCBVIgarjkXA5Ug==}
     peerDependencies:
       react: '>=17.0.0'
       react-dom: '>=17.0.0'
@@ -2765,7 +2765,7 @@ packages:
     dependencies:
       '@livepeer/core': 3.2.7(@types/react@18.3.12)(react@18.3.1)
       '@livepeer/core-react': 3.2.7(@types/react@18.3.12)(react@18.3.1)
-      '@livepeer/core-web': 4.2.8(@types/react@18.3.12)(react@18.3.1)
+      '@livepeer/core-web': 5.0.0(@types/react@18.3.12)(react@18.3.1)
       '@radix-ui/primitive': 1.1.0
       '@radix-ui/react-aspect-ratio': 1.1.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
       '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.12)(react@18.3.1)
