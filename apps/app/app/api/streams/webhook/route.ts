@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       return createErrorResponse(400, ERROR_MESSAGES.INVALID_INPUT);
     }
 
-    const stream_key = body.stream;
+    const stream_key = body.stream_key;
 
     const { data, error } = await supabase
       .from("streams")
