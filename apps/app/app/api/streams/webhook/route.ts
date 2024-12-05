@@ -41,6 +41,8 @@ export async function POST(request: Request) {
       pipeline_parameters: data?.pipeline_params,
     };
 
+    console.log("sending response", response);
+
     return NextResponse.json(response, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
