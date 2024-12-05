@@ -42,7 +42,7 @@ const track = async (
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorData = await response.text();
       console.error("Mixpanel error response:", errorData);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
