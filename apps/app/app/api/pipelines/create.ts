@@ -23,7 +23,7 @@ const pipelineSchema = z.object({
   description: z.string().optional(),
   is_private: z.boolean().default(true),
   cover_image: z.string().url().nullable().optional(),
-  pipeline_type: z.string().default("comfyUI"),
+  type: z.string().default("comfyUI"),
   comfy_ui_json: z.unknown().nullable().optional(),
   sample_code_repo: z.string().url().nullable().optional(),
   is_featured: z.boolean().default(false),

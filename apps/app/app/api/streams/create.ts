@@ -9,12 +9,7 @@ import { newId } from "@/lib/generate-id";
 
 const streamSchema = z.object({
   pipeline_id: z.string(),
-  pipeline_params: z
-    .object({
-      prompt: z.string().optional(),
-    })
-    .optional()
-    .default({}),
+  pipeline_params: z.record(z.any()).optional().default({}),
 });
 
 export async function createStream(body: any, userId: string) {

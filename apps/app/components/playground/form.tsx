@@ -9,9 +9,8 @@ import {
 } from "@repo/design-system/components/ui/tabs";
 import Tabs from "./tab";
 import Try from "./try";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { pipelines } from "../welcome/featured/index";
+
 export default function Form({
   tab,
   onTabChange,
@@ -23,13 +22,11 @@ export default function Form({
   onTabChange: (tab: string) => void;
   onRunClick: (isRunning: boolean) => void;
   setStreamInfo: (streamInfo: any) => void;
-  pipeline: string;
+  pipeline: any;
 }) {
   const [isRunPipelineLoading, setIsRunPipelineLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useState(tab);
-
-  const pipelineData = pipelines.find((p) => p.id === pipeline);
 
   const handleValueChange = (value: string) => {
     setActiveTab(value);
@@ -74,11 +71,15 @@ export default function Form({
           </div>
         </div>
         <TabsContent value={"try"}>
-          <Try setStreamInfo={setStreamInfo} isRunning={isRunPipelineLoading} />
+          <Try
+            pipeline={pipeline}
+            setStreamInfo={setStreamInfo}
+            isRunning={isRunPipelineLoading}
+          />
         </TabsContent>
         <TabsContent value="remix">
           <div className="flex flex-col gap-6 my-6 h-full">
-            {pipelineData?.isComfyUI ? (
+            {pipeline?.type === "comfyUI" ? (
               <p className="font-medium">
                 Inspired by this pipeline?
                 <br />
@@ -96,7 +97,7 @@ export default function Form({
               </p>
             )}
           </div>
-          {pipelineData?.isComfyUI && (
+          {pipeline?.type === "comfyUI" && (
             <div className="flex flex-row gap-2">
               <Button variant="outline">View JSON</Button>
               <Button>Download JSON</Button>

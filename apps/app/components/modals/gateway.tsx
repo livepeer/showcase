@@ -24,9 +24,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import track from "@/lib/track";
+import { Label } from "@repo/design-system/components/ui/label";
 
 export default function Gateway() {
   const [showGateway, setShowGateway] = React.useState(false);
+  const [whipUrl, setWhipUrl] = useState("");
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -41,11 +43,28 @@ export default function Gateway() {
 
   const handleSave = () => {
     toast.success("Saved gateway provider");
+    saveToLocalStorage("whipUrl", whipUrl);
     handleClose();
+  };
+
+  const saveToLocalStorage = (key: string, value: string) => {
+    localStorage.setItem(key, value);
+  };
+
+  const getFromLocalStorage = (key: string) => {
+    return localStorage.getItem(key);
   };
 
   useEffect(() => {
     setShowGateway(gateway === "true");
+    const whipUrl = getFromLocalStorage("whipUrl");
+    if (whipUrl) {
+      setWhipUrl(whipUrl);
+    } else {
+      setWhipUrl("https://ai.livepeer.monster/aiWebrtc/");
+      saveToLocalStorage("whipUrl", "https://ai.livepeer.monster/aiWebrtc/");
+    }
+
     if (gateway === "true") {
       track("gateway_modal_opened");
     }
@@ -71,6 +90,10 @@ export default function Gateway() {
             <SelectItem value="livepeer">Livepeer Studio</SelectItem>
           </SelectContent>
         </Select>
+        <div>
+          <Label>WHIP URL</Label>
+          <Input value={whipUrl} onChange={(e) => setWhipUrl(e.target.value)} />
+        </div>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={handleClose}>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={handleSave}>Save</AlertDialogAction>

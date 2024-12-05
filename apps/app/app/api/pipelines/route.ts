@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createPipeline } from "./create";
 import { z } from "zod";
-import { getAllPipelines } from "./get-all";
+import { getAllPipelines } from "./get";
 
 const ERROR_MESSAGES = {
   UNAUTHORIZED: "Authentication required",

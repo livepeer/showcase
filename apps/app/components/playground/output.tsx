@@ -30,7 +30,7 @@ export default function Output({
   tab: string | string[] | undefined;
   isRunning: boolean;
   streamInfo: any;
-  pipeline: string;
+  pipeline: any;
 }) {
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -41,34 +41,8 @@ export default function Output({
     apiKey: process.env.LIVEPEER_STUDIO_API_KEY,
   });
 
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
-  const [stream, setStream] = useState<MediaStream | null>(null);
   const [playbackInfo, setPlaybackInfo] = useState<any>(null);
   const [showModelInfo, setShowModelInfo] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  useEffect(() => {
-    if (tab === "try") {
-      if (isRunning) {
-        const timer = setInterval(() => {
-          setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-        }, 1000);
-
-        return () => clearInterval(timer);
-      }
-    }
-  }, [tab, isRunning]);
-
-  const formatTime = (seconds: number) => {
-    const hrs = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${hrs.toString().padStart(2, "0")}:${mins
-      .toString()
-      .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-  };
-
-  const pipelineData = pipelines.find((p) => p.id === pipeline);
 
   const modelInfo = [
     {
@@ -98,7 +72,6 @@ export default function Output({
       streamInfo.output_playback_id
     );
     setPlaybackInfo(playbackInfo);
-    console.log("playbackInfo", playbackInfo);
   };
 
   useEffect(() => {
@@ -121,7 +94,7 @@ export default function Output({
         </Button>
       </div>
       <div className="bg-sidebar rounded-2xl relative h-[calc(100vh-16rem)] w-full">
-        {tab === "remix" && pipelineData?.isComfyUI && (
+        {tab === "remix" && pipeline?.type === "comfyUI" && (
           <iframe
             src="https://comfyui.alpha.fal.ai/"
             className="w-full h-full rounded-2xl"
@@ -138,10 +111,10 @@ export default function Output({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="font-medium">
-              {pipelineData?.title}
+              {pipeline?.name}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              {pipelineData?.description}
+              {pipeline?.description}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="text-sm">

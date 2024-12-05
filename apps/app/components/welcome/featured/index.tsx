@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const pipelines = [
   {
-    id: "livepotrait",
+    id: "pip_fPJPE3QdSw2SrF6W",
     title: "Live Portrait",
     description:
       "A real-time video to video model that can generate videos from text prompts.",
@@ -16,12 +16,12 @@ export const pipelines = [
     isFeatured: true,
   },
   {
-    id: "streamdiffusion",
+    id: "pip_p4XsqEJk2ZqqWLuw",
     title: "Stream Diffusion",
     description:
       "A real-time video to video model that can generate videos from text prompts.",
     pipeline: "Video to Video",
-    image: "streamdiffusion.gif",
+    image: "liveportrait.gif",
     huggingFaceId: "",
     docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
     isComfyUI: true,
