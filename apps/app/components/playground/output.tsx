@@ -38,7 +38,8 @@ export default function Output({
   };
 
   const livepeer = new Livepeer({
-    apiKey: process.env.LIVEPEER_STUDIO_API_KEY,
+    serverURL: "https://livepeer.monster/api",
+    apiKey: process.env.NEXT_PUBLIC_LIVEPEER_STUDIO_API_KEY,
   });
 
   const [playbackInfo, setPlaybackInfo] = useState<any>(null);

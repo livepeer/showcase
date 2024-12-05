@@ -8,7 +8,7 @@ export const pipelines = [
     title: "Live Portrait",
     description:
       "A real-time video to video model that can generate videos from text prompts.",
-    pipeline: "Video to Video",
+
     image: "liveportrait.gif",
     huggingFaceId: "",
     docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
@@ -20,8 +20,28 @@ export const pipelines = [
     title: "Stream Diffusion",
     description:
       "A real-time video to video model that can generate videos from text prompts.",
-    pipeline: "Video to Video",
-    image: "liveportrait.gif",
+    image: "StreamDiffusion.jpg",
+    huggingFaceId: "",
+    docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
+    isComfyUI: true,
+    isFeatured: true,
+  },
+  // {
+  //   id: "pip_p4XsqEJk2ZqqWLuw",
+  //   title: "Depth Anything",
+  //   description:
+  //     "A highly practical solution for robust monocular depth estimation.",
+  //   image: "depth-anything.png",
+  //   huggingFaceId: "",
+  //   docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
+  //   isComfyUI: true,
+  //   isFeatured: true,
+  // },
+  {
+    id: "pip_f6PMBBXq44VZCFoP",
+    title: "Comfy UI",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    image: "comfyui.png",
     huggingFaceId: "",
     docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
     isComfyUI: true,

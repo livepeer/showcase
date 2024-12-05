@@ -100,7 +100,7 @@ const FeaturedPipelines = () => {
         </p>
       </div>
 
-      <div className="flex md:flex-row flex-col md:space-x-4 space-y-4 mt-2">
+      <div className="flex md:flex-row flex-col md:space-x-4  mt-2">
         {featuredPipelinesLimited.map((pipeline, index) => (
           <PipelineTile
             key={index}

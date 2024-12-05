@@ -57,7 +57,7 @@ export default function Try({
       user?.id ?? ""
     );
 
-    const whipUrl = getFromLocalStorage("whipUrl");
+    // const whipUrl = getFromLocalStorage("whipUrl");
 
     setStreamId(stream.id);
     setStreamInfo(stream);

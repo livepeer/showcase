@@ -25,17 +25,22 @@ export async function createStream(body: any, userId: string) {
     throw new z.ZodError(validationResult.error.errors);
   }
 
-  const livepeerStream = await createLivepeerStream();
+  const streamId = newId("stream");
+
+  const livepeerStream = await createLivepeerStream(streamId);
 
   const streamData = {
     ...validationResult.data,
-    id: newId("stream"),
+    id: streamId,
     stream_key: newId("stream_key"),
-    pipeline_params: validationResult.data.pipeline_params,
+    pipeline_params: {
+      prompt: "animated",
+    },
     output_playback_id: livepeerStream?.playbackId,
-    output_stream_url: `${process.env.LIVEPEER_STUDIO_RTMP_URL}/${livepeerStream?.streamKey}`,
+    output_stream_url: `rtmp://ai.livepeer.monster/live/${livepeerStream?.streamKey}`,
   };
 
+  console.log("Stream data:", streamData); // Debug log
   const { data, error } = await supabase
     .from("streams")
     .insert(streamData)
@@ -46,13 +51,14 @@ export async function createStream(body: any, userId: string) {
   return data;
 }
 
-const createLivepeerStream = async () => {
+const createLivepeerStream = async (name: string) => {
   const livepeer = new Livepeer({
-    apiKey: process.env.LIVEPEER_STUDIO_API_KEY,
+    serverURL: "https://livepeer.monster/api",
+    apiKey: process.env.NEXT_PUBLIC_LIVEPEER_STUDIO_API_KEY,
   });
 
   const { stream } = await livepeer.stream.create({
-    name: "test",
+    name: name,
   });
 
   return stream;

@@ -110,11 +110,6 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
         icon: HeartIcon,
       },
       {
-        title: "History",
-        url: `?tab=history`,
-        icon: Clock2Icon,
-      },
-      {
         title: "My Pipelines",
         url: `?tab=my`,
         icon: LibraryIcon,

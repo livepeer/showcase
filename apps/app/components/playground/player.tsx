@@ -28,7 +28,7 @@ export function LPPLayer(props: { src: Src[] | null }) {
   }
 
   return (
-    <Player.Root src={props.src}>
+    <Player.Root src={props.src} lowLatency={"force"}>
       <Player.Container className="h-full w-full overflow-hidden bg-black outline-none transition">
         <Player.Video
           title="Live stream"
