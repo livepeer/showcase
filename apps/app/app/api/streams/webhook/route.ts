@@ -19,6 +19,8 @@ export async function POST(request: Request) {
     // }
 
     const body = await request.json().catch(() => null);
+
+    console.log("body", body);
     if (!body) {
       return createErrorResponse(400, ERROR_MESSAGES.INVALID_INPUT);
     }

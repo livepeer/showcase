@@ -33,9 +33,7 @@ export async function createStream(body: any, userId: string) {
     ...validationResult.data,
     id: streamId,
     stream_key: newId("stream_key"),
-    pipeline_params: {
-      prompt: "animated",
-    },
+    pipeline_params: validationResult.data.pipeline_params,
     output_playback_id: livepeerStream?.playbackId,
     output_stream_url: `rtmp://ai.livepeer.monster/live/${livepeerStream?.streamKey}`,
   };
