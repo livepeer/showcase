@@ -28,17 +28,27 @@ const track = async (
     ...eventProperties,
     ...additionalProperties,
   };
+  try {
+   
+    const response = await fetch(`/api/mixpanel`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        event: eventName,
+        properties: properties,
+      }),
+    });
 
-  fetch("/api/mixpanel", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      event: eventName,
-      properties: properties,
-    }),
-  });
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Mixpanel error response:", errorData);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Error tracking event:", error);
+  }
 };
 
 export default track;
