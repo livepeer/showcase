@@ -101,9 +101,9 @@ export default function Output({
             className="w-full h-full rounded-2xl"
           />
         )}
-        {playbackInfo && (
+        {streamInfo?.output_playback_id && (
           <div className="w-full h-full  relative overflow-hidden z-10">
-            <LPPLayer src={getSrc(playbackInfo)} />
+            <LPPLayer output_playback_id={streamInfo?.output_playback_id} />
           </div>
         )}
       </div>
