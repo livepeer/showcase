@@ -1,9 +1,22 @@
+import { usePrivy } from "@privy-io/react-auth";
+
+// Create a store for the user ID
+let cachedUserId: string | null = null;
+
+// Function to set the cached user ID
+export function setUserId(id: string) {
+  cachedUserId = id;
+}
+
 const track = async (
   eventName: string,
   eventProperties?: Record<string, any>
 ) => {
   function getUserId() {
-    return "1231231231";
+    if (cachedUserId) {
+      return cachedUserId;
+    }
+    return "789789789"; // fallback
   }
 
   const userUUID = getUserId();
@@ -11,7 +24,8 @@ const track = async (
   const additionalProperties = {
     distinct_id: userUUID,
     $user_id: userUUID,
-    $browser: navigator.userAgent,
+    user_agent: navigator.userAgent,
+    $browser: navigator.userAgent.match(/(?:Chrome|Firefox|Safari|Opera|Edge|IE)/)?.[0] || 'Unknown Browser',
     $browser_version: navigator.userAgent.match(/(?:Version|Chrome|Firefox|Safari|Opera|Edge|IE)\/?\s*(\d+)/)?.[1] || '',
     $current_url: window.location.href,
     $device: navigator.userAgent.match(/\((.*?)\)/)?.[1] || 'Unknown Device',
