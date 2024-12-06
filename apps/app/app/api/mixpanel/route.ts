@@ -21,20 +21,8 @@ async function getGeoData(ip: string) {
   }
 }
 
-async function getDistinctId(ip: string, userAgent: string) {
-  if (!ip || !userAgent) {
-    return null;
-  }
-  
-  const stringToHash = JSON.stringify({ ip, userAgent });
-  const hash = crypto.createHash('md5').update(stringToHash).digest('hex');
-  
-  return hash;
-}
-
 export async function POST(request: Request) {
   const forwardedFor = request.headers.get('x-forwarded-for');
-  const userId = request.headers.get('x-user-id');
   
   const ip = process.env.NODE_ENV === 'development' 
     ? '93.152.210.100'  // Hardcoded development IP (truncated ip that resolves to San Francisco)
@@ -48,20 +36,14 @@ export async function POST(request: Request) {
   }
 
   const data = await request.json();
-  const userAgent = data.properties.user_agent;
-  
-  const distinctId = userId || await getDistinctId(ip, userAgent);
-  
+    
   try {
     const { event, properties } = data;
     const enrichedProperties = {
       ...properties,
-      ...geoData,
-      distinct_id: distinctId,
-      $user_id: userId || undefined,
+      ...geoData
     };
 
-    console.log('Enriched Properties:', enrichedProperties);
     mixpanel.track(event, enrichedProperties);
     return NextResponse.json({ status: "Event tracked successfully" });
   } catch (error) {

@@ -1,29 +1,53 @@
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy, User } from "@privy-io/react-auth";
 
-// Create a store for the user ID
-let cachedUserId: string | null = null;
+function getAnonymousId() {
+  // Try to get existing anonymous ID
+  let anonymousId = localStorage.getItem('mixpanel_anonymous_id');
+  
+  if (!anonymousId) {
+    // Generate new UUID if none exists
+    anonymousId = crypto.randomUUID();
+    localStorage.setItem('mixpanel_anonymous_id', anonymousId);
+  }
+  
+  return anonymousId;
+}
 
-// Function to set the cached user ID
-export function setUserId(id: string) {
-  cachedUserId = id;
+async function identifyUser(userId: string, anonymousId: string) {
+  try {
+    const response = await fetch(`/api/mixpanel/identify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        distinct_id: userId,
+        anonymous_id: anonymousId
+      }),
+    });
+  } catch (error) {
+    console.error("Error identifying user:", error);
+  }
 }
 
 const track = async (
   eventName: string,
-  eventProperties?: Record<string, any>
+  eventProperties?: Record<string, any>,
+  user?: User
 ) => {
-  function getUserId() {
-    if (cachedUserId) {
-      return cachedUserId;
-    }
-    return "789789789"; // fallback
+  console.log("privy user", user);
+  
+  const anonymousId = getAnonymousId();
+  const distinctId = user?.id || anonymousId;
+  
+  // If user just logged in, identify them
+  if (user?.id && distinctId !== anonymousId) {
+    await identifyUser(user.id, anonymousId);
   }
-
-  const userUUID = getUserId();
-
+  
   const additionalProperties = {
-    distinct_id: userUUID,
-    $user_id: userUUID,
+    distinct_id: distinctId,
+    $user_id: user?.id,  // Only set when logged in
     user_agent: navigator.userAgent,
     $browser: navigator.userAgent.match(/(?:Chrome|Firefox|Safari|Opera|Edge|IE)/)?.[0] || 'Unknown Browser',
     $browser_version: navigator.userAgent.match(/(?:Version|Chrome|Firefox|Safari|Opera|Edge|IE)\/?\s*(\d+)/)?.[1] || '',
@@ -55,6 +79,7 @@ const track = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-privy-user": user?.id || '',  // Add Privy user ID to headers
       },
       body: JSON.stringify({
         event: eventName,
