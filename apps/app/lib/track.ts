@@ -78,8 +78,7 @@ const track = async (
     const response = await fetch(`/api/mixpanel`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "x-privy-user": user?.id || '',  // Add Privy user ID to headers
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         event: eventName,
