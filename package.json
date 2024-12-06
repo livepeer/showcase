@@ -15,7 +15,9 @@
     "@repo/typescript-config": "workspace:*",
     "turbo": "^2.2.3",
     "typescript": "^5.6.3",
-    "ultracite": "^4.1.6"
+    "ultracite": "^4.1.6",
+    "mixpanel": "^0.18.0",
+    "next": "^14.1.0"
   },
   "overrides": {
     "@headlessui/react": "^2.2.0"
@@ -26,9 +28,6 @@
   "packageManager": "pnpm@9.12.3",
   "dependencies": {
     "@headlessui/react": "^2.2.0",
-    "@maxmind/geoip2-node": "^5.0.0",
-    "mixpanel-browser": "^2.56.0",
-    "node-fetch": "^3.3.2",
-    "tar": "^7.4.3"
+    "mixpanel-browser": "^2.56.0"
   }
 }
