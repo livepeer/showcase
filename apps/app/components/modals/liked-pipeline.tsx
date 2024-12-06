@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { XIcon } from "lucide-react";
 import { Label } from "@repo/design-system/components/ui/label";
 import LoggedOutComponent from "./logged-out";
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy, User } from "@privy-io/react-auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import track from "@/lib/track";
 
@@ -118,9 +118,9 @@ export const LikedPipelines = ({ open }: { open: boolean }) => {
 
   // @ts-expect-error - TODO: Fix this
   const groupedPipelines = groupPipelinesByDate(MOCK_DATA);
-  const { authenticated } = usePrivy();
+  const { authenticated, user } = usePrivy();
   const router = useRouter();
-
+  console.log("liked pipelines user", user);
   const searchParams = useSearchParams();
 
   const closeModal = () => {
@@ -151,8 +151,8 @@ export const LikedPipelines = ({ open }: { open: boolean }) => {
   }
 
   useEffect(() => {
-    track("liked_pipelines_modal_opened");
-  }, []);
+    track("liked_pipelines_modal_opened", undefined, user || undefined);
+  }, [user]);
 
   return (
     <div className="p-4">

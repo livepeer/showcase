@@ -253,7 +253,7 @@ const FormSection = ({ section, fields }: { section: string; fields: any }) => (
 export default function CreatePipeline({ open }: { open: boolean }) {
   if (!open) return null;
 
-  const { authenticated } = usePrivy();
+  const { authenticated, user } = usePrivy();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -297,8 +297,8 @@ export default function CreatePipeline({ open }: { open: boolean }) {
   );
 
   useEffect(() => {
-    track("create_pipeline_modal_opened");
-  }, []);
+    track("create_pipeline_modal_opened", undefined, user || undefined);
+  }, [user]);
 
   return (
     <div className="p-4">

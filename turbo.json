@@ -4,7 +4,14 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": [
+        "MIXPANEL_PROJECT_TOKEN",
+        "LIVEPEER_STUDIO_API_KEY",
+        "LIVEPEER_STUDIO_API_URL",
+        "LIVEPEER_STUDIO_RTMP_URL",
+        "SUPABASE_SERVICE_ROLE_KEY"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]

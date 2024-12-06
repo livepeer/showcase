@@ -26,11 +26,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import track from "@/lib/track";
-
+import { usePrivy } from "@privy-io/react-auth";
 export default function Billing() {
   const [selectedCredits, setSelectedCredits] = useState<null | number>(null);
   const [showBilling, setShowBilling] = React.useState(false);
-
+  const { user } = usePrivy();
   const searchParams = useSearchParams();
   const billing = searchParams.get("billing");
 
@@ -52,7 +52,7 @@ export default function Billing() {
   useEffect(() => {
     setShowBilling(billing === "true");
     if (billing === "true") {
-      track("billing_modal_opened");
+      track("billing_modal_opened", undefined, user || undefined);
     }
   }, [billing]);
 

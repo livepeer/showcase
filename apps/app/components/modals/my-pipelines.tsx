@@ -26,6 +26,7 @@ const Header = ({ onClick }: { onClick: () => void }) => (
 );
 
 export const MyPipelines = ({ open }: { open: boolean }) => {
+  const { user } = usePrivy();
   if (!open) return null;
 
   const { authenticated } = usePrivy();
@@ -56,8 +57,8 @@ export const MyPipelines = ({ open }: { open: boolean }) => {
   );
 
   useEffect(() => {
-    track("my_pipelines_modal_opened");
-  }, []);
+    track("my_pipelines_modal_opened", undefined, user || undefined);
+  }, [user]);
 
   return (
     <div className="p-4">

@@ -25,8 +25,10 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import track from "@/lib/track";
 import { Label } from "@repo/design-system/components/ui/label";
+import { usePrivy } from "@privy-io/react-auth";  
 
 export default function Gateway() {
+  const { user } = usePrivy();
   const [showGateway, setShowGateway] = React.useState(false);
   const [whipUrl, setWhipUrl] = useState("");
   const searchParams = useSearchParams();
@@ -66,9 +68,9 @@ export default function Gateway() {
     }
 
     if (gateway === "true") {
-      track("gateway_modal_opened");
+      track("gateway_modal_opened", undefined, user || undefined);
     }
-  }, [gateway]);
+  }, [gateway, user]);
 
   return (
     <AlertDialog open={showGateway} onOpenChange={setShowGateway}>

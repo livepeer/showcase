@@ -79,6 +79,7 @@ const Intro = () => {
 };
 
 const Leaderboard = () => {
+  const { user } = usePrivy();
   const data = [
     { name: "Text to Speech", author: "johndoe", usage: 100 },
     { name: "Image to Image", author: "janedoe", usage: 95 },
@@ -113,7 +114,7 @@ const Leaderboard = () => {
       </Table>
       <Button
         onClick={() => {
-          track("leaderboard_see_all_clicked");
+          track("leaderboard_see_all_clicked", undefined, user || undefined);
         }}
         className="mt-2"
         variant="ghost"
@@ -125,6 +126,7 @@ const Leaderboard = () => {
 };
 
 const MyStats = () => {
+  const { user } = usePrivy();
   const data = [
     { name: "Text to Speech", users: 100, usage: 100 },
     { name: "Image to Image", users: 95, usage: 95 },
@@ -156,7 +158,7 @@ const MyStats = () => {
       </Table>
       <Button
         onClick={() => {
-          track("my_stats_see_all_clicked");
+          track("my_stats_see_all_clicked", undefined, user || undefined);
         }}
         className="mt-2"
         variant="ghost"

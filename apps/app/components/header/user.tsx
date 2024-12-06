@@ -105,7 +105,7 @@ export default function User() {
       ) : (
         <Button
           onClick={() => {
-            track("login_clicked");
+            track("login_clicked", undefined, user || undefined);
             login();
           }}
           disabled={disableLogin}
