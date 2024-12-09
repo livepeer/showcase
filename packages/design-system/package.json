@@ -38,7 +38,7 @@
     "@repo/observability": "workspace:*",
     "@types/lodash.merge": "^4.6.9",
     "@vercel/toolbar": "^0.1.26",
-    "class-variance-authority": "^0.7.0",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
     "date-fns": "^4.1.0",
