@@ -131,6 +131,7 @@ const PipelineList = ({ groupedPipelines }: PipelineListProps) => (
 );
 
 export const HistoryPipelines = ({ open }: { open: boolean }) => {
+  const { user } = usePrivy();
   if (!open) return null;
 
   const { authenticated } = usePrivy();
@@ -156,8 +157,8 @@ export const HistoryPipelines = ({ open }: { open: boolean }) => {
   const groupedPipelines = groupPipelinesByDate(MOCK_HISTORY_DATA);
 
   useEffect(() => {
-    track("history_pipelines_modal_opened");
-  }, []);
+    track("history_pipelines_modal_opened", undefined, user || undefined);
+  }, [user]);
 
   return (
     <div className="p-4">
