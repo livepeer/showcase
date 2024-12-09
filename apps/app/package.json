@@ -10,7 +10,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@arcjet/next": "1.0.0-alpha.28",
+    "@arcjet/next": "1.0.0-alpha.34",
     "@headlessui/react": "^2.2.0",
     "@intercom/messenger-js-sdk": "^0.0.14",
     "@livepeer/react": "^4.2.9",
