@@ -10,6 +10,8 @@ import {
 import Tabs from "./tab";
 import Try from "./try";
 import { motion, AnimatePresence } from "framer-motion";
+import track from "@/lib/track";
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function Form({
   tab,
@@ -24,13 +26,29 @@ export default function Form({
   setStreamInfo: (streamInfo: any) => void;
   pipeline: any;
 }) {
+  const { user } = usePrivy();
   const [isRunPipelineLoading, setIsRunPipelineLoading] = useState(false);
-
   const [activeTab, setActiveTab] = useState(tab);
 
   const handleValueChange = (value: string) => {
     setActiveTab(value);
     onTabChange(value);
+    
+    // Track when user switches to learn tab
+    track(value + "_tab_clicked", {
+      pipeline_id: pipeline?.id,
+      pipeline_name: pipeline?.name,
+      pipeline_type: pipeline?.type
+    }, user || undefined);
+  };
+
+  const handleDownloadJson = () => {
+    // Add download logic here
+    track("pipeline_json_downloaded", {
+      pipeline_id: pipeline?.id,
+      pipeline_name: pipeline?.name,
+      pipeline_type: pipeline?.type
+    }, user || undefined);
   };
 
   return (
@@ -61,6 +79,11 @@ export default function Form({
                   <Button
                     onClick={() => {
                       setIsRunPipelineLoading(true);
+                      track("pipeline_run", {
+                        pipeline_id: pipeline?.id,
+                        pipeline_name: pipeline?.name,
+                        pipeline_type: pipeline?.type
+                      }, user || undefined);
                     }}
                   >
                     Run Pipeline
@@ -100,7 +123,7 @@ export default function Form({
           {pipeline?.type === "comfyUI" && (
             <div className="flex flex-row gap-2">
               <Button variant="outline">View JSON</Button>
-              <Button>Download JSON</Button>
+              <Button onClick={handleDownloadJson}>Download JSON</Button>
             </div>
           )}
         </TabsContent>

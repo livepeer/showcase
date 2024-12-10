@@ -20,6 +20,8 @@ import { Livepeer } from "livepeer";
 import { getSrc } from "@livepeer/react/external";
 import * as Player from "@livepeer/react/player";
 import { LPPLayer } from "./player";
+import track from "@/lib/track";
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function Output({
   tab,
@@ -32,9 +34,16 @@ export default function Output({
   streamInfo: any;
   pipeline: any;
 }) {
+  const { user } = usePrivy();
+  
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success("Link copied to clipboard");
+    track("pipeline_shared", {
+      pipeline_id: pipeline?.id,
+      pipeline_name: pipeline?.name,
+      share_method: "copy_link"
+    }, user || undefined);
   };
 
   const livepeer = new Livepeer({

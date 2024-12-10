@@ -129,6 +129,10 @@ export const LikedPipelines = ({ open }: { open: boolean }) => {
     router.replace(`${window.location.pathname}?${newParams}`);
   };
 
+  useEffect(() => {
+    track("liked_pipelines_modal_opened", undefined, user || undefined);
+  }, [user]);
+
   if (!authenticated) {
     return (
       <div className="p-4">
@@ -149,10 +153,6 @@ export const LikedPipelines = ({ open }: { open: boolean }) => {
       </div>
     );
   }
-
-  useEffect(() => {
-    track("liked_pipelines_modal_opened", undefined, user || undefined);
-  }, [user]);
 
   return (
     <div className="p-4">
