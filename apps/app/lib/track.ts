@@ -31,16 +31,19 @@ async function getDistinctId(user: User | undefined) {
   
   // If user just logged in, identify them
   if (user?.id && distinctId && user.id !== distinctId) {
+    console.log("Identifying user", user.id, distinctId);
     await identifyUser(user.id, distinctId);
   }
 
   if (user) {
+    console.log("Setting distinct id as user id", user.id);
     localStorage.setItem('mixpanel_user_id', user.id);
     localStorage.setItem('mixpanel_distinct_id', user.id);
     return user.id;
   }
   
   if (!distinctId) {
+    console.log("Generating new distinct id");
     // Generate new UUID if none exists
     distinctId = crypto.randomUUID();
     localStorage.setItem('mixpanel_distinct_id', distinctId);
@@ -88,9 +91,10 @@ const track = async (
 ) => {
   console.log("privy user", user);
   
-  const distinctId = getDistinctId(user);
+  const distinctId = await getDistinctId(user);
   const sessionId = getSessionId(user);
-  
+  console.log("distinctId", distinctId);
+  console.log("sessionId", sessionId);
   const additionalProperties = {
     distinct_id: distinctId,
     $user_id: user?.id,  // Only set when logged in
