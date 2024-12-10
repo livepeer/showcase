@@ -33,6 +33,13 @@ export default function Form({
   const handleValueChange = (value: string) => {
     setActiveTab(value);
     onTabChange(value);
+    
+    // Track when user switches to learn tab
+    track(value + "_tab_clicked", {
+      pipeline_id: pipeline?.id,
+      pipeline_name: pipeline?.name,
+      pipeline_type: pipeline?.type
+    }, user || undefined);
   };
 
   const handleDownloadJson = () => {

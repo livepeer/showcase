@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { usePrivy } from "@privy-io/react-auth";
+import { useEffect, useState } from "react";
+import track from "@/lib/track";
 import Form from "@/components/playground/form";
 import Output from "@/components/playground/output";
 import { Badge } from "@repo/design-system/components/ui/badge";
@@ -16,21 +18,34 @@ export default function Playground({
   searchParams: any;
   params: { id: string };
 }) {
+  const { user, authenticated } = usePrivy();
   const [tab, setTab] = useState<string>("try");
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [streamInfo, setStreamInfo] = useState<any>(null);
   const [pipelineData, setPipelineData] = useState<any>(null);
 
   const getPipelineData = async () => {
-    console.log(params.id);
     const pipeline = await getPipeline(params.id);
-    console.log(pipeline);
     setPipelineData(pipeline);
   };
 
+  // Load pipeline data
   useEffect(() => {
     getPipelineData();
   }, [params.id]);
+
+  // Track view separately, only once when pipeline data is loaded
+  useEffect(() => {
+    if (pipelineData) {
+      track("pipeline_viewed", {
+        pipeline_id: params.id,
+        pipeline_name: pipelineData?.name,
+        pipeline_type: pipelineData?.type,
+        is_authenticated: authenticated,
+        referrer: document.referrer
+      }, user || undefined);
+    }
+  }, [params.id]); // Only re-run if pipeline ID changes
 
   return (
     <div className="flex flex-col h-[calc(100%-1rem)]  border border-border rounded-2xl p-4">

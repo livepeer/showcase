@@ -263,6 +263,15 @@ export default function CreatePipeline({ open }: { open: boolean }) {
     router.replace(`${window.location.pathname}?${newParams}`);
   };
 
+  useEffect(() => {
+    if (open) {
+      track("create_pipeline_modal_opened", {
+        is_authenticated: authenticated,
+        modal_state: "opened"
+      }, user || undefined);
+    }
+  }, [open, authenticated, user]);
+
   if (!authenticated) {
     return (
       <div className="p-4">
@@ -295,10 +304,6 @@ export default function CreatePipeline({ open }: { open: boolean }) {
       ))}
     </div>
   );
-
-  useEffect(() => {
-    track("create_pipeline_modal_opened", undefined, user || undefined);
-  }, [user]);
 
   return (
     <div className="p-4">
