@@ -1,7 +1,6 @@
 import "@repo/design-system/styles/globals.css";
 import { GlobalSidebar } from "@/components/sidebar";
 import { SidebarProvider } from "@repo/design-system/components/ui/sidebar";
-import { fonts } from "@repo/design-system/lib/fonts";
 import { DesignSystemProvider } from "@repo/design-system/providers";
 import type { ReactNode } from "react";
 import { SidebarTrigger } from "@repo/design-system/components/ui/sidebar";
@@ -16,7 +15,7 @@ type RootLayoutProperties = {
 };
 
 const RootLayout = ({ children }: RootLayoutProperties) => (
-  <html lang="en" className={fonts} suppressHydrationWarning>
+  <html lang="en" suppressHydrationWarning>
     <body className="bg-sidebar">
       <DesignSystemProvider>
         <AlphaBanner />
