@@ -7,7 +7,10 @@ export const config = {
 };
 
 export async function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname.includes("/api/streams/webhook")) {
+  if (
+    request.nextUrl.pathname.includes("/api/streams/webhook") ||
+    request.nextUrl.pathname.includes("/api/mixpanel")
+  ) {
     return NextResponse.next();
   }
 

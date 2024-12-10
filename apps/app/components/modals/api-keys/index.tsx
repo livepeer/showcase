@@ -93,9 +93,9 @@ export const APIKeys = ({ open }: { open: boolean }) => {
   );
 
   useEffect(() => {
-    track("my_pipelines_modal_opened");
+    track("my_pipelines_modal_opened", undefined, user || undefined);
     fetchAPIKeys();
-  }, []);
+  }, [user]);
 
   const fetchAPIKeys = async () => {
     const apiKeys = await getAPIKeys(user?.id);
