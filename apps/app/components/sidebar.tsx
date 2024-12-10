@@ -116,21 +116,21 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
       },
     ],
     navSettings: [
-      {
-        title: "Billing",
-        url: `?billing=true`,
-        icon: DollarSignIcon,
-      },
+      // {
+      //   title: "Billing",
+      //   url: `?billing=true`,
+      //   icon: DollarSignIcon,
+      // },
       {
         title: "Gateway",
         url: `?gateway=true`,
         icon: DoorOpenIcon,
       },
-      {
-        title: "API Keys",
-        url: `?tab=api-keys`,
-        icon: KeyIcon,
-      },
+      // {
+      //   title: "API Keys",
+      //   url: `?tab=api-keys`,
+      //   icon: KeyIcon,
+      // },
     ],
     navSecondary: [
       {
