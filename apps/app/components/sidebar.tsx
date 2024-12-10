@@ -31,6 +31,7 @@ import {
   KeyIcon,
   LibraryIcon,
   LifeBuoyIcon,
+  ListIcon,
   SendIcon,
   SquareTerminalIcon,
 } from "lucide-react";
@@ -113,6 +114,11 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
         title: "My Pipelines",
         url: `?tab=my`,
         icon: LibraryIcon,
+      },
+      {
+        title: "Explore Pipelines",
+        url: `/explore`,
+        icon: ListIcon,
       },
     ],
     navSettings: [
