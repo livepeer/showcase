@@ -1,16 +1,67 @@
-import { usePrivy, User } from "@privy-io/react-auth";
+import { User } from "@privy-io/react-auth";
 
-function getAnonymousId() {
-  // Try to get existing anonymous ID
-  let anonymousId = localStorage.getItem('mixpanel_anonymous_id');
+// Add session end tracking when the page is unloaded
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', () => {
+    const sessionId = sessionStorage.getItem('mixpanel_session_id');
+    if (sessionId) {
+      // Get the distinct ID and user info first
+      const distinctId = localStorage.getItem('mixpanel_distinct_id');
+      const userId = localStorage.getItem('mixpanel_user_id'); // This might be undefined if user isn't logged in
+
+      const data = {
+        event: "$session_end",
+        properties: {
+          $session_id: sessionId,
+          distinct_id: distinctId,
+          $user_id: userId,
+          $current_url: window.location.href
+        }
+      };
+      
+      navigator.sendBeacon('/api/mixpanel', JSON.stringify(data));
+      sessionStorage.removeItem('mixpanel_session_id');
+    }
+  });
+}
+
+async function getDistinctId(user: User | undefined) {
+  // Try to get existing distinct ID
+  let distinctId = localStorage.getItem('mixpanel_distinct_id');
   
-  if (!anonymousId) {
-    // Generate new UUID if none exists
-    anonymousId = crypto.randomUUID();
-    localStorage.setItem('mixpanel_anonymous_id', anonymousId);
+  // If user just logged in, identify them
+  if (user?.id && distinctId && user.id !== distinctId) {
+    await identifyUser(user.id, distinctId);
+  }
+
+  if (user) {
+    localStorage.setItem('mixpanel_user_id', user.id);
+    localStorage.setItem('mixpanel_distinct_id', user.id);
+    return user.id;
   }
   
-  return anonymousId;
+  if (!distinctId) {
+    // Generate new UUID if none exists
+    distinctId = crypto.randomUUID();
+    localStorage.setItem('mixpanel_distinct_id', distinctId);
+  }
+  
+  return distinctId;
+}
+
+function getSessionId(user: User | undefined) {
+  let sessionId = sessionStorage.getItem('mixpanel_session_id');
+  
+  if (!sessionId) {
+    // Generate new session ID if none exists
+    sessionId = crypto.randomUUID();
+    sessionStorage.setItem('mixpanel_session_id', sessionId);
+    
+    // Track session start
+    track("$session_start", undefined, user);
+  }
+  
+  return sessionId;
 }
 
 async function identifyUser(userId: string, anonymousId: string) {
@@ -37,17 +88,13 @@ const track = async (
 ) => {
   console.log("privy user", user);
   
-  const anonymousId = getAnonymousId();
-  const distinctId = user?.id || anonymousId;
-  
-  // If user just logged in, identify them
-  if (user?.id && distinctId !== anonymousId) {
-    await identifyUser(user.id, anonymousId);
-  }
+  const distinctId = getDistinctId(user);
+  const sessionId = getSessionId(user);
   
   const additionalProperties = {
     distinct_id: distinctId,
     $user_id: user?.id,  // Only set when logged in
+    $session_id: sessionId,  // Add session ID to all events
     user_agent: navigator.userAgent,
     $browser: navigator.userAgent.match(/(?:Chrome|Firefox|Safari|Opera|Edge|IE)/)?.[0] || 'Unknown Browser',
     $browser_version: navigator.userAgent.match(/(?:Version|Chrome|Firefox|Safari|Opera|Edge|IE)\/?\s*(\d+)/)?.[1] || '',
