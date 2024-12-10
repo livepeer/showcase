@@ -1,22 +1,24 @@
 import "@repo/design-system/styles/globals.css";
 import { GlobalSidebar } from "@/components/sidebar";
 import { SidebarProvider } from "@repo/design-system/components/ui/sidebar";
-import { fonts } from "@repo/design-system/lib/fonts";
 import { DesignSystemProvider } from "@repo/design-system/providers";
 import type { ReactNode } from "react";
 import { SidebarTrigger } from "@repo/design-system/components/ui/sidebar";
 import Header from "@/components/header/index";
 import { Separator } from "@repo/design-system/components/ui/separator";
 import Intercom from "@/components/intercom";
+import { AlarmCheck } from "lucide-react";
+import AlphaBanner from "@/components/header/alpha-banner";
 
 type RootLayoutProperties = {
   readonly children: ReactNode;
 };
 
 const RootLayout = ({ children }: RootLayoutProperties) => (
-  <html lang="en" className={fonts} suppressHydrationWarning>
+  <html lang="en" suppressHydrationWarning>
     <body className="bg-sidebar">
       <DesignSystemProvider>
+        <AlphaBanner />
         <SidebarProvider>
           <GlobalSidebar>
             <div>

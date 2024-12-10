@@ -33,8 +33,11 @@ export default function Head() {
     <div className="relative rounded-2xl border pr-4">
       <div className="grid md:grid-cols-3 gap-4 md:gap-10 rounded-2xl p-4">
         <Intro />
-        {authenticated && <MyStats />}
-        <Leaderboard />
+        <div className="md:col-span-2">
+          <CTA />
+        </div>
+        {/* {authenticated && <MyStats />}
+        <Leaderboard /> */}
       </div>
     </div>
   );
@@ -165,6 +168,14 @@ const MyStats = () => {
       >
         See all <ArrowTopRightIcon className="ml-1 h-4 w-4" />
       </Button>
+    </div>
+  );
+};
+
+const CTA = () => {
+  return (
+    <div className="bg-sidebar h-full rounded-md flex flex-col items-center justify-center">
+      <h3 className="font-medium text-lg">CTA</h3>
     </div>
   );
 };

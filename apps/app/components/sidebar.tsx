@@ -31,6 +31,7 @@ import {
   KeyIcon,
   LibraryIcon,
   LifeBuoyIcon,
+  ListIcon,
   SendIcon,
   SquareTerminalIcon,
 } from "lucide-react";
@@ -114,23 +115,28 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
         url: `?tab=my`,
         icon: LibraryIcon,
       },
+      {
+        title: "Explore Pipelines",
+        url: `/explore`,
+        icon: ListIcon,
+      },
     ],
     navSettings: [
-      {
-        title: "Billing",
-        url: `?billing=true`,
-        icon: DollarSignIcon,
-      },
+      // {
+      //   title: "Billing",
+      //   url: `?billing=true`,
+      //   icon: DollarSignIcon,
+      // },
       {
         title: "Gateway",
         url: `?gateway=true`,
         icon: DoorOpenIcon,
       },
-      {
-        title: "API Keys",
-        url: `?tab=api-keys`,
-        icon: KeyIcon,
-      },
+      // {
+      //   title: "API Keys",
+      //   url: `?tab=api-keys`,
+      //   icon: KeyIcon,
+      // },
     ],
     navSecondary: [
       {

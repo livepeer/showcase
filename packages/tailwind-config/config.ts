@@ -79,7 +79,7 @@ export const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", ...defaultTheme.fontFamily.sans],
+        sans: ["FavoritPro", "sans-serif"],
         mono: ["var(--font-geist-mono)", ...defaultTheme.fontFamily.mono],
       },
       keyframes: {
