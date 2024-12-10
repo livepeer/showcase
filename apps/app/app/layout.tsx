@@ -8,6 +8,8 @@ import { SidebarTrigger } from "@repo/design-system/components/ui/sidebar";
 import Header from "@/components/header/index";
 import { Separator } from "@repo/design-system/components/ui/separator";
 import Intercom from "@/components/intercom";
+import { AlarmCheck } from "lucide-react";
+import AlphaBanner from "@/components/header/alpha-banner";
 
 type RootLayoutProperties = {
   readonly children: ReactNode;
@@ -17,6 +19,7 @@ const RootLayout = ({ children }: RootLayoutProperties) => (
   <html lang="en" className={fonts} suppressHydrationWarning>
     <body className="bg-sidebar">
       <DesignSystemProvider>
+        <AlphaBanner />
         <SidebarProvider>
           <GlobalSidebar>
             <div>
