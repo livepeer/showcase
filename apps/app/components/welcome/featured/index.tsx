@@ -8,11 +8,10 @@ export const pipelines = [
     title: "Live Portrait",
     description:
       "A real-time video to video model that can generate videos from text prompts.",
-
     image: "liveportrait.gif",
     huggingFaceId: "",
     docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
-    isComfyUI: true,
+    isComfyUI: false,
     isFeatured: true,
   },
   {
@@ -23,29 +22,39 @@ export const pipelines = [
     image: "StreamDiffusion.jpg",
     huggingFaceId: "",
     docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
-    isComfyUI: true,
+    isComfyUI: false,
     isFeatured: true,
   },
-  // {
-  //   id: "pip_p4XsqEJk2ZqqWLuw",
-  //   title: "Depth Anything",
-  //   description:
-  //     "A highly practical solution for robust monocular depth estimation.",
-  //   image: "depth-anything.png",
-  //   huggingFaceId: "",
-  //   docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
-  //   isComfyUI: true,
-  //   isFeatured: true,
-  // },
+  {
+    id: "pip_p4XsqEJk2ZqqWLuw",
+    title: "Depth Anything",
+    description:
+      "A highly practical solution for robust monocular depth estimation.",
+    image: "depth-anything.png",
+    huggingFaceId: "",
+    docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
+    isComfyUI: false,
+    isFeatured: true,
+  },
   {
     id: "pip_f6PMBBXq44VZCFoP",
     title: "Comfy UI",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    image: "comfyui.png",
+    image: "comfy-ui.jpeg",
     huggingFaceId: "",
     docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
     isComfyUI: true,
-    isFeatured: true,
+    isFeatured: false,
+  },
+  {
+    id: "pip_f6PMBBXq44VZCFoP",
+    title: "Hello World Pipeline",
+    description: "this is my first pipeline!",
+    image: "abc.jpg",
+    huggingFaceId: "",
+    docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
+    isComfyUI: true,
+    isFeatured: false,
   },
 ];
 
