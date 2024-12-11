@@ -25,9 +25,7 @@ export default function Playground({
   const [pipelineData, setPipelineData] = useState<any>(null);
 
   const getPipelineData = async () => {
-    console.log("params", params);
     const pipeline = await getPipeline(params.id);
-    console.log(pipeline);
     setPipelineData(pipeline);
   };
 
