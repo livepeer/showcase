@@ -91,9 +91,6 @@ export default function Output({
         >
           <Info className="mr-2" /> View pipeline info
         </Button>
-        <Button variant="outline" onClick={copyLink}>
-          <Share className="mr-2" /> Share Pipeline
-        </Button>
       </div>
       <div className="bg-sidebar rounded-2xl relative h-[calc(100vh-16rem)] w-full">
         {tab === "remix" && pipeline?.type === "comfyUI" && (
