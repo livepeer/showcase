@@ -91,7 +91,7 @@ export default function Winners() {
         {dummyPlaybackIds.map((playbackId) => (
       <div className="aspect-video">
       <iframe
-        src={`https://monster.lvpr.tv/?v=${playbackId}&lowLatency=force`}
+        src={`https://monster.lvpr.tv/?v=${playbackId}`}
         className="w-full h-full"
           />
         </div>

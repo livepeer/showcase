@@ -8,9 +8,11 @@ import Search from "./search";
 import User from "./user";
 import { usePrivy } from "@privy-io/react-auth";
 import track from "@/lib/track";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const { user, authenticated } = usePrivy();
+  const {push} = useRouter(); 
   const menuItems = [
     {
       label: "Explore",
@@ -47,7 +49,7 @@ export default function Header() {
               href={item.href}
               target={item.external ? "_blank" : undefined}
               key={item.label}
-              className="text-muted-foreground text-sm"
+              className="text-muted-foreground text-sm hover:text-foreground"
               onClick={() => handleClickTrack(item.label)}
             >
               {item.label}
@@ -55,7 +57,10 @@ export default function Header() {
           ))}
         </div>
 
-        <Button variant="outline" className="hidden md:flex" onClick={() => handleClickTrack("github")}>
+        <Button variant="outline" className="hidden md:flex" onClick={() => {
+          window.open('https://github.com/livepeer/showcase', '_blank'); 
+          handleClickTrack("github")
+        }}>
           <GitHubLogoIcon />
           <span>Github</span>
         </Button>
