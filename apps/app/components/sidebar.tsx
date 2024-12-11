@@ -23,6 +23,7 @@ import {
 } from "@repo/design-system/components/ui/sidebar";
 import { useIsMobile } from "@repo/design-system/hooks/use-mobile";
 import {
+  Camera,
   ChevronRightIcon,
   Clock2Icon,
   DollarSignIcon,
@@ -105,7 +106,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
       {
         title: "My streams",
         url: `/my-streams`,
-        icon: Video,
+        icon: Camera,
         isActive: true,
       },
     ],
@@ -246,6 +247,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
             {items.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
+                  className="hover:bg-muted cursor-pointer" 
                   onClick={() => {
                     if (item.external) {
                       window.open(item.url, "_blank");
