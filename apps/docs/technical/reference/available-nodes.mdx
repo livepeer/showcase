@@ -1,0 +1,398 @@
+---
+title: 'Available ComfyUI nodes'
+description: 'This guide covers the available ComfyUI nodes for creating real-time video pipelines.'
+icon: 'code'
+---
+
+This guide covers the available nodes and requirements for creating real-time video pipelines using ComfyUI with Livepeer.
+
+## Video Input/Output Nodes - REQUIRED FOR ALL PIPELINES
+
+### ComfyStream
+- [Github Link](https://github.com/yondonfu/comfystream/)
+- **Input:** 
+  - Video stream URL or device ID
+  - Optional configuration parameters
+- **Output:** 
+  - RGB frame tensor (3, H, W)
+  - Frame metadata (timestamp, index)
+- **Performance Requirements:**
+  - Frame processing time: < 5ms
+  - VRAM usage: < 500MB
+  - Buffer size: ≤ 2 frames
+  - Supported formats: RTMP, WebRTC, V4L2
+- **Best Practices:**
+  - Set fixed frame rate
+
+## Analysis Nodes
+
+### Depth Anything TensorRT
+- [Github Link](https://github.com/yuvraj108c/ComfyUI-Depth-Anything-Tensorrt)
+- **Input:** RGB frame (3, H, W)
+- **Output:** Depth map (1, H, W)
+- **Performance Requirements:**
+  - Inference time: < 20ms
+  - VRAM usage: 2GB
+  - Batch size: 1
+- **Best Practices:**
+  - Place early in workflow
+  - Cache results for static scenes
+  - Use lowest viable resolution
+
+### Segment Anything 2
+- (Github Link)[https://github.com/kijai/ComfyUI-segment-anything-2]
+- **Input:** RGB frame (3, H, W)
+- **Output:** Segmentation mask (1, H, W)
+- **Performance Requirements:**
+  - Inference time: < 30ms
+  - VRAM usage: 3GB
+  - Batch size: 1
+- **Best Practices:**
+  - Cache static masks
+  - Use mask erosion for stability
+  - Implement confidence thresholding
+
+### Florence2
+- [Github Link](https://github.com/kijai/ComfyUI-Florence2)
+- **Input:** RGB frame (3, H, W)
+- **Output:** Feature vector (1, 512)
+- **Performance Requirements:**
+  - Inference time: < 15ms
+  - VRAM usage: 1GB
+  - Batch size: 1
+- **Best Practices:**
+  - Cache embeddings for known references
+  - Use cosine similarity for matching
+  - Implement feature vector normalization
+
+## Generation and Control Nodes
+
+### LivePortraitKJ
+- [Github Link](https://github.com/kijai/ComfyUI-LivePortraitKJ)
+- **Input:**
+  - Source image (3, H, W)
+  - Driving frame (3, H, W)
+- **Output:** Animated frame (3, H, W)
+- **Performance Requirements:**
+  - Inference time: < 50ms
+  - VRAM usage: 4GB
+  - Batch size: 1
+- **Best Practices:**
+  - Pre-process source images
+  - Implement motion smoothing
+  - Cache facial landmarks
+
+### ComfyUI Diffusers
+- (Github Link)[https://github.com/Limitex/ComfyUI-Diffusers]
+- **Input:**
+  - Conditioning tensor
+  - Latent tensor
+- **Output:** Generated frame (3, H, W)
+- **Performance Requirements:**
+  - Inference time: < 50ms
+  - VRAM usage: 4GB
+  - Maximum steps: 20
+- **Best Practices:**
+  - Use TensorRT optimization
+  - Implement denoising strength control
+  - Cache conditioning tensors
+
+## Supporting Nodes
+
+### K Sampler
+- **Input:**
+  - Latent tensor
+  - Conditioning
+- **Output:** Sampled latent
+- **Performance Requirements:**
+  - Maximum steps: 20
+  - VRAM usage: 2GB
+  - Scheduler: euler_ancestral
+- **Best Practices:**
+  - Use adaptive step sizing
+  - Cache conditioning tensors
+
+### Prompt Control
+- **Input:** Text prompts
+- **Output:** Conditioning tensors
+- **Performance Requirements:**
+  - Processing time: < 5ms
+  - VRAM usage: minimal
+- **Best Practices:**
+  - Cache common prompts
+  - Use consistent style tokens
+  - Implement prompt weighting
+
+### VAE
+- **Input:** Latent tensor
+- **Output:** RGB frame
+- **Performance Requirements:**
+  - Inference time: < 10ms
+  - VRAM usage: 1GB
+  - Tile size: 512
+- **Best Practices:**
+  - Use tiling for large frames
+  - Implement half-precision
+  - Cache common latents
+
+### IPAdapter
+- **Input:**
+  - Reference image
+  - Target tensor
+- **Output:** Conditioned tensor
+- **Performance Requirements:**
+  - Inference time: < 20ms
+  - VRAM usage: 2GB
+  - Reference resolution: ≤ 512x512
+- **Best Practices:**
+  - Cache reference embeddings
+  - Use consistent weights
+  - Implement cross-attention
+
+### Cache Nodes
+- **Input:** Any tensor
+- **Output:** Cached tensor
+- **Performance Requirements:**
+  - Access time: < 1ms
+  - Maximum size: 2GB
+  - Cache type: GPU
+- **Best Practices:**
+  - Implement LRU eviction
+  - Monitor cache pressure
+  - Clear on scene changes
+
+### ControlNet
+- **Input:**
+  - Control signal
+  - Target tensor
+- **Output:** Controlled tensor
+- **Performance Requirements:**
+  - Inference time: < 30ms
+  - VRAM usage: 2GB
+  - Resolution: ≤ 512
+- **Best Practices:**
+  - Use adaptive conditioning
+  - Implement strength scheduling
+  - Cache control signals
+
+
+## Default Nodes
+
+All default nodes that ship with ComfyUI are available. The list below is subject to change.
+- AlignYourStepsScheduler
+- BasicGuider
+- BasicScheduler
+- BetaSamplingScheduler
+- Canny
+- CFGGuider
+- CheckpointLoader
+- CheckpointLoaderSimple
+- CheckpointSave
+- CLIPAdd
+- CLIPAttentionMultiply
+- CLIPLoader
+- CLIPMergeSimple
+- CLIPSave
+- CLIPSetLastLayer
+- CLIPSubtract
+- CLIPTextEncode
+- CLIPTextEncodeControlnet
+- CLIPTextEncodeFlux
+- CLIPTextEncodeHunyuanDiT
+- CLIPTextEncodeSD3
+- CLIPTextEncodeSDXL
+- CLIPTextEncodeSDXLRefiner
+- CLIPVisionEncode
+- CLIPVisionLoader
+- ConditioningAverage
+- ConditioningCombine
+- ConditioningConcat
+- ConditioningSetArea
+- ConditioningSetAreaPercentage
+- ConditioningSetAreaStrength
+- ConditioningSetMask
+- ConditioningSetTimestepRange
+- ConditioningZeroOut
+- ControlNetApply
+- ControlNetApplyAdvanced
+- ControlNetApplySD3
+- ControlNetInpaintingAliMamaApply
+- ControlNetLoader
+- CropMask
+- DifferentialDiffusion
+- DiffControlNetLoader
+- DiffusersLoader
+- DisableNoise
+- DualCFGGuider
+- DualCLIPLoader
+- EmptyImage
+- EmptyLatentAudio
+- EmptyLatentImage
+- EmptyMochiLatentVideo
+- EmptySD3LatentImage
+- ExponentialScheduler
+- FeatherMask
+- FlipSigmas
+- FluxGuidance
+- FreeU
+- FreeU_V2
+- GITSScheduler
+- GLIGENLoader
+- GLIGENTextBoxApply
+- GrowMask
+- HypernetworkLoader
+- HyperTile
+- ImageBatch
+- ImageBlend
+- ImageBlur
+- ImageCompositeMasked
+- ImageColorToMask
+- ImageCrop
+- ImageFromBatch
+- ImageInvert
+- ImageOnlyCheckpointLoader
+- ImageOnlyCheckpointSave
+- ImagePadForOutpaint
+- ImageQuantize
+- ImageScale
+- ImageScaleBy
+- ImageScaleToTotalPixels
+- ImageSharpen
+- ImageToMask
+- ImageUpscaleWithModel
+- InpaintModelConditioning
+- InstructPixToPixConditioning
+- InvertMask
+- JoinImageWithAlpha
+- KarrasScheduler
+- KSampler
+- KSamplerAdvanced
+- KSamplerSelect
+- LaplaceScheduler
+- LatentAdd
+- LatentApplyOperation
+- LatentApplyOperationCFG
+- LatentBatch
+- LatentBatchSeedBehavior
+- LatentBlend
+- LatentComposite
+- LatentCompositeMasked
+- LatentCrop
+- LatentFlip
+- LatentFromBatch
+- LatentInterpolate
+- LatentMultiply
+- LatentOperationSharpen
+- LatentOperationTonemapReinhard
+- LatentRotate
+- LatentSubtract
+- LatentUpscale
+- LatentUpscaleBy
+- LoadAudio
+- LoadImage
+- LoadImageMask
+- LoadLatent
+- LoraLoader
+- LoraLoaderModelOnly
+- LoraSave
+- MaskComposite
+- MaskToImage
+- ModelAdd
+- ModelMergeBlocks
+- ModelMergeFlux1
+- ModelMergeSD1
+- ModelMergeSD2
+- ModelMergeSD35_Large
+- ModelMergeSD3_2B
+- ModelMergeSDXL
+- ModelMergeSimple
+- ModelSamplingAuraFlow
+- ModelSamplingContinuousEDM
+- ModelSamplingContinuousV
+- ModelSamplingDiscrete
+- ModelSamplingFlux
+- ModelSamplingSD3
+- ModelSamplingStableCascade
+- ModelSave
+- ModelSubtract
+- Morphology
+- PatchModelAddDownscale
+- PerpNeg
+- PerpNegGuider
+- PerturbedAttentionGuidance
+- PhotoMakerEncode
+- PhotoMakerLoader
+- PolyexponentialScheduler
+- PorterDuffImageComposite
+- PreviewAudio
+- PreviewImage
+- RandomNoise
+- RebatchImages
+- RebatchLatents
+- RepeatImageBatch
+- RepeatLatentBatch
+- RescaleCFG
+- SamplerCustom
+- SamplerCustomAdvanced
+- SamplerDPMAdaptative
+- SamplerDPMPP_2M_SDE
+- SamplerDPMPP_2S_Ancestral
+- SamplerDPMPP_3M_SDE
+- SamplerDPMPP_SDE
+- SamplerEulerAncestral
+- SamplerEulerAncestralCFGPP
+- SamplerEulerCFGpp
+- SamplerLCMUpscale
+- SamplerLMS
+- SaveAnimatedPNG
+- SaveAnimatedWEBP
+- SaveAudio
+- SaveImage
+- SaveLatent
+- SD_4XUpscale_Conditioning
+- SDTurboScheduler
+- SelfAttentionGuidance
+- SetLatentNoiseMask
+- SetUnionControlNetType
+- SkipLayerGuidanceSD3
+- SolidMask
+- SplitImageWithAlpha
+- SplitSigmas
+- SplitSigmasDenoise
+- StableCascade_EmptyLatentImage
+- StableCascade_StageB_Conditioning
+- StableCascade_StageC_VAEEncode
+- StableCascade_SuperResolutionControlnet
+- StableZero123_Conditioning
+- StableZero123_Conditioning_Batched
+- StyleModelApply
+- StyleModelLoader
+- SV3D_Conditioning
+- SVD_img2vid_Conditioning
+- ThresholdMask
+- TomePatchModel
+- TorchCompileModel
+- TripleCLIPLoader
+- unCLIPCheckpointLoader
+- unCLIPConditioning
+- UNETLoader
+- UNetCrossAttentionMultiply
+- UNetSelfAttentionMultiply
+- UNetTemporalAttentionMultiply
+- UpscaleModelLoader
+- VAEDecode
+- VAEDecodeAudio
+- VAEDecodeTiled
+- VAEEncode
+- VAEEncodeAudio
+- VAEEncodeForInpaint
+- VAEEncodeTiled
+- VAESave
+- VideoLinearCFGGuidance
+- VideoTriangleCFGGuidance
+- VPScheduler
+- WebcamCapture
+
+
+
+

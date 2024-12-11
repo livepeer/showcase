@@ -1,0 +1,164 @@
+---
+title: What is a Pipeline?
+description: 'Transform live video with AI, at scale'
+icon: 'book'
+---
+
+<iframe width="560" height="315" src="https://youtu.be/rSUOeU6zxrA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
+
+## Overview
+
+Livepeer Pipelines enable developers to build, deploy, and scale real-time AI video processing workflows. By combining multiple AI models into a single workflow, you can create sophisticated video experiences—from style transfer to object detection to live translation—without managing complex infrastructure.
+Pipelines abstract away the complexities of video processing, inference management, and scaling, letting you focus on creating unique video experiences.
+
+# Understanding Livepeer Pipelines
+
+## What is a Pipeline?
+
+A Pipeline is a composable workflow that applies AI processing to live video in real-time. Think of it as an assembly line where each station performs a specific AI operation on your video stream—like style transfer, object detection, or live translation.
+
+```javascript
+// Example: Create a stream with a simple Pipeline
+const stream = await livepeer.Stream.create({
+  pipeline: "anime-style-transfer",
+  params: {
+    styleIntensity: 0.8
+  }
+});
+```
+
+## Key Concepts
+
+### Real-time Processing
+
+Unlike traditional video AI that works with pre-recorded files, Pipelines operate on live video streams with minimal added latency. This enables interactive experiences like:
+
+* Live AI-powered video filters
+
+* Real-time content moderation
+
+* Dynamic visual effects
+
+* Instant language translation
+
+### Composability
+
+Pipelines are built from smaller, reusable units that can be chained together. This modular approach means you can:
+
+* Combine multiple AI capabilities into a single workflow
+
+* Reuse common processing patterns
+
+* Modify individual components without rebuilding the entire Pipeline
+
+Right now, these units are represented as ComfyUI nodes.
+
+## Pipeline Types
+
+Pipelines generally fall into three categories:
+
+1. **Transformation Pipelines**
+
+   * Change how video looks (style transfer, filters)
+
+   * Modify video properties (resolution, framerate)
+
+   * Add visual elements (overlays, effects)
+
+2. **Analysis Pipelines**
+
+   * Typically outputs JSON or text (high volume)
+
+   * Detect objects or activities
+
+   * Track movement
+
+   * Generate metadata
+
+3. **Generation Pipelines**
+
+   * Create new video content
+
+   * Add synthetic elements
+
+   * Produce alternative views
+
+Pipelines can be composed, so you could use the output of one pipeline to inform another.
+
+## Pipeline Lifecycle
+
+A Pipeline moves through several states:
+
+1. **Creation**
+
+   * Built using ComfyUI (available now) or custom Python code (coming Q1 2025)
+
+   * Defined processing steps and parameters
+
+   * Set resource requirements
+
+2. **Publication**
+
+   * Made available for other developers to see, use, and remix
+
+3. **Usage**
+
+   * Integrated into applications
+
+   * Processes live video streams
+
+   * Monitored for performance
+
+4. **Remixing**
+
+   * Another developer uses Pipeline code as a starting point to create a novel experience
+
+## Key Characteristics
+
+### Configurable
+
+* Behavior can be adjusted through configuration
+
+* Supports runtime parameter updates
+
+* Enables dynamic control during streaming
+
+### Observable
+
+* Reports health and performance metrics
+
+* Provides detailed error information
+
+* Enables monitoring and debugging
+
+***
+
+### Choose your path
+
+There are two ways to work with Pipelines:
+
+<CardGroup cols={2}>
+  <Card title="Application Developer" icon="pen-to-square" href="/stream-into-pipeline">
+    * Use existing Pipelines in your applications <br />
+
+    * Focus on integration and user experience <br />
+
+    * Minimal AI/ML expertise required
+  </Card>
+
+  <Card title="Pipeline Developer" icon="image" href="/remix-your-first-pipeline">
+    Create new Pipelines for others to use <br />
+    Build with ComfyUI or custom Python <br />
+    Deeper technical involvement
+  </Card>
+</CardGroup>
+
+## Community & Support
+
+* Join our [Discord](https://discord.gg/livepeer)
+
+* Browse the [Showcase](https://showcase.livepeer.org)
+
+* Contribute to [open source](https://github.com/livepeer)
+
+***
