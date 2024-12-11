@@ -1,5 +1,6 @@
 import PipelineTile from "./tile";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import Image from "next/image";
 import Link from "next/link";
 
 export const pipelines = [
@@ -71,10 +72,9 @@ export default function Winners() {
     <div className="relative rounded-2xl border p-4 mt-4 h-[calc(100vh-24rem)]">
       <div className="flex flex-row items-center justify-between">
         <div>
-          <h3 className="font-medium text-lg">Yeterday's Challenge Winners</h3>
+          <h3 className="font-medium text-lg">Yesterday's Challenge Winners</h3>
           <p className="text-muted-foreground text-sm w-full">
-            Here are the winners of yesterday's challenge. Check out their
-            pipelines and give them a shoutout!
+          Here are the winners of yesterday's prompt challenge. Check out the AI streams and give them a shoutout!
           </p>
         </div>
         <div>
@@ -89,11 +89,27 @@ export default function Winners() {
       </div>
       <div className="grid md:grid-cols-4 gap-6 mt-4">
         {dummyPlaybackIds.map((playbackId) => (
-      <div className="aspect-video">
+      <div className="aspect-video relative">
       <iframe
         src={`https://monster.lvpr.tv/?v=${playbackId}`}
         className="w-full h-full"
           />
+          <div className="absolute top-2  right-2 z-10 overflow-auto">
+          <div
+            className={
+              "flex items-center gap-1 overflow-hidden rounded-full bg-white pr-2 py-0.5 text-black text-xs"
+            }
+          >
+            <Image
+              src="https://github.com/suhailkakar.png"
+              alt="suhail"
+              width={100}
+              height={100}
+              className="h-5 w-5 flex-shrink-0 rounded-full "
+            />
+            @johndoe
+          </div>
+          </div>
         </div>
         ))}
       </div>

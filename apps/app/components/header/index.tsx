@@ -40,7 +40,7 @@ export default function Header() {
   return (
     <div className="flex h-16 w-full items-center justify-between">
       <div className="flex items-center gap-8">
-        <Search />
+        {/* <Search /> */}
       </div>
       <div className="flex items-center gap-4">
         <div className="hidden gap-6 md:flex ">

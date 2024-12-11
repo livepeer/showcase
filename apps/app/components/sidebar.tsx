@@ -97,14 +97,14 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   const isMobile = useIsMobile();
 
   const data: {
-    stream: NavItem[];
+    streams: NavItem[];
     pipelines: NavItem[];
     settings: NavItem[];
     footer: NavItem[];
   } = {
-    stream: [
+    streams: [
       {
-        title: "My streams",
+        title: "My Streams",
         url: `/my-streams`,
         icon: Camera,
         isActive: true,
@@ -147,7 +147,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   };
 
   const labelMap: Record<string, string> = {
-    stream: 'Stream',
+    streams: 'Streams',
     pipelines: 'Pipelines',
     settings: 'Settings',
     footer: 'More'
