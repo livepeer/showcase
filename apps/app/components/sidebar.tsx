@@ -32,8 +32,10 @@ import {
   LibraryIcon,
   LifeBuoyIcon,
   ListIcon,
+  Map,
   SendIcon,
   SquareTerminalIcon,
+  Video,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -94,11 +96,20 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   const isMobile = useIsMobile();
 
   const data: {
-    navMain: NavItem[];
-    navSettings: NavItem[];
-    navSecondary: NavItem[];
+    stream: NavItem[];
+    pipelines: NavItem[];
+    settings: NavItem[];
+    footer: NavItem[];
   } = {
-    navMain: [
+    stream: [
+      {
+        title: "My streams",
+        url: `/my-streams`,
+        icon: Video,
+        isActive: true,
+      },
+    ],
+    pipelines: [
       {
         title: "Create Pipeline",
         url: `?tab=create`,
@@ -106,39 +117,19 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
         isActive: true,
       },
       {
-        title: "Liked Pipelines",
-        url: `?tab=liked`,
-        icon: HeartIcon,
-      },
-      {
-        title: "My Pipelines",
-        url: `?tab=my`,
-        icon: LibraryIcon,
-      },
-      {
         title: "Explore Pipelines",
         url: `/explore`,
-        icon: ListIcon,
+        icon: Map,
       },
     ],
-    navSettings: [
-      // {
-      //   title: "Billing",
-      //   url: `?billing=true`,
-      //   icon: DollarSignIcon,
-      // },
+    settings: [
       {
         title: "Gateway",
         url: `?gateway=true`,
         icon: DoorOpenIcon,
       },
-      // {
-      //   title: "API Keys",
-      //   url: `?tab=api-keys`,
-      //   icon: KeyIcon,
-      // },
     ],
-    navSecondary: [
+    footer: [
       {
         title: "Support",
         url: "https://discord.gg/livepeer",
@@ -154,6 +145,14 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
     ],
   };
 
+  const labelMap: Record<string, string> = {
+    stream: 'Stream',
+    pipelines: 'Pipelines',
+    settings: 'Settings',
+    footer: 'More'
+  };
+
+  
   return (
     <>
       <Sidebar variant="inset" collapsible="icon">
@@ -234,145 +233,42 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
           </Link>
         </SidebarHeader>
         <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Pipelines</SidebarGroupLabel>
-            <SidebarMenu>
-              {data.navMain.map((item) => (
-                <Collapsible
-                  key={item.title}
+        {Object.entries(data).map(([key, items]) => (
+        <SidebarGroup key={key}
+        className={key === 'footer' ? 'mt-auto mb-10' : ''}
+        >
+          {key !== 'footer' && (
+            <SidebarGroupLabel>
+              {labelMap[key] || key.charAt(0).toUpperCase() + key.slice(1)}
+            </SidebarGroupLabel>
+          ) }
+          <SidebarMenu>
+            {items.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  onClick={() => {
+                    if (item.external) {
+                      window.open(item.url, "_blank");
+                    } else {
+                      router.replace(item.url);
+                    }
+                    if (isMobile) {
+                      _sidebar.setOpenMobile(false);
+                    }
+                  }}
                   asChild
-                  defaultOpen={item.isActive}
+                  tooltip={item.title}
                 >
-                  <SidebarMenuItem>
-                    <SidebarMenuButton
-                      onClick={() => {
-                        if (item.external) {
-                          window.open(item.url, "_blank");
-                        } else {
-                          router.replace(item.url);
-                        }
-                        if (isMobile) {
-                          _sidebar.setOpenMobile(false);
-                        }
-                      }}
-                      asChild
-                      tooltip={item.title}
-                    >
-                      <div>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </div>
-                    </SidebarMenuButton>
-                    {item.items?.length ? (
-                      <>
-                        <CollapsibleTrigger asChild>
-                          <SidebarMenuAction className="data-[state=open]:rotate-90">
-                            <ChevronRightIcon />
-                            <span className="sr-only">Toggle</span>
-                          </SidebarMenuAction>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          <SidebarMenuSub>
-                            {item.items?.map((subItem) => (
-                              <SidebarMenuSubItem key={subItem.title}>
-                                <SidebarMenuSubButton asChild>
-                                  <a href={subItem.url}>
-                                    <span>{subItem.title}</span>
-                                  </a>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            ))}
-                          </SidebarMenuSub>
-                        </CollapsibleContent>
-                      </>
-                    ) : null}
-                  </SidebarMenuItem>
-                </Collapsible>
-              ))}
-            </SidebarMenu>
-          </SidebarGroup>
-          <SidebarGroup>
-            <SidebarGroupLabel>Settings</SidebarGroupLabel>
-            <SidebarMenu>
-              {data.navSettings.map((item) => (
-                <Collapsible
-                  key={item.title}
-                  asChild
-                  defaultOpen={item.isActive}
-                >
-                  <SidebarMenuItem>
-                    <SidebarMenuButton
-                      onClick={() => {
-                        if (item.external) {
-                          window.open(item.url, "_blank");
-                        } else {
-                          router.replace(item.url);
-                        }
-                        if (isMobile) {
-                          _sidebar.setOpenMobile(false);
-                        }
-                      }}
-                      asChild
-                      tooltip={item.title}
-                    >
-                      <div>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </div>
-                    </SidebarMenuButton>
-                    {item.items?.length ? (
-                      <>
-                        <CollapsibleTrigger asChild>
-                          <SidebarMenuAction className="data-[state=open]:rotate-90">
-                            <ChevronRightIcon />
-                            <span className="sr-only">Toggle</span>
-                          </SidebarMenuAction>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          <SidebarMenuSub>
-                            {item.items?.map((subItem) => (
-                              <SidebarMenuSubItem key={subItem.title}>
-                                <SidebarMenuSubButton asChild>
-                                  <a href={subItem.url}>
-                                    <span>{subItem.title}</span>
-                                  </a>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            ))}
-                          </SidebarMenuSub>
-                        </CollapsibleContent>
-                      </>
-                    ) : null}
-                  </SidebarMenuItem>
-                </Collapsible>
-              ))}
-            </SidebarMenu>
-          </SidebarGroup>
-          <SidebarGroup className="mt-auto">
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {data.navSecondary.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      asChild
-                      onClick={() => {
-                        if (item.external) {
-                          window.open(item.url, "_blank");
-                        } else {
-                          router.replace(item.url);
-                        }
-                      }}
-                    >
-                      <div>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </div>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+                  <div>
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </div>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+      ))}
         </SidebarContent>
       </Sidebar>
       <SidebarInset>{children}</SidebarInset>

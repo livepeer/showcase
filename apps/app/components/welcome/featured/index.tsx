@@ -58,16 +58,23 @@ export const pipelines = [
   },
 ];
 
-export default function FeaturedPipelines() {
-  const featuredPipelines = pipelines.filter((pipeline) => pipeline.isFeatured);
+
+const dummyPlaybackIds = [
+  "121312",
+  "121312",
+  "121312",
+  "121312",
+]
+
+export default function Winners() {
   return (
     <div className="relative rounded-2xl border p-4 mt-4 h-[calc(100vh-24rem)]">
       <div className="flex flex-row items-center justify-between">
         <div>
-          <h3 className="font-medium text-lg">Featured Pipelines</h3>
+          <h3 className="font-medium text-lg">Yeterday's Challenge Winners</h3>
           <p className="text-muted-foreground text-sm w-full">
-            Here are some of our hand-picked pipelines, curated to help you get
-            started with Livepeer AI pipelines.
+            Here are the winners of yesterday's challenge. Check out their
+            pipelines and give them a shoutout!
           </p>
         </div>
         <div>
@@ -75,22 +82,19 @@ export default function FeaturedPipelines() {
             href={"/explore"}
             className="text-sm gap-1 flex items-center -ml-20 -mt-8 md:-ml-0 md:-mt-0"
           >
-            View All
+            Participate in today's challenge
             <ArrowTopRightIcon className="h-4 w-4" />
           </Link>
         </div>
       </div>
       <div className="grid md:grid-cols-4 gap-6 mt-4">
-        {featuredPipelines.map((pipeline, index) => (
-          <PipelineTile
-            key={index}
-            id={pipeline.id}
-            title={pipeline.title}
-            description={pipeline.description}
-            image={`/images/${pipeline.image}`}
-            isComfyUI={pipeline.isComfyUI || false}
-            author="Suhail"
+        {dummyPlaybackIds.map((playbackId) => (
+      <div className="aspect-video">
+      <iframe
+        src={`https://monster.lvpr.tv/?v=${playbackId}&lowLatency=force`}
+        className="w-full h-full"
           />
+        </div>
         ))}
       </div>
     </div>

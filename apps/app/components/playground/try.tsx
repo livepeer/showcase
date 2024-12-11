@@ -260,7 +260,9 @@ toast("Params updated successfully")
         <div className="flex flex-col gap-1.5">
           <Label className="text-muted-foreground">Stream Source</Label>
           <div className="flex flex-row h-[300px] w-full bg-sidebar rounded-2xl items-center justify-center overflow-hidden relative">
-            {!streamUrl && (
+            {streamUrl ? (
+              <BroadcastWithControls ingestUrl={streamUrl} />
+            ): (
               <p className="text-muted-foreground">
                 Waiting for stream to start...
               </p>
