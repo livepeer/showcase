@@ -28,28 +28,31 @@ if (typeof window !== 'undefined') {
 }
 
 async function getDistinctId(user: User | undefined) {
+  // Add debugging
+  console.log("Getting distinct ID for user:", user?.id);
+  
   // Try to get existing distinct ID
   let distinctId = localStorage.getItem('mixpanel_distinct_id');
+  console.log("Distinct ID from localStorage:", distinctId);
   
   // If user just logged in, identify them
   if (user?.id && distinctId && user.id !== distinctId) {
-    console.log("Identifying user", user.id, distinctId);
+    console.log("User logged in, updating distinct ID from", distinctId, "to", user.id);
     await identifyUser(user.id, distinctId);
   }
 
   if (user) {
+    console.log("Setting distinct id as user id:", user.id);
     localStorage.setItem('mixpanel_user_id', user.id);
     localStorage.setItem('mixpanel_distinct_id', user.id);
-    console.log("Setting distinct ID", user.id);
-    console.log("Setting user ID", user.id);
-
     return user.id;
   }
   
   if (!distinctId) {
+    console.log("No distinct ID found, generating new one");
     // Generate new UUID if none exists
     distinctId = crypto.randomUUID();
-    console.log("Generating new distinct ID", distinctId);
+    console.log("Generated new distinct ID:", distinctId);
     localStorage.setItem('mixpanel_distinct_id', distinctId);
   }
   
@@ -92,57 +95,34 @@ async function identifyUser(userId: string, anonymousId: string) {
 const track = async (
   eventName: string,
   eventProperties?: Record<string, any>,
-  user?: User | undefined
+  user?: User
 ) => {
   const distinctId = await getDistinctId(user);
   const sessionId = getSessionId(user);
   console.log("Session ID", sessionId);
-  
-  const properties = {
-    ...eventProperties,
-    $distinct_id: distinctId,
-    distinct_id: distinctId,
-    $user_id: user?.id,
-    $session_id: sessionId,
-    user_agent: navigator.userAgent,
-    $browser: navigator.userAgent.match(/(?:Chrome|Firefox|Safari|Opera|Edge|IE)/)?.[0] || 'Unknown Browser',
-    $browser_version: navigator.userAgent.match(/(?:Version|Chrome|Firefox|Safari|Opera|Edge|IE)\/?\s*(\d+)/)?.[1] || '',
-    $current_url: window.location.href,
-    $device: navigator.userAgent.match(/\((.*?)\)/)?.[1] || 'Unknown Device',
-    $device_id: navigator.userAgent,
-    $initial_referrer: document.referrer ? document.referrer : undefined,
-    $initial_referring_domain: document.referrer
-      ? new URL(document.referrer).hostname
-      : undefined,
-    $os: navigator.userAgent.match(/\(([^)]+)\)/)?.[1]?.split(';')[0] || 'Unknown OS',
-    $screen_height: window.screen.height,
-    $screen_width: window.screen.width,
+  console.log("Distinct ID", distinctId);
+
+  const data = {
+    event: eventName,
+    properties: {
+      distinct_id: distinctId,  // Move this into properties
+      $user_id: user?.id,
+      $session_id: sessionId,
+      user_agent: navigator.userAgent,
+      ...eventProperties,
+    }
   };
-  console.log(
-    "Sending to mixpanel:",
-    JSON.stringify({
-      event: eventName,
-      distinct_id: distinctId,
-      session_id: sessionId,
-      properties: properties,
-    })
-  );
+
   try {
     const response = await fetch(`/api/mixpanel`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        event: eventName,
-        properties: properties,
-        distinct_id: distinctId
-      }),
+      body: JSON.stringify(data)  // Match the sendBeacon format
     });
-
+    
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error("Mixpanel error response:", errorData);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
   } catch (error) {
