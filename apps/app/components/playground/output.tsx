@@ -24,29 +24,13 @@ import track from "@/lib/track";
 import { usePrivy } from "@privy-io/react-auth";
 
 export default function Output({
-  tab,
-  isRunning,
   pipeline,
   streamInfo,
 }: {
-  tab: string | string[] | undefined;
-  isRunning: boolean;
   streamInfo: any;
   pipeline: any;
 }) {
-  const { user } = usePrivy();
   
-  const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    toast.success("Link copied to clipboard");
-    track("pipeline_shared", {
-      pipeline_id: pipeline?.id,
-      pipeline_name: pipeline?.name,
-      share_method: "copy_link"
-    }, user || undefined);
-  };
-
-  const [playbackInfo, setPlaybackInfo] = useState<any>(null);
   const [showModelInfo, setShowModelInfo] = useState(false);
 
   const modelInfo = [
@@ -96,12 +80,6 @@ export default function Output({
         </Button>
       </div>
       <div className="bg-sidebar rounded-2xl relative h-[calc(100vh-16rem)] w-full">
-        {tab === "remix" && pipeline?.type === "comfyUI" && (
-          <iframe
-            src="https://comfyui.alpha.fal.ai/"
-            className="w-full h-full rounded-2xl"
-          />
-        )}
         {streamInfo?.output_playback_id && (
           <div className="w-full h-full  relative overflow-hidden z-10">
             <LPPLayer output_playback_id={streamInfo?.output_playback_id} />
