@@ -263,6 +263,15 @@ export default function CreatePipeline({ open }: { open: boolean }) {
     router.replace(`${window.location.pathname}?${newParams}`);
   };
 
+  useEffect(() => {
+    if (open) {
+      track("create_pipeline_modal_opened", {
+        is_authenticated: authenticated,
+        modal_state: "opened"
+      }, user || undefined);
+    }
+  }, [open, authenticated, user]);
+
   if (!authenticated) {
     return (
       <div className="p-4">
@@ -296,10 +305,6 @@ export default function CreatePipeline({ open }: { open: boolean }) {
     </div>
   );
 
-  useEffect(() => {
-    track("create_pipeline_modal_opened", undefined, user || undefined);
-  }, [user]);
-
   return (
     <div className="p-4">
       <div className="flex items-center justify-between relative">
@@ -329,6 +334,10 @@ export default function CreatePipeline({ open }: { open: boolean }) {
             {renderContent(FORM_FIELDS.MODEL_CARD)}
           </TabsContent>
 
+          {/* TODO: When implementing pipeline creation, add tracking:
+            OnClick of create pipeline button:
+            track("pipeline_creation_clicked", undefined, user || undefined);
+          */}
           <Button disabled className="w-full my-6">
             Create Pipeline
           </Button>

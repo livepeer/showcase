@@ -8,6 +8,8 @@ import { pipelines } from "@/components/welcome/featured";
 import { ScrollArea } from "@repo/design-system/components/ui/scroll-area";
 import Modals from "@/components/modals";
 import { getPipeline } from "@/app/api/pipelines/get";
+import track from "@/lib/track";
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function Playground({
   searchParams,
@@ -16,21 +18,32 @@ export default function Playground({
   searchParams: any;
   params: { id: string };
 }) {
+  const { user, authenticated } = usePrivy();
   const [tab, setTab] = useState<string>("try");
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [streamInfo, setStreamInfo] = useState<any>(null);
   const [pipelineData, setPipelineData] = useState<any>(null);
 
   const getPipelineData = async () => {
-    console.log(params.id);
     const pipeline = await getPipeline(params.id);
-    console.log(pipeline);
     setPipelineData(pipeline);
   };
 
   useEffect(() => {
     getPipelineData();
   }, [params.id]);
+
+  useEffect(() => {
+    if (pipelineData) {
+      track("pipeline_viewed", {
+        pipeline_id: params.id,
+        pipeline_name: pipelineData?.name,
+        pipeline_type: pipelineData?.type,
+        is_authenticated: authenticated,
+        referrer: document.referrer
+      }, user || undefined);
+    }
+  }, [pipelineData]);
 
   return (
     <div className="flex flex-col h-[calc(100%-1rem)]  border border-border rounded-2xl p-4">

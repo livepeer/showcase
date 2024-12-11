@@ -1,11 +1,16 @@
+"use client";
+
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { ModeToggle } from "@repo/design-system/components/mode-toggle";
 import { Button } from "@repo/design-system/components/ui/button";
 import Link from "next/link";
 import Search from "./search";
 import User from "./user";
+import { usePrivy } from "@privy-io/react-auth";
+import track from "@/lib/track";
 
 export default function Header() {
+  const { user, authenticated } = usePrivy();
   const menuItems = [
     {
       label: "Explore",
@@ -23,6 +28,13 @@ export default function Header() {
     },
   ];
 
+  const handleClickTrack = (label: string) => {
+    track(label.toLowerCase() + "_button_clicked", {
+      location: "header",
+      is_authenticated: authenticated
+    }, user || undefined);
+  };
+
   return (
     <div className="flex h-16 w-full items-center justify-between">
       <div className="flex items-center gap-8">
@@ -36,13 +48,14 @@ export default function Header() {
               target={item.external ? "_blank" : undefined}
               key={item.label}
               className="text-muted-foreground text-sm"
+              onClick={() => handleClickTrack(item.label)}
             >
               {item.label}
             </Link>
           ))}
         </div>
 
-        <Button variant="outline" className="hidden md:flex">
+        <Button variant="outline" className="hidden md:flex" onClick={() => handleClickTrack("github")}>
           <GitHubLogoIcon />
           <span>Github</span>
         </Button>
