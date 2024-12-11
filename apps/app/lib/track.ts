@@ -31,7 +31,7 @@ async function getDistinctId(user: User | undefined) {
   
   // If user just logged in, identify them
   if (user?.id && distinctId && user.id !== distinctId) {
-    await identifyUser(user.id, distinctId);
+    // await identifyUser(user.id, distinctId);
   }
 
   if (user) {
@@ -86,14 +86,15 @@ const track = async (
   eventProperties?: Record<string, any>,
   user?: User
 ) => {
-  
   const distinctId = await getDistinctId(user);
   const sessionId = getSessionId(user);
 
-  const additionalProperties = {
+  const properties = {
+    ...eventProperties,
+    $distinct_id: distinctId,
     distinct_id: distinctId,
-    $user_id: user?.id,  // Only set when logged in
-    $session_id: sessionId,  // Add session ID to all events
+    $user_id: user?.id,
+    $session_id: sessionId,
     user_agent: navigator.userAgent,
     $browser: navigator.userAgent.match(/(?:Chrome|Firefox|Safari|Opera|Edge|IE)/)?.[0] || 'Unknown Browser',
     $browser_version: navigator.userAgent.match(/(?:Version|Chrome|Firefox|Safari|Opera|Edge|IE)\/?\s*(\d+)/)?.[1] || '',
@@ -108,16 +109,13 @@ const track = async (
     $screen_height: window.screen.height,
     $screen_width: window.screen.width,
   };
-  const properties = {
-    ...eventProperties,
-    ...additionalProperties,
-  };
   console.log(
     "Sending to mixpanel:",
     JSON.stringify({
       event: eventName,
       distinct_id: distinctId,
       session_id: sessionId,
+      properties: properties,
     })
   );
   try {
@@ -129,6 +127,7 @@ const track = async (
       body: JSON.stringify({
         event: eventName,
         properties: properties,
+        distinct_id: distinctId
       }),
     });
 
