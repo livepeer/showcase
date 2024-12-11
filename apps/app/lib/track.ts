@@ -105,21 +105,32 @@ const track = async (
   const data = {
     event: eventName,
     properties: {
-      distinct_id: distinctId,  // Move this into properties
+      distinct_id: distinctId,
       $user_id: user?.id,
       $session_id: sessionId,
       user_agent: navigator.userAgent,
+      $browser: navigator.userAgent.match(/(?:Chrome|Firefox|Safari|Opera|Edge|IE)/)?.[0] || 'Unknown Browser',
+      $browser_version: navigator.userAgent.match(/(?:Version|Chrome|Firefox|Safari|Opera|Edge|IE)\/?\s*(\d+)/)?.[1] || '',
+      $current_url: window.location.href,
+      $device: navigator.userAgent.match(/\((.*?)\)/)?.[1] || 'Unknown Device',
+      $initial_referrer: document.referrer ? document.referrer : undefined,
+      $initial_referring_domain: document.referrer
+        ? new URL(document.referrer).hostname
+        : undefined,
+      $os: navigator.userAgent.match(/\(([^)]+)\)/)?.[1]?.split(';')[0] || 'Unknown OS',
+      $screen_height: window.screen.height,
+      $screen_width: window.screen.width,
       ...eventProperties,
     }
   };
-
+  console.log("Tracking event", eventName, JSON.stringify(data));
   try {
     const response = await fetch(`/api/mixpanel`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(data)  // Match the sendBeacon format
+      body: JSON.stringify(data)
     });
     
     if (!response.ok) {
