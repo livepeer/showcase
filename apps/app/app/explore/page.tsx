@@ -34,7 +34,7 @@ export default function Explore({
                 Browse through all the pipelines available
               </p>
             </div>
-            <div className="mt-6 grid md:grid-cols-3 gap-6 grid-rows-3 w-full">
+            <div className="mt-6 grid grid-cols-1  md:grid-cols-2 gap-6 lg:grid-cols-3 w-full">
               {pipelines.map((pipeline, index) => (
                 <PipelineTile
                   key={index}
@@ -100,7 +100,7 @@ const FeaturedPipelines = () => {
         </p>
       </div>
 
-      <div className="flex md:flex-row flex-col md:space-x-4  mt-2">
+      <div className="flex md:flex-row flex-col md:space-x-4  mt-2 overflow-x-auto">
         {featuredPipelinesLimited.map((pipeline, index) => (
           <PipelineTile
             key={index}

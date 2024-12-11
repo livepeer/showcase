@@ -1,147 +1,36 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@repo/design-system/components/ui/button";
-import { Heart, Loader2 } from "lucide-react";
-import {
-  Tabs as TabsC,
-  TabsContent,
-} from "@repo/design-system/components/ui/tabs";
-import Tabs from "./tab";
+import { Heart,  } from "lucide-react";
+
 import Try from "./try";
 import { motion, AnimatePresence } from "framer-motion";
-import track from "@/lib/track";
-import { usePrivy } from "@privy-io/react-auth";
 
 export default function Form({
-  tab,
-  onTabChange,
-  onRunClick,
   setStreamInfo,
   pipeline,
 }: {
-  tab: string;
-  onTabChange: (tab: string) => void;
-  onRunClick: (isRunning: boolean) => void;
   setStreamInfo: (streamInfo: any) => void;
   pipeline: any;
 }) {
-  const { user } = usePrivy();
-  const [isRunPipelineLoading, setIsRunPipelineLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState(tab);
-
-  const handleValueChange = (value: string) => {
-    setActiveTab(value);
-    onTabChange(value);
-    
-    // Track when user switches to learn tab
-    track(value + "_tab_clicked", {
-      pipeline_id: pipeline?.id,
-      pipeline_name: pipeline?.name,
-      pipeline_type: pipeline?.type
-    }, user || undefined);
-  };
-
-  const handleDownloadJson = () => {
-    // Add download logic here
-    track("pipeline_json_downloaded", {
-      pipeline_id: pipeline?.id,
-      pipeline_name: pipeline?.name,
-      pipeline_type: pipeline?.type
-    }, user || undefined);
-  };
-
   return (
-    <div className="w-full h-full overflow-y-auto rounded-lg p-0.5 overflow-hidden z-10  pr-6 pt-6  ">
-      <TabsC
-        onValueChange={handleValueChange}
-        value={activeTab}
-        defaultValue="try"
-        className="h-full"
-      >
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center">
-          <Tabs />
-          <div className="flex flex-row gap-2 mt-4 md:mt-0  md:w-auto self-end relative">
-            <HeartButton />
-            {tab === "try" && (
-              <>
-                {isRunPipelineLoading ? (
-                  <Button
-                    onClick={() => {
-                      setIsRunPipelineLoading(false);
-                      onRunClick(false);
-                    }}
-                  >
-                    <Loader2 className="animate-spin" />
-                    Running...
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => {
-                      setIsRunPipelineLoading(true);
-                      track("pipeline_run", {
-                        pipeline_id: pipeline?.id,
-                        pipeline_name: pipeline?.name,
-                        pipeline_type: pipeline?.type
-                      }, user || undefined);
-                    }}
-                  >
-                    Run Pipeline
-                  </Button>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-        <TabsContent value={"try"}>
-          <Try
-            pipeline={pipeline}
-            setStreamInfo={setStreamInfo}
-            isRunning={isRunPipelineLoading}
-          />
-        </TabsContent>
-        <TabsContent value="remix">
-          <div className="flex flex-col gap-6 my-6 h-full">
-            {pipeline?.type === "comfyUI" ? (
-              <p className="font-medium">
-                Inspired by this pipeline?
-                <br />
-                <br />
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Quisquam, quos. Lorem ipsum dolor sit amet consectetur
-                adipisicing elit. Quisquam, quos.
-              </p>
-            ) : (
-              <p className="font-medium">
-                This pipeline is not supported by ComfyUI.
-                <br />
-                <br />
-                Custom Python pipelines coming in March 2025
-              </p>
-            )}
-          </div>
-          {pipeline?.type === "comfyUI" && (
-            <div className="flex flex-row gap-2">
-              <Button variant="outline">View JSON</Button>
-              <Button onClick={handleDownloadJson}>Download JSON</Button>
-            </div>
-          )}
-        </TabsContent>
-      </TabsC>
-    </div>
+      <Try
+        pipeline={pipeline}
+        setStreamInfo={setStreamInfo}
+      />
   );
 }
 
 const HeartButton = () => {
   const [isLiked, setIsLiked] = useState(false);
 
-  // Generate more particles with varying shapes
   const particles = Array.from({ length: 12 }).map(() => ({
-    x: Math.random() * 100 - 50, // Wider spread
-    y: Math.random() * -80 - 20, // Higher spread
-    rotation: Math.random() * 720 - 360, // More rotation
+    x: Math.random() * 100 - 50, 
+    y: Math.random() * -80 - 20, 
+    rotation: Math.random() * 720 - 360, 
     scale: Math.random() * 0.6 + 0.4,
-    shape: Math.random() > 0.5 ? "circle" : "heart", // Randomize shapes
+    shape: Math.random() > 0.5 ? "circle" : "heart", 
   }));
 
   return (
@@ -253,7 +142,6 @@ const HeartButton = () => {
         className="absolute inset-0 bg-gradient-to-r from-red-100 to-pink-100 rounded-full z-0"
       />
 
-      {/* Hover ring effect */}
       <motion.div
         initial={false}
         animate={isLiked ? { scale: 0, opacity: 0 } : { scale: 1, opacity: 1 }}
