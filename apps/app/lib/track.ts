@@ -26,21 +26,16 @@ if (typeof window !== 'undefined') {
 }
 
 async function getDistinctId(user: User | undefined) {
-  // Add debugging
-  console.log("Getting distinct ID for user:", user?.id);
-  
-  // Try to get existing distinct ID
+// Try to get existing distinct ID
   let distinctId = localStorage.getItem('mixpanel_distinct_id');
   console.log("Distinct ID from localStorage:", distinctId);
   
   // If user just logged in, identify them
   if (user?.id && distinctId && user.id !== distinctId) {
-    console.log("User logged in, updating distinct ID from", distinctId, "to", user.id);
     await identifyUser(user.id, distinctId);
   }
 
   if (user) {
-    console.log("Setting distinct id as user id:", user.id);
     localStorage.setItem('mixpanel_user_id', user.id);
     localStorage.setItem('mixpanel_distinct_id', user.id);
     return user.id;
@@ -50,7 +45,6 @@ async function getDistinctId(user: User | undefined) {
     console.log("No distinct ID found, generating new one");
     // Generate new UUID if none exists
     distinctId = crypto.randomUUID();
-    console.log("Generated new distinct ID:", distinctId);
     localStorage.setItem('mixpanel_distinct_id', distinctId);
   }
   
@@ -95,10 +89,8 @@ const track = async (
   eventProperties?: Record<string, any>,
   user?: User
 ) => {
-  const distinctId = await getDistinctId(user);
   const sessionId = getSessionId(user);
-  console.log("Session ID", sessionId);
-  console.log("Distinct ID", distinctId);
+  const distinctId = await getDistinctId(user);
 
   const data = {
     event: eventName,
@@ -121,7 +113,7 @@ const track = async (
       ...eventProperties,
     }
   };
-  console.log("Tracking event", eventName, JSON.stringify(data));
+  console.log("Tracking event", eventName, distinctId, sessionId);
   try {
     const response = await fetch(`/api/mixpanel`, {
       method: "POST",
