@@ -19,13 +19,13 @@ import { cn } from "@repo/design-system/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { ScrollArea } from "@repo/design-system/components/ui/scroll-area";
+import { Button } from "@repo/design-system/components/ui/button";
+import { toast } from "sonner";
 
 export default function Try({
-  isRunning,
   setStreamInfo,
   pipeline,
 }: {
-  isRunning: boolean;
   setStreamInfo: (streamInfo: any) => void;
   pipeline: any;
 }): JSX.Element {
@@ -33,19 +33,31 @@ export default function Try({
   const [streamId, setStreamId] = useState<string | null>(null);
   const [streamUrl, setStreamUrl] = useState<string | null>(null);
   const [inputValues, setInputValues] = useState<Record<string, any>>({});
+  const [initialValues, setInitialValues] = useState<Record<string, any>>({});
   const [isOpen, setIsOpen] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
 
   const { user } = usePrivy();
 
   const handleInputChange = (id: string, value: any) => {
-    setInputValues((prev) => ({
-      ...prev,
+    const newValues = {
+      ...inputValues,
       [id]: value,
-    }));
+    };
+    setInputValues(newValues);
+    
+    const hasAnyChange = Object.keys(newValues).some(
+      key => newValues[key] !== initialValues[key]
+    );
+    setHasChanges(hasAnyChange);
   };
 
-  const getFromLocalStorage = (key: string) => {
-    return localStorage.getItem(key);
+  const handleUpdate = async () => {
+toast("Params updated successfully")    
+    setInitialValues({...inputValues});
+    
+      setHasChanges(false);
   };
 
   const handleRun = async (): Promise<void> => {
@@ -57,8 +69,6 @@ export default function Try({
       user?.id ?? ""
     );
 
-    // const whipUrl = getFromLocalStorage("whipUrl");
-
     setStreamId(stream.id);
     setStreamInfo(stream);
     setStreamUrl(
@@ -69,8 +79,8 @@ export default function Try({
   const inputs = pipeline.config.inputs;
 
   const createDefaultValues = () => {
-    const primaryInput = inputs.primary; //object
-    const advancedInputs = inputs.advanced; //array
+    const primaryInput = inputs.primary; 
+    const advancedInputs = inputs.advanced; 
     const allInputs = [primaryInput, ...advancedInputs];
     return allInputs.reduce((acc, input) => {
       acc[input.id] = input.defaultValue;
@@ -81,13 +91,11 @@ export default function Try({
   useEffect(() => {
     const defaultValues = createDefaultValues();
     setInputValues(defaultValues);
-  }, [pipeline]);
-
-  useEffect(() => {
-    if (isRunning && !streamId) {
+    setInitialValues(defaultValues);
+    if (!streamId) {
       handleRun();
     }
-  }, [isRunning]);
+  }, [pipeline]);
 
   const renderInput = (input: any) => {
     switch (input.type) {
@@ -160,95 +168,106 @@ export default function Try({
   };
 
   return (
-    <div className="flex flex-col gap-4 mt-5">
-      {/* Source Input */}
-      <div className="flex flex-col gap-2">
-        <Label className="text-muted-foreground">Source</Label>
-        <Select
-          defaultValue="webcam"
-          value={source}
-          disabled
-          onValueChange={setSource}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Webcam" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="webcam">Webcam</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Primary Input (Prompt) */}
-      {inputs.primary && (
-        <div className="flex flex-col gap-2">
-          <Label className="text-muted-foreground">
-            {inputs.primary.label}
-          </Label>
-          {renderInput(inputs.primary)}
-        </div>
-      )}
-
-      {/* Advanced Settings Collapsible */}
-      <div className="flex flex-col gap-2">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <motion.div
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <ChevronDown className="h-4 w-4" />
-          </motion.div>
-          Advanced Settings
-        </button>
-
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden"
+    <div>
+      <div className="flex justify-end h-10">
+        {streamId && (
+          <>
+            <Button
+              onClick={handleUpdate}
+              disabled={!hasChanges}
             >
-              <ScrollArea className="h-[500px] rounded-md border">
-                <div className="p-4 space-y-4">
-                  {inputs.advanced
-                    .filter((input: any) => input.id !== "prompt")
-                    .map((input: any) => (
-                      <div
-                        key={input.id}
-                        className={cn({
-                          "flex flex-col gap-2": true,
-                          "flex flex-row justify-between items-center":
-                            input.type === "switch",
-                        })}
-                      >
-                        <Label className="text-muted-foreground">
-                          {input.label}
-                        </Label>
-                        {renderInput(input)}
-                      </div>
-                    ))}
-                </div>
-              </ScrollArea>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              Update params
+            </Button>
+          </>
+        )}
       </div>
+      <div className="flex flex-col gap-4 mt-2">
+        <div className="flex flex-col gap-2">
+          <Label className="text-muted-foreground">Source</Label>
+          <Select
+            defaultValue="Video"
+            value={source}
+            disabled
+            onValueChange={setSource}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Video" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Video">Video</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-      {/* Stream Source */}
-      <div className="flex flex-col gap-1.5">
-        <Label className="text-muted-foreground">Stream Source</Label>
-        <div className="flex flex-row h-[300px] w-full bg-sidebar rounded-2xl items-center justify-center overflow-hidden relative">
-          {streamUrl && <BroadcastWithControls ingestUrl={streamUrl} />}
-          {!streamUrl && (
-            <p className="text-muted-foreground">
-              Click on the "Run" button to begin
-            </p>
-          )}
+        {inputs.primary && (
+          <div className="flex flex-col gap-2">
+            <Label className="text-muted-foreground">
+              {inputs.primary.label}
+            </Label>
+            {renderInput(inputs.primary)}
+          </div>
+        )}
+
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <motion.div
+              animate={{ rotate: isOpen ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ChevronDown className="h-4 w-4" />
+            </motion.div>
+            Advanced Settings
+          </button>
+
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
+              >
+                <ScrollArea className="h-[500px] rounded-md border">
+                  <div className="p-4 space-y-4">
+                    {inputs.advanced
+                      .filter((input: any) => input.id !== "prompt")
+                      .map((input: any) => (
+                        <div
+                          key={input.id}
+                          className={cn({
+                            "flex flex-col gap-2": true,
+                            "flex flex-row justify-between items-center":
+                              input.type === "switch",
+                          })}
+                        >
+                          <Label className="text-muted-foreground">
+                            {input.label}
+                          </Label>
+                          {renderInput(input)}
+                        </div>
+                      ))}
+                  </div>
+                </ScrollArea>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <Label className="text-muted-foreground">Stream Source</Label>
+          <div className="flex flex-row h-[300px] w-full bg-sidebar rounded-2xl items-center justify-center overflow-hidden relative">
+            {streamUrl ? (
+              <BroadcastWithControls ingestUrl={streamUrl} />
+            ): (
+              <p className="text-muted-foreground">
+                Waiting for stream to start...
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
