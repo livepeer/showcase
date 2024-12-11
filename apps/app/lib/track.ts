@@ -59,11 +59,12 @@ async function getDistinctId(user: User | undefined) {
 function getSessionId(user: User | undefined) {
   let sessionId = sessionStorage.getItem('mixpanel_session_id');
   
+  console.log("Session ID already exists", sessionId);
   if (!sessionId) {
     // Generate new session ID if none exists
     sessionId = crypto.randomUUID();
     sessionStorage.setItem('mixpanel_session_id', sessionId);
-    
+    console.log("Generating new session ID", sessionId);
     // Track session start
     track("$session_start", undefined, user);
   }
@@ -91,11 +92,12 @@ async function identifyUser(userId: string, anonymousId: string) {
 const track = async (
   eventName: string,
   eventProperties?: Record<string, any>,
-  user?: User
+  user?: User | undefined
 ) => {
   const distinctId = await getDistinctId(user);
   const sessionId = getSessionId(user);
-
+  console.log("Session ID", sessionId);
+  
   const properties = {
     ...eventProperties,
     $distinct_id: distinctId,
