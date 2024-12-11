@@ -1,0 +1,130 @@
+---
+title: "Local Development with ComfyStream"
+description: "Local development guide"
+icon: "recycle"
+---
+https://drive.google.com/file/d/12qnVTLdH6T0sUZM74I1H0H9-GGfKJm1k/view
+
+# Summary
+
+ComfyStream (https://github.com/yondonfu/comfystream) is a tool for running live streams through ComfyUI, created by Yondon.  Here is a guide for setting it up on RunPod, based on my experience.  
+
+This tutorial comes from the perspective of a AI pipeline developer for our first cohort, who uses a remote ComfyUI environment that gives them access to the terminal.
+
+The goal of this tutorial is to set up the depth map real time AI pipeline that Yondon shared in the demo video.
+
+Here is a high level technical architecture for our setup
+
+![Screenshot 2024-11-09 at 11.08.49 AM.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/ba5cc718-47bf-4371-9ee3-50bdd7161e7a/559f32ef-9c6f-4b7d-8c13-2969a0f5b52c/Screenshot_2024-11-09_at_11.08.49_AM.png)
+
+# Step 1: Set up ComfyUI (on Runpod)
+
+I picked ComfyUI-Launcher, created by the Comfyworkflows.com team.  This tool allows you to easily launch multiple ComfyUI workspaces.  Follow this instruction, https://github.com/ComfyWorkflows/ComfyUI-Launcher/blob/main/cloud/RUNPOD.md.  I picked a 4090 as my GPU.  This should get ComfyUI running on Runpod.
+
+You can monitor the container logs through Runpod, which is very helpful for debugging issues as you install nodes.  In my experience, hacking on ComfyUI workflows require a decent amount of debugging around installing nodes.
+
+I also recommend setting up SSH public keys, so you can directly ssh into the GPU server. This will help us with installing custom nodes, and setting up ssh tunnels.
+
+ComfyUI-Launcher will create `/workspace/comfyui_launcher_models`  and  `/workspace/comfyui_launcher_projects` on you drive.  You can create multiple ComfyUI workspaces, and they will live in `/workspace/comfyui_launcher_projects/{workspace}/comfyui` .  Ignore the `/workspace/comfyui_launcher_projects/{workspace}/comfyui/models` directory - all of your models will be in `/workspace/comfyui_launcher_models`
+
+When you create an “empty” workflow, you will see the new workspace with the same name. Note, you have to install a model in the ComfyUI manager GUI so the “Load Checkpoint” node can find a model.
+
+Enjoy generating your first purple bottle image.
+
+# Step 2: Install ComfyStream
+
+First, we install Conda. 
+
+- `cd /workspace`
+- `wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh`
+- `./Miniconda3-latest-Linux-x86_64.sh`
+- `eval "$(/root/miniconda3/bin/conda shell.bash hook)"`
+
+Verify Conda has been installed using `which conda` - you should see “/root/miniconda3/bin/conda”
+
+Next, we create and activate a Conda environment
+
+- `conda create -n comfystream python=3.11`
+- `conda activate comfystream`
+
+Next, we install Pytorch
+
+- `conda install pytorch torchvision -c pytorch`
+
+Next, we install ComfyStream.  There is currently a dependency issue, and there is a branch with a workaround.
+
+- `cd /workspace`
+- `git clone https://github.com/yondonfu/comfystream.git`
+- `cd comfystream`
+- `git fetch`
+- `git checkout pin-opentelemetry`
+- `pip install .`
+
+After that, we copy the `tensor_utils` nodes into the `custom_nodes` folder in the ComfyUI workspace (at `/workspace/comfyui_launcher_projects/{workspace}/comfyui/custom_nodes`).
+
+- `cp -r nodes/tensor_utils /workspace/comfyui_launcher_projects/{workspace}/comfyui/custom_nodes`
+
+# Step 3: Install DepthAnything Tensorrt Node
+
+The `https://github.com/yuvraj108c/ComfyUI-Depth-Anything-Tensorrt` custom node generates depth maps from images. Installing the node is pretty manual. 
+
+**Installation**
+
+- `cd /workspace/comfyui_launcher_projects/{workspace}/comfyui/custom_nodes`
+- `git clone https://github.com/yuvraj108c/ComfyUI-Depth-Anything-Tensorrt.git`
+- `cd ./ComfyUI-Depth-Anything-Tensorrt`
+- `pip install -r requirements.txt`
+
+**Download and Build Tensorrt Engine**
+
+- `wget https://huggingface.co/yuvraj108c/Depth-Anything-2-Onnx/resolve/main/depth_anything_v2_vitb.onnx?download=true`
+- `mv depth_anything_v2_vitb.onnx?download=true depth_anything_v2_vitb.onnx`
+- Open up `export_trt.py`, update 2 variables:
+    - `onnx_path` to `"./depth_anything_v2_vitb.onnx"`
+    - `trt_path` to `depth_anything_v2_vitb-fp16.engine`
+- `python export_trt.py`
+- `mkdir -p /workspace/comfyui_launcher_models/tensorrt/depth-anything/`
+- `mv depth_anything_v2_vitb-fp16.engine /workspace/comfyui_launcher_models/tensorrt/depth-anything/`
+
+**Test Out in Depth Map Generation in ComfyUI**
+
+- Open up the custom node manager, and you should see **`ComfyUI Depth Anything TensorRT`** as a custom node that’s installed.
+- You have to click on “Restart”, and reload the browser.
+- If you double-click on an empty part of the canvas, you should be able to search and find `Depth Anything Tensorrt`.  Add it to the canvas.
+    - If this doesn’t show up, try and see if it’s because the custom node is installed correctly.  If not, you can try to “fix it”.  The fixing process will take a while, since it’ll be installing some packages.
+- Add a ”Load Image” node as the input, and the “Preview Image” node as the output.  You should be able to pick an image and see the depth map.
+
+# Step 4: Bring Up ComfyStream Server
+
+Tunnel to open up UDP connection
+
+- On the remote server (remote_host), run: `socat TCP4-LISTEN:4321,fork UDP4:127.0.0.1:5678`
+- On the local machine: Open an SSH tunnel, run `ssh -L 4321:localhost:4321 {remote_user@remote_host and other params from Runpod ssh cmd}`
+- On the local machine, run `socat UDP4-LISTEN:1234,fork TCP4:127.0.0.1:4321`
+
+Traffic sent to `localhost:1234` on the local machine will be forwarded over the SSH tunnel and will reach `127.0.0.1:5678` on the remote server.
+
+Bring up ComfyStream Server
+
+- `cd /workspace/comfystream`
+- `pip install -r requirements.txt`
+- `python install.py --workspace /workspace/comfyui_launcher_projects/{workspace}/comfyui`
+- (Is this needed?) Open another terminal, ssh into the Runpod terminal:
+    - You should find “SSH over exposed TCP” value in Runpod.
+    - Copy that command, and add `-L 8888:localhost:8888`
+    - For example: `ssh -L 8888:localhost:8888 root@{runpod_ip} -p 16974 -i ~/.ssh/id_ed25519`
+- `python server/app.py --workspace /workspace/comfyui_launcher_projects/{workspace}/comfyui --media-ports=5678`
+
+We should now have the ComfyStream server running on port `8888`, with media port `5678` listening on UDP.  It’s also using the same workspace and sharing the available nodes / models as the ComfyUI engine you were using.
+
+Traffic sent to `localhost:1234` on the local machine will be forwarded over the SSH tunnel and will reach `127.0.0.1:5678` on the remote server.
+
+# Step 5: Run the Front End
+
+You can run the frontend on your local machine. Just git clone the same repo, and run the following:
+
+- `cd ui`
+- `npm install --legacy-peer-deps`
+- `npm run dev`
+
+Now you should be able to visit `localhost:3000`, use `localhost:8888` as the stream URL, pick the “depth anything” workflow in the workflows directory from `comfystream`.  After that, you should see the depth map live stream based on you webcam.

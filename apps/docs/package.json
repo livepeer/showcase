@@ -1,0 +1,12 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "mintlify dev --port 3003"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

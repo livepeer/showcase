@@ -1,0 +1,119 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Livepeer Pipelines",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373",
+    "anchors": {
+      "from": "#0D9373",
+      "to": "#07C983"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:hello@livepeer.org"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://pipelines.livepeer.org"
+  },
+  "anchors": [
+    {
+      "name": "Community",
+      "icon": "discord",
+      "url": "https://discord.gg/livepeer"
+    },
+    {
+      "name": "Blog",
+      "icon": "newspaper",
+      "url": "https://livepeer.org/blog"
+    }
+  ],
+  "tabs": [
+    {
+      "name": "Knowledge Base",
+      "url": "knowledge-base"
+    },
+    {
+      "name": "Technical Documentation",
+      "url": "technical"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "knowledge-base/get-started/what-is-pipeline",
+        "knowledge-base/get-started/try-a-pipeline"
+      ]
+    },
+    {
+      "group": "Pipeline Development",
+      "pages": [
+        "technical/develop-pipeline/what-is-pipeline",
+        "technical/develop-pipeline/remix-your-first-pipeline",
+        "technical/develop-pipeline/create-your-first-pipeline"
+      ]
+    },
+    {
+      "group": "Application Development",
+      "pages": [
+        "technical/develop-app/stream-into-pipeline-app",
+        "technical/develop-app/stream-into-pipeline-studio",
+        "technical/develop-app/stream-into-pipeline-livekit"
+      ]
+    },
+    {
+      "group": "Reference",
+      "pages": [
+        "knowledge-base/reference/pricing"
+      ]
+    },
+    {
+      "group": "Reference",
+      "pages": [
+        "technical/reference/pricing",
+        "technical/reference/available-nodes",
+        "technical/reference/performance-recommendations",
+        "technical/reference/local-testing"
+      ]
+    },
+    {
+      "group": "Streamer Tutorials",
+      "pages": [
+        "knowledge-base/tutorials/stream-into-pipeline-obs",
+        "knowledge-base/tutorials/pseudonymous-video-chat",
+        "knowledge-base/tutorials/stream-to-twitch"
+      ]
+    },
+    {
+      "group": "Pipeline API Reference",
+      "pages": [
+        "technical/api-reference/pipeline/get",
+        "technical/api-reference/pipeline/create",
+        "technical/api-reference/pipeline/update",
+        "technical/api-reference/pipeline/delete"
+      ]
+    },
+    {
+      "group": "Stream API Reference",
+      "pages": [
+        "technical/api-reference/pipeline/stream/create",
+        "technical/api-reference/pipeline/stream/control"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "x": "https://x.com/livepeer",
+    "github": "https://github.com/livepeer",
+    "linkedin": "https://linkedin.com/company/livepeer"
+  }
+}
