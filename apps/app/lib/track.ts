@@ -21,8 +21,6 @@ if (typeof window !== 'undefined') {
       
       navigator.sendBeacon('/api/mixpanel', JSON.stringify(data));
       sessionStorage.removeItem('mixpanel_session_id');
-      localStorage.removeItem('mixpanel_distinct_id');
-      localStorage.removeItem('mixpanel_user_id');
     }
   });
 }
