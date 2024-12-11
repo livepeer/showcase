@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@repo/design-system/components/ui/button";
-import { Info, PauseIcon, PlayIcon, Share } from "lucide-react";
+import { Copy, Info, PauseIcon, PlayIcon, Share } from "lucide-react";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { pipelines } from "../welcome/featured/index";
@@ -37,11 +37,6 @@ export default function Output({
     toast.success("Link copied to clipboard");
   };
 
-  const livepeer = new Livepeer({
-    serverURL: "https://livepeer.monster/api",
-    apiKey: process.env.NEXT_PUBLIC_LIVEPEER_STUDIO_API_KEY,
-  });
-
   const [playbackInfo, setPlaybackInfo] = useState<any>(null);
   const [showModelInfo, setShowModelInfo] = useState(false);
 
@@ -68,22 +63,19 @@ export default function Output({
     },
   ];
 
-  const handleGetPlaybackInfo = async () => {
-    const { playbackInfo } = await livepeer.playback.get(
-      streamInfo.output_playback_id
-    );
-    setPlaybackInfo(playbackInfo);
+  const copyLogs = () => {
+    navigator.clipboard.writeText(JSON.stringify(streamInfo));
+    toast.success("Logs copied to clipboard");
   };
-
-  useEffect(() => {
-    if (streamInfo) {
-      handleGetPlaybackInfo();
-    }
-  }, [streamInfo]);
 
   return (
     <div className="flex flex-col h-full relative">
       <div className="flex-shrink-0 flex justify-end mb-4 space-x-4">
+        {streamInfo?.output_stream_url && (
+          <Button variant="outline" onClick={() => copyLogs()}>
+            <Copy className="mr-2" /> Copy logs
+          </Button>
+        )}
         <Button
           variant="outline"
           onClick={() => setShowModelInfo(!showModelInfo)}
