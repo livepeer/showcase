@@ -21,6 +21,8 @@ if (typeof window !== 'undefined') {
       
       navigator.sendBeacon('/api/mixpanel', JSON.stringify(data));
       sessionStorage.removeItem('mixpanel_session_id');
+      localStorage.removeItem('mixpanel_distinct_id');
+      localStorage.removeItem('mixpanel_user_id');
     }
   });
 }
@@ -31,18 +33,23 @@ async function getDistinctId(user: User | undefined) {
   
   // If user just logged in, identify them
   if (user?.id && distinctId && user.id !== distinctId) {
-    // await identifyUser(user.id, distinctId);
+    console.log("Identifying user", user.id, distinctId);
+    await identifyUser(user.id, distinctId);
   }
 
   if (user) {
     localStorage.setItem('mixpanel_user_id', user.id);
     localStorage.setItem('mixpanel_distinct_id', user.id);
+    console.log("Setting distinct ID", user.id);
+    console.log("Setting user ID", user.id);
+
     return user.id;
   }
   
   if (!distinctId) {
     // Generate new UUID if none exists
     distinctId = crypto.randomUUID();
+    console.log("Generating new distinct ID", distinctId);
     localStorage.setItem('mixpanel_distinct_id', distinctId);
   }
   
