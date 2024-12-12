@@ -5,6 +5,20 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
+  "background":{
+  "style": "grid"
+  },
+  "font": {
+    "headings": {
+      "family": "Roboto Mono",
+      "weight": 700
+    },
+    "body": {
+      "family": "Roboto Mono",
+      "weight": 480
+    }
+  },
+  "rounded": "sharp",
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#0D9373",
@@ -19,11 +33,15 @@
     {
       "name": "Support",
       "url": "mailto:hello@livepeer.org"
+    },
+    {
+      "name": "Dashboard",
+      "url":"https://pipelines.livepeer.org"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://pipelines.livepeer.org"
+    "type": "github",
+    "url":"https://github.com/livepeer/showcase/tree/main/apps/docs"
   },
   "anchors": [
     {
