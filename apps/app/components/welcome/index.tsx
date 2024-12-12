@@ -69,7 +69,7 @@ const Intro = () => {
       <div className="flex">
         <Button
           onClick={() => {
-            window.open("https://livepeer2.mintlify.app", "_blank");
+            window.open("https://showcase.livepeer.org/docs", "_blank");
           }}
           variant="ghost"
           className="mt-3  w-auto"

@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 export default function Header() {
   const { user, authenticated } = usePrivy();
-  const {push} = useRouter(); 
+
   const menuItems = [
     {
       label: "Explore",
@@ -21,7 +21,7 @@ export default function Header() {
     {
       label: "Learn",
       external: true,
-      href: "https://livepeer2.mintlify.app/",
+      href: "https://showcase.livepeer.org/docs",
     },
     {
       label: "Community",
