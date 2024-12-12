@@ -4,7 +4,7 @@ description: 'Transform live video with AI, at scale'
 icon: 'book'
 ---
 
-<iframe width="560" height="315" src="https://youtu.be/rSUOeU6zxrA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
+<iframe width="720" height="480" src="https://lvpr.tv/?v=f013vrpssj1bzw57" title="Livepeer video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 ## Overview
 
@@ -17,15 +17,8 @@ Pipelines abstract away the complexities of video processing, inference manageme
 
 A Pipeline is a composable workflow that applies AI processing to live video in real-time. Think of it as an assembly line where each station performs a specific AI operation on your video stream—like style transfer, object detection, or live translation.
 
-```javascript
-// Example: Create a stream with a simple Pipeline
-const stream = await livepeer.Stream.create({
-  pipeline: "anime-style-transfer",
-  params: {
-    styleIntensity: 0.8
-  }
-});
-```
+Right now, pipelines operate on video and return either video or data streams. In the future, pipelines will express additional modalities such as live text-to-video.
+
 
 ## Key Concepts
 
@@ -91,7 +84,7 @@ A Pipeline moves through several states:
 
 1. **Creation**
 
-   * Built using ComfyUI (available now) or custom Python code (coming Q1 2025)
+   * Built using [ComfyUI and ComfyStream](/technical/reference/local-testing) or custom Python code (coming soon)
 
    * Defined processing steps and parameters
 
@@ -103,13 +96,15 @@ A Pipeline moves through several states:
 
 3. **Usage**
 
-   * Integrated into applications
+   * Integrated into creator workflows (available now) or applications (API docs coming soon)
 
    * Processes live video streams
-
+   
+   * Pipeline control parameters updated
+   
    * Monitored for performance
 
-4. **Remixing**
+4. **Remixing (Coming Soon)**
 
    * Another developer uses Pipeline code as a starting point to create a novel experience
 
@@ -133,32 +128,12 @@ A Pipeline moves through several states:
 
 ***
 
-### Choose your path
-
-There are two ways to work with Pipelines:
-
-<CardGroup cols={2}>
-  <Card title="Application Developer" icon="pen-to-square" href="/stream-into-pipeline">
-    * Use existing Pipelines in your applications <br />
-
-    * Focus on integration and user experience <br />
-
-    * Minimal AI/ML expertise required
-  </Card>
-
-  <Card title="Pipeline Developer" icon="image" href="/remix-your-first-pipeline">
-    Create new Pipelines for others to use <br />
-    Build with ComfyUI or custom Python <br />
-    Deeper technical involvement
-  </Card>
-</CardGroup>
-
 ## Community & Support
 
 * Join our [Discord](https://discord.gg/livepeer)
 
-* Browse the [Showcase](https://showcase.livepeer.org)
+* Join the [Daily Prompt Challenge](https://pipelines.livepeer.org)
 
-* Contribute to [open source](https://github.com/livepeer)
+* [Contribute](https://github.com/livepeer)
 
 ***
