@@ -93,22 +93,6 @@
         "knowledge-base/tutorials/pseudonymous-video-chat",
         "knowledge-base/tutorials/stream-to-twitch"
       ]
-    },
-    {
-      "group": "Pipeline API Reference",
-      "pages": [
-        "technical/api-reference/pipeline/get",
-        "technical/api-reference/pipeline/create",
-        "technical/api-reference/pipeline/update",
-        "technical/api-reference/pipeline/delete"
-      ]
-    },
-    {
-      "group": "Stream API Reference",
-      "pages": [
-        "technical/api-reference/pipeline/stream/create",
-        "technical/api-reference/pipeline/stream/control"
-      ]
     }
   ],
   "footerSocials": {
