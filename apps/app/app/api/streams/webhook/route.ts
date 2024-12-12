@@ -41,6 +41,7 @@ export async function POST(request: Request) {
       rtmp_output_url: data?.output_stream_url,
       pipeline: data?.pipeline_id?.key,
       pipeline_parameters: data?.pipeline_params,
+      stream_id: data?.id
     };
 
     console.log("sending response", response);
