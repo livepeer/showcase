@@ -56,6 +56,15 @@
       ]
     },
     {
+      "group": "Streamer Tutorials",
+      "pages": [
+        "knowledge-base/tutorials/stream-into-pipeline-obs",
+        "knowledge-base/tutorials/stream-to-twitch",
+        "knowledge-base/tutorials/stream-to-youtube",
+        "knowledge-base/tutorials/stream-to-x"
+      ]
+    },
+    {
       "group": "Pipeline Development",
       "pages": [
         "technical/develop-pipeline/what-is-pipeline",
@@ -80,18 +89,9 @@
     {
       "group": "Reference",
       "pages": [
-        "technical/reference/pricing",
         "technical/reference/available-nodes",
         "technical/reference/performance-recommendations",
         "technical/reference/local-testing"
-      ]
-    },
-    {
-      "group": "Streamer Tutorials",
-      "pages": [
-        "knowledge-base/tutorials/stream-into-pipeline-obs",
-        "knowledge-base/tutorials/pseudonymous-video-chat",
-        "knowledge-base/tutorials/stream-to-twitch"
       ]
     }
   ],
