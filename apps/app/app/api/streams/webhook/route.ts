@@ -29,7 +29,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase
       .from("streams")
-      .select("*, pipeline_id(key)")
+      .select("*, pipeline_id(key,id)")
       .eq("stream_key", stream_key)
       .single();
 
