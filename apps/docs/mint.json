@@ -8,16 +8,7 @@
   "background":{
   "style": "grid"
   },
-  "font": {
-    "headings": {
-      "family": "Roboto Mono",
-      "weight": 700
-    },
-    "body": {
-      "family": "Roboto Mono",
-      "weight": 480
-    }
-  },
+  "theme": "quill",
   "rounded": "sharp",
   "favicon": "/favicon.svg",
   "colors": {
