@@ -68,16 +68,7 @@
       "group": "Pipeline Development",
       "pages": [
         "technical/develop-pipeline/what-is-pipeline",
-        "technical/develop-pipeline/remix-your-first-pipeline",
         "technical/develop-pipeline/create-your-first-pipeline"
-      ]
-    },
-    {
-      "group": "Application Development",
-      "pages": [
-        "technical/develop-app/stream-into-pipeline-app",
-        "technical/develop-app/stream-into-pipeline-studio",
-        "technical/develop-app/stream-into-pipeline-livekit"
       ]
     },
     {
