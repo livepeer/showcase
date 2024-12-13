@@ -1,46 +1,21 @@
 "use client";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@repo/design-system/components/ui/collapsible";
-import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   useSidebar,
 } from "@repo/design-system/components/ui/sidebar";
-import { useIsMobile } from "@repo/design-system/hooks/use-mobile";
-import {
-  Camera,
-  ChevronRightIcon,
-  Clock2Icon,
-  DollarSignIcon,
-  DoorOpenIcon,
-  HeartIcon,
-  KeyIcon,
-  LibraryIcon,
-  LifeBuoyIcon,
-  ListIcon,
-  Map,
-  SendIcon,
-  SquareTerminalIcon,
-  Video,
-} from "lucide-react";
+import {useIsMobile} from "@repo/design-system/hooks/use-mobile";
+import { VideoIcon, DoorOpenIcon, LifeBuoyIcon, Map, SendIcon, SquareTerminalIcon,} from "lucide-react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import type { ReactNode } from "react";
+import {useRouter} from "next/navigation";
+import type {ReactNode} from "react";
 
 type GlobalSidebarProperties = {
   readonly children: ReactNode;
@@ -104,9 +79,15 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   } = {
     streams: [
       {
+        title: "Create Streams",
+        url: `/stream/create`,
+        icon: SquareTerminalIcon,
+        isActive: true,
+      },
+      {
         title: "My Streams",
-        url: `/my-streams`,
-        icon: Camera,
+        url: `/streams/my-streams`,
+        icon: VideoIcon,
         isActive: true,
       },
     ],

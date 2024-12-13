@@ -1,7 +1,7 @@
 "use client";
 
 import track from "@/lib/track";
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy, User as PrivyUser } from "@privy-io/react-auth";
 import {
   Avatar,
   AvatarFallback,
@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@repo/design-system/components/ui/dropdown-menu";
-import createClient from "@repo/supabase/client";
+import { createUser } from "./action";
 import { LogOut } from "lucide-react";
 import { useEffect } from "react";
 
@@ -28,32 +28,13 @@ export default function User() {
 
   const disableLogin = !ready || authenticated;
 
-  const checkUser = async () => {
-    //  check if the user exists in supabase, if not, create them
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", user?.id);
-
-    if (error) {
-      console.error(error);
-    }
-
-    if (data?.length === 0) {
-      console.log("user not found, creating");
-      await supabase.from("users").insert({
-        id: user?.id,
-        email: user?.email,
-        name: user?.github?.name || user?.discord?.username,
-        provider: user?.github ? "github" : "discord",
-      });
-    }
+  const checkUser = async (userToInsert: PrivyUser) => {
+    await createUser(userToInsert);
   };
 
   useEffect(() => {
     if (user?.id) {
-      checkUser();
+      checkUser(user);
     }
   }, [user]);
 

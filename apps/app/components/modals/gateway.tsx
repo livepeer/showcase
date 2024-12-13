@@ -63,8 +63,8 @@ export default function Gateway() {
     if (whipUrl) {
       setWhipUrl(whipUrl);
     } else {
-      setWhipUrl("https://ai.livepeer.monster/aiWebrtc/");
-      saveToLocalStorage("whipUrl", "https://ai.livepeer.monster/aiWebrtc/");
+      setWhipUrl(process.env.NEXT_PUBLIC_AI_WEBRTC_BASE_URL || "https://ai.livepeer.monster/aiWebrtc/");
+      saveToLocalStorage("whipUrl", process.env.NEXT_PUBLIC_AI_WEBRTC_BASE_URL || "https://ai.livepeer.monster/aiWebrtc/");
     }
 
     if (gateway === "true") {
