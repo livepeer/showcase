@@ -106,7 +106,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
       {
         title: "My Streams",
         url: `/my-streams`,
-        icon: Camera,
+        icon: Video,
         isActive: true,
       },
     ],
@@ -147,13 +147,12 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   };
 
   const labelMap: Record<string, string> = {
-    streams: 'Streams',
-    pipelines: 'Pipelines',
-    settings: 'Settings',
-    footer: 'More'
+    streams: "Streams",
+    pipelines: "Pipelines",
+    settings: "Settings",
+    footer: "More",
   };
 
-  
   return (
     <>
       <Sidebar variant="inset" collapsible="icon">
@@ -234,43 +233,44 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
           </Link>
         </SidebarHeader>
         <SidebarContent>
-        {Object.entries(data).map(([key, items]) => (
-        <SidebarGroup key={key}
-        className={key === 'footer' ? 'mt-auto mb-10' : ''}
-        >
-          {key !== 'footer' && (
-            <SidebarGroupLabel>
-              {labelMap[key] || key.charAt(0).toUpperCase() + key.slice(1)}
-            </SidebarGroupLabel>
-          ) }
-          <SidebarMenu>
-            {items.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton
-                  className="hover:bg-muted cursor-pointer" 
-                  onClick={() => {
-                    if (item.external) {
-                      window.open(item.url, "_blank");
-                    } else {
-                      router.replace(item.url);
-                    }
-                    if (isMobile) {
-                      _sidebar.setOpenMobile(false);
-                    }
-                  }}
-                  asChild
-                  tooltip={item.title}
-                >
-                  <div>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </div>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-      ))}
+          {Object.entries(data).map(([key, items]) => (
+            <SidebarGroup
+              key={key}
+              className={key === "footer" ? "mt-auto mb-10" : ""}
+            >
+              {key !== "footer" && (
+                <SidebarGroupLabel>
+                  {labelMap[key] || key.charAt(0).toUpperCase() + key.slice(1)}
+                </SidebarGroupLabel>
+              )}
+              <SidebarMenu>
+                {items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      className="hover:bg-muted cursor-pointer"
+                      onClick={() => {
+                        if (item.external) {
+                          window.open(item.url, "_blank");
+                        } else {
+                          router.replace(item.url);
+                        }
+                        if (isMobile) {
+                          _sidebar.setOpenMobile(false);
+                        }
+                      }}
+                      asChild
+                      tooltip={item.title}
+                    >
+                      <div>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </div>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          ))}
         </SidebarContent>
       </Sidebar>
       <SidebarInset>{children}</SidebarInset>

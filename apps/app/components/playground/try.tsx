@@ -21,6 +21,7 @@ import { ChevronDown } from "lucide-react";
 import { ScrollArea } from "@repo/design-system/components/ui/scroll-area";
 import { Button } from "@repo/design-system/components/ui/button";
 import { toast } from "sonner";
+import { updateParams } from "@/app/api/streams/update-params";
 
 export default function Try({
   setStreamInfo,
@@ -37,7 +38,7 @@ export default function Try({
   const [isOpen, setIsOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
-
+  const [streamKey, setStreamKey] = useState<string | null>(null);
   const { user } = usePrivy();
 
   const handleInputChange = (id: string, value: any) => {
@@ -46,18 +47,20 @@ export default function Try({
       [id]: value,
     };
     setInputValues(newValues);
-    
+
     const hasAnyChange = Object.keys(newValues).some(
-      key => newValues[key] !== initialValues[key]
+      (key) => newValues[key] !== initialValues[key]
     );
     setHasChanges(hasAnyChange);
   };
 
   const handleUpdate = async () => {
-toast("Params updated successfully")    
-    setInitialValues({...inputValues});
-    
-      setHasChanges(false);
+    toast("Params updated successfully");
+    if (!streamKey) return;
+    updateParams(streamKey, inputValues);
+    setInitialValues({ ...inputValues });
+
+    setHasChanges(false);
   };
 
   const handleRun = async (): Promise<void> => {
@@ -74,13 +77,14 @@ toast("Params updated successfully")
     setStreamUrl(
       `https://ai.livepeer.monster/aiWebrtc/${stream.stream_key}/whip`
     );
+    setStreamKey(stream.stream_key);
   };
 
   const inputs = pipeline.config.inputs;
 
   const createDefaultValues = () => {
-    const primaryInput = inputs.primary; 
-    const advancedInputs = inputs.advanced; 
+    const primaryInput = inputs.primary;
+    const advancedInputs = inputs.advanced;
     const allInputs = [primaryInput, ...advancedInputs];
     return allInputs.reduce((acc, input) => {
       acc[input.id] = input.defaultValue;
@@ -172,10 +176,7 @@ toast("Params updated successfully")
       <div className="flex justify-end h-10">
         {streamId && (
           <>
-            <Button
-              onClick={handleUpdate}
-              disabled={!hasChanges}
-            >
+            <Button onClick={handleUpdate} disabled={!hasChanges}>
               Update params
             </Button>
           </>
@@ -261,8 +262,11 @@ toast("Params updated successfully")
           <Label className="text-muted-foreground">Stream Source</Label>
           <div className="flex flex-row h-[300px] w-full bg-sidebar rounded-2xl items-center justify-center overflow-hidden relative">
             {streamUrl ? (
-              <BroadcastWithControls ingestUrl={streamUrl} />
-            ): (
+              <p>
+                {/* <BroadcastWithControls streamUrl={streamUrl} /> */}
+                Hello
+              </p>
+            ) : (
               <p className="text-muted-foreground">
                 Waiting for stream to start...
               </p>
