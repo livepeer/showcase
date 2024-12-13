@@ -18,7 +18,7 @@ import Search from "../header/search";
 
 const StreamForm = forwardRef(
 (
-  { pipeline, stream }: { pipeline: any; stream?: any | null },
+  { stream }: { stream?: any | null },
   ref: React.Ref<any>
 ) => {
 
@@ -26,14 +26,18 @@ const StreamForm = forwardRef(
     stream?.pipeline_params || {}
   );
   const [isOpen, setIsOpen] = useState(true);
-  const [selectedPipeline, setSelectedPipeline] = useState<any | null>(pipeline);
+  const [selectedPipeline, setSelectedPipeline] = useState<any | null>(stream?.pipelines);
   const [selectedStream, setSelectedStream] = useState<any | null>(stream);
-  const inputs = selectedPipeline?.config?.inputs || {};
+  const [inputs, setInputs] = useState<Record<string, any>>(selectedPipeline?.config?.inputs || {})
 
   useEffect(() => {
     const defaultValues = createDefaultValues();
     setInputValues(defaultValues);
-  }, [selectedPipeline, selectedStream]);
+  }, [selectedStream]);
+
+  useEffect(() => {
+    setInputs(selectedPipeline?.config?.inputs);
+  }, [selectedPipeline]);
 
   const handleInputChange = (id: string, value: any) => {
     if (['name', 'output_stream_url'].includes(id)) {
@@ -52,7 +56,8 @@ const StreamForm = forwardRef(
   useImperativeHandle(ref, () => ({
     getFormData: () => ({
       ...selectedStream,
-      pipeline: selectedPipeline,
+      pipelines: selectedPipeline,
+      pipeline_id: selectedPipeline.id,
       pipeline_params: inputValues,
     }),
     
@@ -166,13 +171,15 @@ const StreamForm = forwardRef(
                   onChange={(e) => handleInputChange('name', e.target.value)}
                 />
           </div>
+          {stream?.stream_key && (
+            <div className="flex flex-col gap-2">
+              <Label className="text-muted-foreground">
+                Stream Key
+              </Label>
+              {stream?.stream_key}
+            </div>
+          )}
           <div className="flex flex-col gap-2">
-            <Label className="text-muted-foreground">
-              Stream Key
-            </Label>
-            {stream?.stream_key}
-          </div>
-          <div className="mt-6">
             <Label className="text-muted-foreground">
               Stream Destination
             </Label>
@@ -198,7 +205,7 @@ const StreamForm = forwardRef(
       )}
 
       {/* Advanced Settings Collapsible */}
-      {inputs?.advanced && (
+      {inputs?.advanced && inputs.advanced.length > 0 && (
         <div className="flex flex-col gap-2">
           <button
             onClick={() => setIsOpen(!isOpen)}

@@ -26,7 +26,7 @@ import {
 import {DoubleArrowLeftIcon, DoubleArrowRightIcon} from "@radix-ui/react-icons";
 import Modals from "@/components/modals";
 
-export function MyStreams({searchParams}: {
+export default function MyStreams({searchParams}: {
   searchParams: any;
 }){
   const { authenticated, user, ready:isAuthLoaded } = usePrivy();
@@ -293,5 +293,3 @@ export function MyStreams({searchParams}: {
       </div>
   );
 }
-
-export default MyStreams;

@@ -17,7 +17,7 @@ export async function GET(request: NextRequest,
     }
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_STREAM_STATUS_ENDPOINT_URL}/${streamId}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_STREAM_STATUS_ENDPOINT_URL}/${streamId}/status`);
         if (!response.ok) {
            return createErrorResponse(200, ERROR_MESSAGES.INVALID_RESPONSE + ` - [${response.status}] ${response.statusText}`);
         }

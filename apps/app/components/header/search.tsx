@@ -15,19 +15,23 @@ import track from "@/lib/track";
 import { fetchPipelines } from "./fetchPipelines";
 
 
-export default function Search({ pipeline, onPipelineSelect }: { pipeline?: any, onPipelineSelect?: (pipelineId: string) => void }) {
+export default function Search({ pipeline, onPipelineSelect }: { pipeline?: any, onPipelineSelect?: (pipeline: any) => void }) {
   const [open, setOpen] = useState(false);
   const [selectedPipeline, setSelectedPipeline] = useState<any | null>(pipeline);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any>([]);
 
   const selectPipeline = (pipeline: any) => {
+    if (!pipeline) {
+      console.error("No pipeline selected.");
+      return;
+    }
     setSelectedPipeline(pipeline);
+    setOpen(false);
+    setQuery("");
     if (onPipelineSelect) {
       onPipelineSelect(pipeline);
     }
-    setOpen(false);
-    setQuery("");
   };
 
   useEffect(() => {
@@ -47,8 +51,8 @@ export default function Search({ pipeline, onPipelineSelect }: { pipeline?: any,
     <div>
       <Input
         placeholder="Search Pipelines"
-        defaultValue={selectedPipeline?.name}
-        value={selectedPipeline?.name}
+        value={selectedPipeline?.name || ""}
+        readOnly={true}
         onClick={() => {
           track("search_clicked");
           setOpen(true);

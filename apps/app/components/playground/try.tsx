@@ -64,7 +64,7 @@ export default function Try({
   };
 
   const handleRun = async (): Promise<void> => {
-    const stream = await createStream(
+    const {data: stream, error} = await createStream(
       {
         pipeline_id: pipeline.id,
         pipeline_params: inputValues,
@@ -72,6 +72,10 @@ export default function Try({
       user?.id ?? ""
     );
 
+    if(error){
+      toast.error(`Error creating stream for playback ${error}`);
+      return;
+    }
     setStreamId(stream.id);
     setStreamInfo(stream);
     setStreamUrl(
