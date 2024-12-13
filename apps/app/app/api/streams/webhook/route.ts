@@ -29,7 +29,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase
       .from("streams")
-      .select("*, pipeline_id(key)")
+      .select("*, pipeline_id(key,id)")
       .eq("stream_key", stream_key)
       .single();
 
@@ -40,7 +40,9 @@ export async function POST(request: Request) {
     const response = {
       rtmp_output_url: data?.output_stream_url,
       pipeline: data?.pipeline_id?.key,
+      pipeline_id: data?.pipeline_id?.id,
       pipeline_parameters: data?.pipeline_params,
+      stream_id: data?.id
     };
 
     console.log("sending response", response);
