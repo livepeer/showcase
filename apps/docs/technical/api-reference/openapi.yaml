@@ -94,6 +94,16 @@ components:
           type: string
         output_stream_url:
           type: string
+          description: RTMP ingest URL for streaming content into the pipeline
+        ingest_urls:
+          type: object
+          properties:
+            rtmp:
+              type: string
+              description: RTMP ingest URL for streaming content
+            whip:
+              type: string
+              description: WHIP ingest URL for WebRTC streaming
         status:
           type: string
           enum:
@@ -189,6 +199,9 @@ paths:
       tags:
         - Streams
       summary: Create a new stream with pipeline
+      description: |
+        Creates a new stream with the specified pipeline configuration. The response includes
+        RTMP ingest URL that can be used to stream content into the pipeline.
       requestBody:
         required: true
         content:
@@ -202,6 +215,64 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stream'
+
+  /streams/ingest/whip:
+    post:
+      tags:
+        - Streams
+      summary: Create WHIP ingest endpoint
+      description: |
+        Creates a WebRTC-HTTP Ingest Protocol (WHIP) endpoint for streaming content.
+        Use this endpoint to obtain WHIP configuration for WebRTC-based streaming.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - stream_id
+              properties:
+                stream_id:
+                  type: string
+                  description: ID of the stream to ingest into
+                ice_servers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      urls:
+                        type: array
+                        items:
+                          type: string
+                      username:
+                        type: string
+                      credential:
+                        type: string
+      responses:
+        '201':
+          description: WHIP endpoint created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  whip_url:
+                    type: string
+                    description: WHIP ingest endpoint URL
+                  ice_servers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        urls:
+                          type: array
+                          items:
+                            type: string
+                        username:
+                          type: string
+                        credential:
+                          type: string
 
   /streams/{id}:
     get:
