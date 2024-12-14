@@ -225,6 +225,8 @@ importers:
         specifier: ^2.1.4
         version: 2.1.4(@types/node@22.9.0)(jsdom@25.0.1(bufferutil@4.0.8)(utf-8-validate@5.0.10))(terser@5.36.0)
 
+  apps/docs: {}
+
   apps/email:
     dependencies:
       '@react-email/components':
