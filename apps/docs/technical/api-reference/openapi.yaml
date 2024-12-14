@@ -12,13 +12,18 @@ servers:
 
 security:
   - ApiKeyAuth: []
+  - PaymentAuth: []
 
 components:
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
       in: header
-      name: x-user-id
+      name: x-api-key
+    PaymentAuth:
+      type: apiKey
+      in: header
+      name: x-payment-token
 
   schemas:
     ModelCard:
@@ -42,6 +47,7 @@ components:
       required:
         - name
         - type
+        - model_id
       properties:
         id:
           type: string
@@ -66,10 +72,17 @@ components:
             - text-to-speech
             - llm
             - image-to-text
+        model_id:
+          type: string
+          description: ID of the model to use for this pipeline
         model_card:
           $ref: '#/components/schemas/ModelCard'
         comfy_ui_json:
           type: object
+          description: ComfyUI workflow configuration for the pipeline
+        pipeline_params:
+          type: object
+          description: Additional configuration parameters specific to the pipeline type
         created_at:
           type: string
           format: date-time
@@ -113,12 +126,31 @@ components:
 
     Error:
       type: object
+      required:
+        - code
+        - message
       properties:
-        success:
-          type: boolean
-          default: false
-        error:
+        code:
           type: string
+          enum:
+            - BadRequest
+            - ServiceUnavailable
+            - Unauthorized
+            - PaymentRequired
+            - ResourceNotFound
+            - ValidationError
+        message:
+          type: string
+          description: Detailed error message with operation context
+        details:
+          type: object
+          description: Additional error context specific to the operation
+        operation:
+          type: string
+          description: The operation that caused the error
+        timestamp:
+          type: string
+          format: date-time
 
 paths:
   /pipelines:
@@ -189,6 +221,57 @@ paths:
       responses:
         '200':
           description: Pipeline details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+    delete:
+      tags:
+        - Pipelines
+      summary: Delete a pipeline
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Pipeline deleted successfully
+        '404':
+          description: Pipeline not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Pipelines
+      summary: Update pipeline configuration
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                comfy_ui_json:
+                  type: object
+                pipeline_params:
+                  type: object
+      responses:
+        '200':
+          description: Pipeline updated successfully
           content:
             application/json:
               schema:
@@ -292,6 +375,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stream'
+    delete:
+      tags:
+        - Streams
+      summary: Delete a stream
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Stream deleted successfully
+        '404':
+          description: Stream not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /streams/{id}/playback:
     patch:
@@ -341,7 +443,7 @@ paths:
         '200':
           description: Stream status
           content:
-            application/json:
+            text/event-stream:
               schema:
                 type: object
                 properties:
@@ -358,6 +460,19 @@ paths:
                     type: object
                   error:
                     type: string
+                  events:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum: [status, error, progress]
+                        timestamp:
+                          type: string
+                          format: date-time
+                        data:
+                          type: object
 
   /live/video-to-video/{streamKey}/update:
     post:
@@ -380,3 +495,146 @@ paths:
       responses:
         '200':
           description: Configuration updated successfully
+
+  /streams/{id}/events:
+    get:
+      tags:
+        - Streams
+      summary: Get stream events
+      description: |
+        Stream events in real-time using Server-Sent Events (SSE).
+        Events include status updates, errors, and progress information.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stream of events
+          content:
+            text/event-stream:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum: [status, error, progress, worker]
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      progress:
+                        type: number
+                      status:
+                        type: string
+                      error:
+                        type: string
+                      worker_id:
+                        type: string
+                      timestamp:
+                        type: string
+                        format: date-time
+
+  /payment/balance:
+    get:
+      tags:
+        - Payment
+      summary: Get current balance
+      security:
+        - ApiKeyAuth: []
+        - PaymentAuth: []
+      responses:
+        '200':
+          description: Current balance information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: number
+                    format: float
+                  currency:
+                    type: string
+                    default: USD
+                  last_updated:
+                    type: string
+                    format: date-time
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payment/process:
+    post:
+      tags:
+        - Payment
+      summary: Process payment for stream
+      security:
+        - ApiKeyAuth: []
+        - PaymentAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - stream_id
+                - amount
+              properties:
+                stream_id:
+                  type: string
+                  description: ID of the stream to process payment for
+                amount:
+                  type: number
+                  format: float
+                  description: Amount to charge for stream processing
+                currency:
+                  type: string
+                  default: USD
+                  description: Currency for the payment
+      responses:
+        '200':
+          description: Payment processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_id:
+                    type: string
+                  status:
+                    type: string
+                    enum: [success, pending]
+                  amount:
+                    type: number
+                    format: float
+                  currency:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+        '400':
+          description: Invalid payment request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Payment required or failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
