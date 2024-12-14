@@ -1,0 +1,311 @@
+openapi: 3.0.0
+info:
+  title: Livepeer Showcase API
+  version: 1.0.0
+  description: |
+    API for managing AI video processing pipelines and streams in the Livepeer Showcase application.
+    Supports creation and management of various pipeline types, stream configuration, and real-time processing.
+
+servers:
+  - url: https://showcase.livepeer.org/api
+    description: Production server
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-user-id
+
+  schemas:
+    ModelCard:
+      type: object
+      properties:
+        baseModel:
+          type: string
+        modelType:
+          type: string
+        license:
+          type: string
+        intendedUse:
+          type: string
+        trainingDataset:
+          type: string
+        evaluationResult:
+          type: string
+
+    Pipeline:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        is_private:
+          type: boolean
+          default: true
+        type:
+          type: string
+          enum:
+            - live-video-to-video
+            - depth-anything
+            - segment-anything-2
+            - text-to-image
+            - image-to-image
+            - image-to-video
+            - upscale
+            - audio-to-text
+            - text-to-speech
+            - llm
+            - image-to-text
+        model_card:
+          $ref: '#/components/schemas/ModelCard'
+        comfy_ui_json:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Stream:
+      type: object
+      required:
+        - pipeline_id
+      properties:
+        id:
+          type: string
+        pipeline_id:
+          type: string
+        pipeline_params:
+          type: object
+        stream_key:
+          type: string
+        output_playback_id:
+          type: string
+        output_stream_url:
+          type: string
+        status:
+          type: string
+          enum:
+            - active
+            - inactive
+            - error
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        error:
+          type: string
+
+paths:
+  /pipelines:
+    post:
+      tags:
+        - Pipelines
+      summary: Create a new pipeline
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pipeline'
+      responses:
+        '201':
+          description: Pipeline created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - Pipelines
+      summary: List all pipelines
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: is_private
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: List of pipelines
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pipeline'
+
+  /pipelines/{id}:
+    get:
+      tags:
+        - Pipelines
+      summary: Get pipeline by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pipeline details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+
+  /streams:
+    post:
+      tags:
+        - Streams
+      summary: Create a new stream with pipeline
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stream'
+      responses:
+        '201':
+          description: Stream created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stream'
+
+  /streams/{id}:
+    get:
+      tags:
+        - Streams
+      summary: Get stream details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stream details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stream'
+
+  /streams/{id}/playback:
+    patch:
+      tags:
+        - Streams
+      summary: Update stream playback endpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                playback_id:
+                  type: string
+                rtmp_url:
+                  type: string
+                playback_policy:
+                  type: string
+                  enum: [public, private]
+      responses:
+        '200':
+          description: Playback endpoint updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stream'
+
+  /streams/{id}/status:
+    get:
+      tags:
+        - Streams
+      summary: Get stream status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stream status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active:
+                    type: boolean
+                  health:
+                    type: object
+                    properties:
+                      fps:
+                        type: number
+                      latency:
+                        type: number
+                  configuration:
+                    type: object
+                  error:
+                    type: string
+
+  /live/video-to-video/{streamKey}/update:
+    post:
+      tags:
+        - Streams
+      summary: Update stream configuration
+      parameters:
+        - name: streamKey
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Configuration parameters specific to pipeline type
+      responses:
+        '200':
+          description: Configuration updated successfully
