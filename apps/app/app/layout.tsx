@@ -17,7 +17,7 @@ type RootLayoutProperties = {
 const RootLayout = ({ children }: RootLayoutProperties) => (
   <html lang="en" suppressHydrationWarning>
     <body className="bg-sidebar">
-      <DesignSystemProvider>
+      <DesignSystemProvider defaultTheme="dark">
         <AlphaBanner />
         <SidebarProvider>
           <GlobalSidebar>
