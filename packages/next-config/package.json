@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "devDependencies": {
-    "@repo/env": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "next": "15.0.3"
   },
