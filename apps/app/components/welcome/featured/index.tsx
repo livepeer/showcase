@@ -47,16 +47,6 @@ export const pipelines = [
     isComfyUI: true,
     isFeatured: false,
   },
-  {
-    id: "pip_f6PMBBXq44VZCFoP",
-    title: "Hello World Pipeline",
-    description: "this is my first pipeline!",
-    image: "abc.jpg",
-    huggingFaceId: "",
-    docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
-    isComfyUI: true,
-    isFeatured: false,
-  },
 ];
 
 const dummyPlaybackIds = [

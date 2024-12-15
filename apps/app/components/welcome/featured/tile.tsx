@@ -63,7 +63,6 @@ export default function PipelineTile({
       </div>
       <Image
         className="absolute top-0 left-0 h-full w-full rounded-[10px] object-cover"
-        // just a little blur to light blur over the image to make it less visually busy
         style={{
           filter: "blur(0.5px)",
         }}
