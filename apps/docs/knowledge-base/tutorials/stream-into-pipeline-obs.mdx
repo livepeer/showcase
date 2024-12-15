@@ -1,16 +1,16 @@
 ---
 title: Stream into a Pipeline with OBS
-description: 'How to stream with a Livepeer Pipeline using OBS'
-icon: 'video'
+description: "How to stream with a Livepeer Pipeline using OBS"
+icon: "video"
 ---
 
 Before you begin, you'll need:
 
-* [OBS Studio](https://obsproject.com/) installed on your computer
+- [OBS Studio](https://obsproject.com/) installed on your computer
 
-* A Livepeer API key
+- A Livepeer API key
 
-* A pipeline ID (find one in the [Pipelines application](https://showcase.livepeer.stuorgio))
+- A pipeline ID (find one in the [Pipelines application](https://pipelines.livepeer.org))
 
 ## Step 1: Create a stream
 
@@ -18,24 +18,24 @@ First, create a stream that uses your chosen pipeline. Using your preferred lang
 
 ```javascript
 const livepeer = new LivepeerClient({
-  apiKey: 'your-api-key'
+  apiKey: "your-api-key",
 });
 
 const stream = await livepeer.Stream.create({
-  name: 'My AI Stream',
+  name: "My AI Stream",
   pipeline: {
-    id: 'anime-style-transfer',
+    id: "anime-style-transfer",
     params: {
-      styleIntensity: 0.8
-    }
-  }
+      styleIntensity: 0.8,
+    },
+  },
 });
 
 // Save these values
 console.log({
   streamKey: stream.streamKey,
   rtmpIngestUrl: stream.rtmpIngestUrl,
-  playbackUrl: stream.playbackUrl
+  playbackUrl: stream.playbackUrl,
 });
 ```
 
@@ -45,9 +45,9 @@ console.log({
 
 2. Click the "+" under Sources and add your video source:
 
-   * For webcam: Select "Video Capture Device"
+   - For webcam: Select "Video Capture Device"
 
-   * For screen capture: Select "Display Capture"
+   - For screen capture: Select "Display Capture"
 
 ## Step 3: Set up streaming settings
 
@@ -71,16 +71,16 @@ console.log({
 
 ## Common issues
 
-* **Black screen**: Check that your video source is properly selected and visible in OBS
+- **Black screen**: Check that your video source is properly selected and visible in OBS
 
-* **Connection failed**: Verify your stream key and RTMP URL are correct
+- **Connection failed**: Verify your stream key and RTMP URL are correct
 
-* **High CPU usage**: Lower your video output resolution in OBS Settings → Video
+- **High CPU usage**: Lower your video output resolution in OBS Settings → Video
 
 ## Next steps
 
-* [Update pipeline parameters in real-time](https://pipelines.livepeer.org/api-reference)
+- [Update pipeline parameters in real-time](https://pipelines.livepeer.org/api-reference)
 
-* [Distribute your stream with Livepeer Studio](https://livepeer.studio)
+- [Distribute your stream with Livepeer Studio](https://livepeer.studio)
 
 Need help? Join our [Discord](https://discord.gg/livepeer) or contact support at [support@livepeer.org](mailto:support@livepeer.org)

@@ -5,8 +5,8 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
-  "background":{
-  "style": "grid"
+  "background": {
+    "style": "grid"
   },
   "theme": "quill",
   "rounded": "sharp",
@@ -27,12 +27,12 @@
     },
     {
       "name": "Dashboard",
-      "url":"https://pipelines.livepeer.org"
+      "url": "https://pipelines.livepeer.org"
     }
   ],
   "topbarCtaButton": {
     "type": "github",
-    "url":"https://github.com/livepeer/showcase/tree/main/apps/docs"
+    "url": "https://github.com/livepeer/pipelines/tree/main/apps/docs"
   },
   "anchors": [
     {
@@ -82,9 +82,7 @@
     },
     {
       "group": "Reference",
-      "pages": [
-        "knowledge-base/reference/pricing"
-      ]
+      "pages": ["knowledge-base/reference/pricing"]
     },
     {
       "group": "Reference",
