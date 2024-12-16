@@ -47,16 +47,6 @@ export const pipelines = [
     isComfyUI: true,
     isFeatured: false,
   },
-  {
-    id: "pip_f6PMBBXq44VZCFoP",
-    title: "Hello World Pipeline",
-    description: "this is my first pipeline!",
-    image: "abc.jpg",
-    huggingFaceId: "",
-    docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
-    isComfyUI: true,
-    isFeatured: false,
-  },
 ];
 
 const dummyPlaybackIds = [
@@ -68,7 +58,7 @@ const dummyPlaybackIds = [
 
 export default function Winners() {
   return (
-    <div className="relative rounded-2xl border p-4 mt-4 h-[calc(100vh-24rem)]">
+    <div className="relative  border p-4 mt-4 h-[calc(100vh-24rem)]">
       <div className="flex flex-row items-center justify-between">
         <div>
           <h3 className="font-medium text-lg">Yesterday's Challenge Winners</h3>
@@ -79,7 +69,8 @@ export default function Winners() {
         </div>
         <div>
           <Link
-            href={"/explore"}
+            href={"https://discord.gg/livepeer"}
+            target="_blank"
             className="text-sm gap-1 flex items-center -ml-20 -mt-8 md:-ml-0 md:-mt-0"
           >
             Participate in today's challenge
