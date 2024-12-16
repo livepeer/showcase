@@ -219,7 +219,7 @@ const FormField = ({ field }: { field: any }) => {
       );
     case "upload":
       return (
-        <div className="border-2 border-dashed rounded-lg p-4 text-center cursor-pointer hover:bg-accent/50">
+        <div className="border-2 border-dashed  p-4 text-center cursor-pointer hover:bg-accent/50">
           <Upload className="w-6 h-6 mx-auto mb-2" />
           <p className="text-sm text-muted-foreground">{field.placeholder}</p>
         </div>
@@ -265,10 +265,14 @@ export default function CreatePipeline({ open }: { open: boolean }) {
 
   useEffect(() => {
     if (open) {
-      track("create_pipeline_modal_opened", {
-        is_authenticated: authenticated,
-        modal_state: "opened"
-      }, user || undefined);
+      track(
+        "create_pipeline_modal_opened",
+        {
+          is_authenticated: authenticated,
+          modal_state: "opened",
+        },
+        user || undefined
+      );
     }
   }, [open, authenticated, user]);
 

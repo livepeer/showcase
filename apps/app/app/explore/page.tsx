@@ -27,7 +27,7 @@ export default function Explore({
         <Filter />
         <div className="w-full md:w-3/4 md:border-l border-border/50 md:ml-[3rem] md:pl-[3rem]">
           <FeaturedPipelines />
-          <div className="border p-4 rounded-xl mt-6">
+          <div className="border p-4  mt-6">
             <div>
               <h3 className="font-medium text-lg">All Pipelines</h3>
               <p className="text-muted-foreground text-sm">
@@ -65,13 +65,13 @@ const Filter = () => {
       <div>
         <Label>Comfy UI supported</Label>
         <div className="flex flex-col space-y-2 mt-2">
-          <div className="flex items-center space-x-2 bg-sidebar p-3 rounded-md">
+          <div className="flex items-center space-x-2 bg-sidebar p-3 ">
             <Checkbox className="" id="comfyui" />
             <Label className="text-foreground/80 font-normal" htmlFor="comfyui">
               Comfy UI supported
             </Label>
           </div>
-          <div className="flex items-center space-x-2 bg-sidebar p-3 rounded-md">
+          <div className="flex items-center space-x-2 bg-sidebar p-3 ">
             <Checkbox className="" id="comfyuinot" />
             <Label
               className="text-foreground/80 font-normal"
@@ -91,7 +91,7 @@ const FeaturedPipelines = () => {
   const featuredPipelinesLimited = featuredPipelines.slice(0, 3);
 
   return (
-    <div className="border p-4 rounded-xl">
+    <div className="border p-4 ">
       <div>
         <h3 className="font-medium text-lg">Featured Pipelines</h3>
         <p className="text-muted-foreground text-sm">

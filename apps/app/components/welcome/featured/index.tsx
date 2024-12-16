@@ -58,7 +58,7 @@ const dummyPlaybackIds = [
 
 export default function Winners() {
   return (
-    <div className="relative rounded-2xl border p-4 mt-4 h-[calc(100vh-24rem)]">
+    <div className="relative  border p-4 mt-4 h-[calc(100vh-24rem)]">
       <div className="flex flex-row items-center justify-between">
         <div>
           <h3 className="font-medium text-lg">Yesterday's Challenge Winners</h3>
