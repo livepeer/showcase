@@ -25,7 +25,7 @@ const streamSchema = z.object({
   path: ["pipeline_id", "pipelines.id"]
 });
 
-export async function createStream(body: any, userId: string) {
+export async function upsertStream(body: any, userId: string) {
   const supabase = await createServerClient();
 
   console.log("Received body:", body); // Debug log

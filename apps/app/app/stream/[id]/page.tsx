@@ -6,7 +6,7 @@ import { LoaderCircleIcon } from "lucide-react";
 import LoggedOutComponent from "@/components/modals/logged-out";
 import StreamForm from "@/components/stream/stream-form";
 import { getStream } from "@/app/api/streams/get";
-import { createStream } from "@/app/api/streams/create";
+import { upsertStream } from "@/app/api/streams/upsert";
 import { usePrivy } from "@privy-io/react-auth";
 import { ExternalToast, toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -85,7 +85,7 @@ export default function Stream({
       updatedStream.author = user?.id;
       updatedStream.from_playground = false;//set flag indicating this is not ephemeral stream being shown in the Try/Playground components/views
       try {
-        const { data: savedStream, error } = await createStream(
+        const { data: savedStream, error } = await upsertStream(
             updatedStream,
             updatedStream.author
         );

@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@repo/design-system/components/ui/select";
 import { Textarea } from "@repo/design-system/components/ui/textarea";
-import { createStream } from "@/app/api/streams/create";
+import { upsertStream } from "@/app/api/streams/upsert";
 import { usePrivy } from "@privy-io/react-auth";
 import { BroadcastWithControls } from "./broadcast";
 import { Input } from "@repo/design-system/components/ui/input";
@@ -65,7 +65,7 @@ export default function Try({
   };
 
   const handleRun = async (): Promise<void> => {
-    const {data: stream, error} = await createStream(
+    const {data: stream, error} = await upsertStream(
       {
         pipeline_id: pipeline.id,
         pipeline_params: inputValues,

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createStream } from "./create";
+import { upsertStream } from "./upsert";
 import { getAllStreams } from "./get-all";
 import { z } from "zod";
 import { deleteStream } from "./delete";
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       return createErrorResponse(400, ERROR_MESSAGES.INVALID_INPUT);
     }
 
-    const pipeline = await createStream(body, userId);
+    const pipeline = await upsertStream(body, userId);
     return NextResponse.json(pipeline, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
