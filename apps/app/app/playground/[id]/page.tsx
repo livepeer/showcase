@@ -33,18 +33,22 @@ export default function Playground({
 
   useEffect(() => {
     if (pipelineData) {
-      track("pipeline_viewed", {
-        pipeline_id: params.id,
-        pipeline_name: pipelineData?.name,
-        pipeline_type: pipelineData?.type,
-        is_authenticated: authenticated,
-        referrer: document.referrer
-      }, user || undefined);
+      track(
+        "pipeline_viewed",
+        {
+          pipeline_id: params.id,
+          pipeline_name: pipelineData?.name,
+          pipeline_type: pipelineData?.type,
+          is_authenticated: authenticated,
+          referrer: document.referrer,
+        },
+        user || undefined
+      );
     }
   }, [pipelineData]);
 
   return (
-    <div className="flex flex-col h-[calc(100%-1rem)]  border border-border rounded-2xl p-4">
+    <div className="flex flex-col h-[calc(100%-1rem)]  border border-border  p-4">
       {pipelineData && (
         <ScrollArea className="h-full">
           <div className="flex-shrink-0 flex flex-row justify-between  w-full items-center  md:w-[34%] h-10">
@@ -52,16 +56,10 @@ export default function Playground({
           </div>
           <div className="flex-grow flex flex-col md:flex-row gap-14 h-full ">
             <div className="w-full md:w-[35%] flex-shrink-0 overflow-hidden flex flex-col ">
-              <Form
-                setStreamInfo={setStreamInfo}
-                pipeline={pipelineData}
-              />
+              <Form setStreamInfo={setStreamInfo} pipeline={pipelineData} />
             </div>
             <div className="flex-grow overflow-hidden ">
-              <Output
-                pipeline={pipelineData}
-                streamInfo={streamInfo}
-              />
+              <Output pipeline={pipelineData} streamInfo={streamInfo} />
             </div>
           </div>
         </ScrollArea>

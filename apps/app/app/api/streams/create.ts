@@ -3,9 +3,8 @@
 import { createServerClient } from "@repo/supabase";
 import { z } from "zod";
 import { Livepeer } from "livepeer";
-import { Stream } from "stream";
-import crypto from "crypto";
 import { newId } from "@/lib/generate-id";
+import { livepeer } from "@/lib/env";
 
 const streamSchema = z.object({
   pipeline_id: z.string(),
@@ -35,7 +34,7 @@ export async function createStream(body: any, userId: string) {
     stream_key: newId("stream_key"),
     pipeline_params: validationResult.data.pipeline_params,
     output_playback_id: livepeerStream?.playbackId,
-    output_stream_url: `rtmp://rtmp.livepeer.monster/live/${livepeerStream?.streamKey}`,
+    output_stream_url: `${livepeer.rtmpUrl}${livepeerStream?.streamKey}`,
   };
 
   console.log("Stream data:", streamData); // Debug log
@@ -50,12 +49,12 @@ export async function createStream(body: any, userId: string) {
 }
 
 const createLivepeerStream = async (name: string) => {
-  const livepeer = new Livepeer({
-    serverURL: "https://livepeer.monster/api",
-    apiKey: process.env.NEXT_PUBLIC_LIVEPEER_STUDIO_API_KEY,
+  const livepeerClient = new Livepeer({
+    serverURL: livepeer.apiUrl,
+    apiKey: livepeer.apiKey,
   });
 
-  const { stream } = await livepeer.stream.create({
+  const { stream } = await livepeerClient.stream.create({
     name: name,
   });
 

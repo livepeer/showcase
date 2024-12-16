@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import crypto from 'crypto';
+import { app, mixpanel } from "@/lib/env";
 const Mixpanel = require("mixpanel");
 
-const mixpanel = Mixpanel.init(process.env.MIXPANEL_PROJECT_TOKEN);
+const mixpanelClient = Mixpanel.init(mixpanel.projectToken);
 
 async function getGeoData(ip: string) {
   try {
@@ -16,35 +16,36 @@ async function getGeoData(ip: string) {
       $longitude: data.lon,
     };
   } catch (error) {
-    console.error('Error getting geolocation:', error);
+    console.error("Error getting geolocation:", error);
     return {};
   }
 }
 
 export async function POST(request: Request) {
-  const forwardedFor = request.headers.get('x-forwarded-for');
-  
-  const ip = process.env.NODE_ENV === 'development' 
-    ? '93.152.210.100'  // Hardcoded development IP (truncated ip that resolves to San Francisco)
-    : forwardedFor 
-      ? forwardedFor.split(',')[0].trim() 
-      : '127.0.0.1';
+  const forwardedFor = request.headers.get("x-forwarded-for");
+
+  const ip =
+    app.environment === "dev"
+      ? "93.152.210.100" // Hardcoded development IP (truncated ip that resolves to San Francisco)
+      : forwardedFor
+        ? forwardedFor.split(",")[0].trim()
+        : "127.0.0.1";
 
   let geoData = {};
-  if (ip && ip !== '127.0.0.1' && ip !== '::1') {
+  if (ip && ip !== "127.0.0.1" && ip !== "::1") {
     geoData = await getGeoData(ip);
   }
 
   const data = await request.json();
-    
+
   try {
     const { event, properties } = data;
     const enrichedProperties = {
       ...properties,
-      ...geoData
+      ...geoData,
     };
 
-    mixpanel.track(event, enrichedProperties);
+    mixpanelClient.track(event, enrichedProperties);
     return NextResponse.json({ status: "Event tracked successfully" });
   } catch (error) {
     console.error("Error tracking event:", error);
@@ -59,9 +60,9 @@ export async function OPTIONS() {
   return new NextResponse(null, {
     status: 200,
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
     },
   });
 }
