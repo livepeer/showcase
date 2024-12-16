@@ -69,7 +69,8 @@ export default function Winners() {
         </div>
         <div>
           <Link
-            href={"/explore"}
+            href={"https://discord.gg/livepeer"}
+            target="_blank"
             className="text-sm gap-1 flex items-center -ml-20 -mt-8 md:-ml-0 md:-mt-0"
           >
             Participate in today's challenge
