@@ -4,7 +4,7 @@ export async function updateParams(streamKey: string, body: any) {
   console.log("Stream key:", streamKey);
   console.log("Body:", body);
   const response = await fetch(
-    `https://livepeer.monster/api/live/video-to-video/${streamKey}/update`,
+    `https://ai.livepeer.monster/live/video-to-video/${streamKey}/update`,
     {
       method: "POST",
       headers: {
