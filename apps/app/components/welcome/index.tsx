@@ -25,13 +25,12 @@ import { cn } from "@repo/design-system/lib/utils";
 import track from "@/lib/track";
 import { useRouter, useSearchParams } from "next/navigation";
 import Search from "../header/search";
+import Link from "next/link";
 
 export default function Head() {
-  const { authenticated } = usePrivy();
-
   return (
-    <div className="relative rounded-2xl border pr-4">
-      <div className="grid md:grid-cols-3 gap-4 md:gap-10 rounded-2xl p-4">
+    <div className="relative  border pr-4">
+      <div className="grid md:grid-cols-3 gap-4 md:gap-10  p-4">
         <Intro />
         <div className="md:col-span-2">
           <CTA />
@@ -61,7 +60,7 @@ const Intro = () => {
         className="
       hover:border-primary/60 hover:text-primary/60 transition-all duration-200
       cursor-pointer
-      mt-3 text-muted-foreground text-md border border-dashed rounded-lg h-32 flex items-center justify-center"
+      mt-3 text-muted-foreground text-md border border-dashed  h-32 flex items-center justify-center"
       >
         <Plus className="h-7 w-7 mr-2" />
         Create a pipeline
@@ -174,8 +173,24 @@ const MyStats = () => {
 
 const CTA = () => {
   return (
-    <div className="bg-sidebar h-full rounded-md flex flex-col items-center justify-center">
-      <h3 className="font-medium text-lg">CTA</h3>
-    </div>
+    <Link
+      href={"https://discord.gg/livepeer"}
+      target="_blank"
+      style={{
+        backgroundImage:
+          "url('https://cdn.prod.website-files.com/66b1e1cb750c24d738b2c64b/66e7f4958c45556cb5bf3340_Card%20(52)%20(1).webp')",
+      }}
+      className=" h-full  flex flex-col  justify-center relative pl-6 bg-cover bg-center"
+    >
+      <h3 className="font-medium text-5xl uppercase text-white">
+        Daily Prompt <br />
+        Program
+      </h3>
+      <p className="text-lg uppercase my-4 text-white">Join our discord</p>
+      <img
+        src="https://cdn.prod.website-files.com/66b1e1cb750c24d738b2c64b/66b23b09ed2da9e4696256ad_Logo%20(6).svg"
+        className="absolute bottom-4 right-6"
+      />
+    </Link>
   );
 };
