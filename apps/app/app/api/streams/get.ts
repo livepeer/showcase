@@ -43,12 +43,14 @@ export async function getStreams(userId: string, page: number = 1, limit: number
         created_at,
         pipeline_id,
         output_playback_id,
+        from_playground,
         pipelines!inner (
           id,
           name
         )
       `)
       .eq('author', userId)
+      .eq('from_playground', false)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
   

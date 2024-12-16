@@ -83,6 +83,7 @@ export default function Stream({
 
       const toastId = toast.loading("Saving stream...", toastOptions);
       updatedStream.author = user?.id;
+      updatedStream.from_playground = false;//set flag indicating this is not ephemeral stream being shown in the Try/Playground components/views
       try {
         const { data: savedStream, error } = await createStream(
             updatedStream,

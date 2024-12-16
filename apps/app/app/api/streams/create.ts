@@ -19,6 +19,7 @@ const streamSchema = z.object({
   output_stream_url: z.string().optional(),
   stream_key: z.string().optional(),
   created_at: z.any().optional(),
+  from_playground: z.boolean().optional(),
 }).refine(data => data.pipeline_id || data.pipelines, {
   message: "Either pipeline_id or a nested pipelines object with an id must be provided",
   path: ["pipeline_id", "pipelines.id"]
@@ -72,6 +73,7 @@ export async function createStream(body: any, userId: string) {
     pipeline_params: streamData.pipeline_params,
     pipeline_id: streamData.pipeline_id || streamData.pipelines?.id,
     author: streamData.author,
+    from_playground: streamData.from_playground,
   };
 
   // set the date this was created

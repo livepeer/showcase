@@ -22,18 +22,25 @@ export async function GET(
     const authHeader = `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`;
 
     try {
+        console.log("Calling: ", `${process.env.STREAM_STATUS_ENDPOINT_URL}/${streamId}/status`)
         const response = await fetch(
             `${process.env.STREAM_STATUS_ENDPOINT_URL}/${streamId}/status`,
             {
                 headers: {
                     Authorization: authHeader,
+                    'cache-control': 'no-store',
                 },
             }
         );
 
         if (!response.ok) {
-            const responseMsg = await response.text();
-            return createErrorResponse(200, ERROR_MESSAGES.INVALID_RESPONSE + ` - [${response.status}] ${response.statusText} - ${responseMsg?.replace(/[\n\r]+/g, ' ')}`);
+            const responseMsg = await response.text().then((text) => text?.replace(/[\n\r]+/g, ' '));
+
+            //handle 404 as state OFFLINE
+            if(response.status === 404){
+                return NextResponse.json({ success: true, error: null, data: {'state':'OFFLINE', info: responseMsg} }, { status: 200 });
+            }
+            return createErrorResponse(200, ERROR_MESSAGES.INVALID_RESPONSE + ` - [${response.status}] ${response.statusText} - ${responseMsg}`);
         }
 
         const data = await response.json();

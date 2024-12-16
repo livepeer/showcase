@@ -26,14 +26,14 @@ const StreamForm = forwardRef(
     stream?.pipeline_params || {}
   );
   const [isOpen, setIsOpen] = useState(true);
-  const [selectedPipeline, setSelectedPipeline] = useState<any | null>(stream?.pipelines);
-  const [selectedStream, setSelectedStream] = useState<any | null>(stream);
+  const [selectedPipeline, setSelectedPipeline] = useState<any | null>(stream?.pipelines || {});
+  const [selectedStream, setSelectedStream] = useState<any | null>(stream || "");
   const [inputs, setInputs] = useState<Record<string, any>>(selectedPipeline?.config?.inputs || {})
 
   useEffect(() => {
     const defaultValues = createDefaultValues();
     setInputValues(defaultValues);
-  }, [selectedStream]);
+  }, [inputs]);
 
   useEffect(() => {
     setInputs(selectedPipeline?.config?.inputs);
@@ -70,9 +70,9 @@ const StreamForm = forwardRef(
     if (allInputs.length === 0) return {};
     return allInputs.reduce((acc, input) => {
       if (!input?.id) return acc;
-      //if there is an existing stream, use the values from the 
+      //if there is an existing stream and the pipeline is same as the selectedPipeline, use the values from the
       //stream.pipeline_params object instead of the default values
-      if (selectedStream && selectedStream.pipeline_params) {
+      if (selectedStream && selectedStream?.pipelines === selectedPipeline && selectedStream?.pipeline_params) {
         acc[input.id] = selectedStream.pipeline_params?.[input.id];
         return acc;
       }
@@ -167,7 +167,7 @@ const StreamForm = forwardRef(
             <Input
                   type="text"
                   placeholder={"Stream Name"}
-                  defaultValue={selectedStream?.name}
+                  value={selectedStream?.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                 />
           </div>
@@ -186,7 +186,7 @@ const StreamForm = forwardRef(
             <Input
                   type="text"
                   placeholder={"Stream Destination URL (RTMP)"}
-                  defaultValue={selectedStream?.output_stream_url}
+                  value={selectedStream?.output_stream_url}
                   onChange={(e) => handleInputChange('output_stream_url', e.target.value)}
                 />
             {/* <RestreamDropdown onOutputStreamsChange={setStreamOutputs} initialStreams={selectedStream?.restream_config} /> */}
