@@ -111,7 +111,7 @@ export async function upsertStream(body: any, userId: string) {
   return { data: upsertedStream, error: null };
 }
 
-export const createLivepeerStream = async (name: string) => {
+export const createLivepeerStream = async (name?: string) => {
   try {
     const livepeerSDK = new Livepeer({
       serverURL: livePeerEnv.apiUrl,
@@ -119,7 +119,7 @@ export const createLivepeerStream = async (name: string) => {
     });
 
     const { stream, error } = await livepeerSDK.stream.create({
-      name: name,
+      name: name || "stream",
     });
 
     return { stream, error };
