@@ -2,6 +2,7 @@
 
 import { createServerClient } from "@repo/supabase";
 import { Livepeer } from "livepeer";
+import {livepeer as livePeerEnv} from "@/lib/env";
 
 export async function deleteStream(streamId: string) {
     const supabase = await createServerClient();
@@ -17,13 +18,13 @@ export async function deleteStream(streamId: string) {
 
 export const deleteLivepeerStream = async (name: string) => {
   try{
-    
-    const livepeer = new Livepeer({
-      serverURL: "https://livepeer.monster/api",
-      apiKey: process.env.NEXT_PUBLIC_LIVEPEER_STUDIO_API_KEY,
+
+    const livepeerSDK = new Livepeer({
+      serverURL: livePeerEnv.apiUrl,
+      apiKey: livePeerEnv.apiKey,
     });
 
-    const { error } = await livepeer.stream.delete(name);
+    const { error } = await livepeerSDK.stream.delete(name);
 
     return { error };
   }catch(e: any){
