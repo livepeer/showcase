@@ -1,13 +1,11 @@
 "use client";
 
-import React from "react";
 import IntercomClient from "@intercom/messenger-js-sdk";
+import { intercom } from "@/lib/env";
 
 export default function Intercom() {
-  const intercomAppId = process.env.NEXT_PUBLIC_INTERCOM_APP_ID!;
-
   IntercomClient({
-    app_id: intercomAppId,
+    app_id: intercom.appId,
   });
 
   return null;

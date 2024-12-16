@@ -1,24 +1,23 @@
 ---
 title: Stream into a Pipeline with OBS
-description: 'How to stream with a Livepeer Pipeline using OBS'
-icon: 'video'
+description: "How to stream with a Livepeer Pipeline using OBS"
+icon: "video"
 ---
 
 Before you begin, you'll need:
 
 * [OBS Studio](https://obsproject.com/) installed on your computer
-* A Pipeline ID (find one in the [Pipelines application](https://pipelines.livepeer.org))
 * [A stream created](/create-a-stream.mdx)
 
-## Step 1: Configure OBS
+## Step 2: Configure OBS
 
 1. Open OBS Studio
 
 2. Click the "+" under Sources and add your video source:
 
-   * For webcam: Select "Video Capture Device"
+   - For webcam: Select "Video Capture Device"
 
-   * For screen capture: Select "Display Capture"
+   - For screen capture: Select "Display Capture"
 
 ## Step 2: Set up streaming settings
 
@@ -26,9 +25,9 @@ Before you begin, you'll need:
 
 2. For "Service" select "Custom..."
 
-3. Set "Server" to your `rtmpIngestUrl`
+3. Set "Server" to your `rtmpIngestUrl`, copied from the [Livepeer Pipelines app](https://pipelines.livepeer.org/streams/my-streams)
 
-4. Set "Stream Key" to your `streamKey`
+4. Set "Stream Key" to your `streamKey`, copied from the [Livepeer Pipelines app](https://pipelines.livepeer.org/streams/my-streams)
 
 5. Click "Apply"
 
@@ -55,14 +54,13 @@ Before you begin, you'll need:
 
 ## Common issues
 
-* **Black screen**: Check that your video source is properly selected and visible in OBS
+- **Black screen**: Check that your video source is properly selected and visible in OBS
 
-* **Connection failed**: Verify your stream key and RTMP URL are correct
+- **Connection failed**: Verify your stream key and RTMP URL are correct
 
-* **High CPU usage**: Lower your video output resolution in OBS Settings → Video
+- **High CPU usage**: Lower your video output resolution in OBS Settings → Video
 
 ## Next steps
-
 * [Update pipeline parameters in real-time](https://pipelines.livepeer.org/streams/my-streams)
 
 Need help? Join our [Discord](https://discord.gg/livepeer) or contact support at [support@livepeer.org](mailto:support@livepeer.org)

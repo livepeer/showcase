@@ -16,6 +16,7 @@ import { toast } from "sonner";
 
 import { Src } from "@livepeer/react";
 import { cn } from "@repo/design-system/lib/utils";
+import { isProduction } from "@/lib/env";
 
 export function LPPLayer({
   output_playback_id,
@@ -25,7 +26,7 @@ export function LPPLayer({
   return (
     <div className="aspect-video">
       <iframe
-        src={`https://monster.lvpr.tv/?v=${output_playback_id}&lowLatency=force`}
+        src={`https://${isProduction() ? "lvpr.tv" : "monster.lvpr.tv"}/?v=${output_playback_id}&lowLatency=force`}
         className="w-full h-full"
       />
     </div>

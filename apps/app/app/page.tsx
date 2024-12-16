@@ -3,6 +3,7 @@ import Welcome from "@/components/welcome";
 import type { Metadata } from "next";
 import { type ReactElement, Suspense } from "react";
 import FeaturedPipelines from "@/components/welcome/featured";
+import { validateEnv } from "@/lib/env";
 
 const title = "Livepeer Pipelines ";
 
@@ -15,6 +16,8 @@ const App = async ({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }): Promise<ReactElement> => {
+  await validateEnv();
+
   return (
     <div>
       <div className="flex-shrink-0">
