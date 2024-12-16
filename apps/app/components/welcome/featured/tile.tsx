@@ -43,17 +43,10 @@ export default function PipelineTile({
 
           <div
             className={
-              "flex items-center gap-1 overflow-hidden rounded-full bg-white pr-2 py-0.5 text-black text-xs"
+              "flex items-center gap-1 overflow-hidden rounded-full bg-white px-2 py-0.5 text-black text-xs"
             }
           >
-            <Image
-              src="https://github.com/suhailkakar.png"
-              alt="suhail"
-              width={100}
-              height={100}
-              className="h-5 w-5 flex-shrink-0 rounded-full "
-            />
-            @{author}
+            @johndoe
           </div>
         </div>
         <div className="flex flex-col gap-1">
