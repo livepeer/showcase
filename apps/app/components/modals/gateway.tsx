@@ -25,12 +25,11 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import track from "@/lib/track";
 import { Label } from "@repo/design-system/components/ui/label";
-import { usePrivy } from "@privy-io/react-auth";  
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function Gateway() {
   const { user } = usePrivy();
   const [showGateway, setShowGateway] = React.useState(false);
-  const [whipUrl, setWhipUrl] = useState("");
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -45,27 +44,11 @@ export default function Gateway() {
 
   const handleSave = () => {
     toast.success("Saved gateway provider");
-    saveToLocalStorage("whipUrl", whipUrl);
     handleClose();
-  };
-
-  const saveToLocalStorage = (key: string, value: string) => {
-    localStorage.setItem(key, value);
-  };
-
-  const getFromLocalStorage = (key: string) => {
-    return localStorage.getItem(key);
   };
 
   useEffect(() => {
     setShowGateway(gateway === "true");
-    const whipUrl = getFromLocalStorage("whipUrl");
-    if (whipUrl) {
-      setWhipUrl(whipUrl);
-    } else {
-      setWhipUrl(process.env.NEXT_PUBLIC_AI_WEBRTC_BASE_URL || "https://ai.livepeer.monster/aiWebrtc/");
-      saveToLocalStorage("whipUrl", process.env.NEXT_PUBLIC_AI_WEBRTC_BASE_URL || "https://ai.livepeer.monster/aiWebrtc/");
-    }
 
     if (gateway === "true") {
       track("gateway_modal_opened", undefined, user || undefined);
@@ -89,13 +72,10 @@ export default function Gateway() {
             <SelectValue placeholder="Select Gateway" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="livepeer">Livepeer Studio</SelectItem>
+            <SelectItem value="livepeer">Livepeer Pipelines</SelectItem>
           </SelectContent>
         </Select>
-        <div>
-          <Label>WHIP URL</Label>
-          <Input value={whipUrl} onChange={(e) => setWhipUrl(e.target.value)} />
-        </div>
+
         <AlertDialogFooter>
           <AlertDialogCancel onClick={handleClose}>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={handleSave}>Save</AlertDialogAction>

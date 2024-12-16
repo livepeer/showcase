@@ -21,7 +21,7 @@ export default function Header() {
     {
       label: "Learn",
       external: true,
-      href: "https://showcase.livepeer.org/docs",
+      href: "https://pipelines.livepeer.org/docs",
     },
     {
       label: "Community",
@@ -31,17 +31,19 @@ export default function Header() {
   ];
 
   const handleClickTrack = (label: string) => {
-    track(label.toLowerCase() + "_button_clicked", {
-      location: "header",
-      is_authenticated: authenticated
-    }, user || undefined);
+    track(
+      label.toLowerCase() + "_button_clicked",
+      {
+        location: "header",
+        is_authenticated: authenticated,
+      },
+      user || undefined
+    );
   };
 
   return (
     <div className="flex h-16 w-full items-center justify-between">
-      <div className="flex items-center gap-8">
-        {/* <Search /> */}
-      </div>
+      <div className="flex items-center gap-8">{/* <Search /> */}</div>
       <div className="flex items-center gap-4">
         <div className="hidden gap-6 md:flex ">
           {menuItems.map((item) => (
@@ -57,10 +59,14 @@ export default function Header() {
           ))}
         </div>
 
-        <Button variant="outline" className="hidden md:flex" onClick={() => {
-          window.open('https://github.com/livepeer/showcase', '_blank'); 
-          handleClickTrack("github")
-        }}>
+        <Button
+          variant="outline"
+          className="hidden md:flex"
+          onClick={() => {
+            window.open("https://github.com/livepeer/pipelines", "_blank");
+            handleClickTrack("github");
+          }}
+        >
           <GitHubLogoIcon />
           <span>Github</span>
         </Button>

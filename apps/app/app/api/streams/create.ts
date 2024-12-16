@@ -4,7 +4,7 @@ import { createServerClient } from "@repo/supabase";
 import { z } from "zod";
 import { Livepeer } from "livepeer";
 import { newId } from "@/lib/generate-id";
-import { getRtmpUrl } from "@/lib/url-helpers";
+import { livepeer as livePeerEnv } from "@/lib/env";
 
 const streamSchema = z.object({
   id: z.string().optional(),
@@ -66,15 +66,17 @@ export async function createStream(body: any, userId: string) {
     id: streamId,
     name: streamData.name,
     //use the existing value for the playback id if it exists (update) or the playback id from the livepeer stream or default to null
-    output_playback_id: streamData.output_playback_id || livepeerStream?.playbackId || null,
+    output_playback_id: streamData.output_playback_id || livepeerStream?.playbackId || '',
     //use the existing value for output_stream_url else generate one from the livepeer stream or default to null
-    output_stream_url: streamData.output_stream_url??(livepeerStream?.streamKey ? getRtmpUrl(livepeerStream.streamKey) : null),
+    output_stream_url: streamData.output_stream_url??(livepeerStream?.streamKey ? `${livePeerEnv.rtmpUrl}${livepeerStream?.streamKey}` : ''),
     stream_key: streamKey,
     pipeline_params: streamData.pipeline_params,
     pipeline_id: streamData.pipeline_id || streamData.pipelines?.id,
     author: streamData.author,
     from_playground: streamData.from_playground,
   };
+  console.log('streamPayload',streamPayload)
+  console.log('livepeerStream',livepeerStream)
 
   // set the date this was created
   // if updating, don't override the data this stream was first created
@@ -98,13 +100,13 @@ export async function createStream(body: any, userId: string) {
 
 export const createLivepeerStream = async (name: string) => {
   try{
-    
-    const livepeer = new Livepeer({
-      serverURL: "https://livepeer.monster/api",
-      apiKey: process.env.NEXT_PUBLIC_LIVEPEER_STUDIO_API_KEY,
+
+    const livepeerSDK = new Livepeer({
+        serverURL: livePeerEnv.apiUrl,
+        apiKey: livePeerEnv.apiKey,
     });
 
-    const { stream, error } = await livepeer.stream.create({
+    const { stream, error } = await livepeerSDK.stream.create({
       name: name,
     });
 

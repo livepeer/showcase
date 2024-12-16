@@ -22,6 +22,7 @@ import { ScrollArea } from "@repo/design-system/components/ui/scroll-area";
 import { Button } from "@repo/design-system/components/ui/button";
 import { toast } from "sonner";
 import { updateParams } from "@/app/api/streams/update-params";
+import { app } from "@/lib/env";
 
 export default function Try({
   setStreamInfo,
@@ -78,9 +79,7 @@ export default function Try({
     }
     setStreamId(stream.id);
     setStreamInfo(stream);
-    setStreamUrl(
-      `https://ai.livepeer.monster/aiWebrtc/${stream.stream_key}/whip`
-    );
+    setStreamUrl(`${app.whipUrl}${stream.stream_key}/whip`);
     setStreamKey(stream.stream_key);
   };
 

@@ -15,6 +15,7 @@ import {Button} from "@repo/design-system/components/ui/button";
 import StreamStatusIndicator from "@/components/stream/stream-status-indicator";
 import ConfirmDialog from "@/components/modals/confirm";
 import LoggedOutComponent from "@/components/modals/logged-out";
+import { app as appEnv } from "@/lib/env";
 
 import {
   Pagination,
@@ -147,6 +148,7 @@ export default function MyStreams({searchParams}: {
                         <TableRow>
                           <TableHead>Status</TableHead>
                           <TableHead>Stream Name</TableHead>
+                          <TableHead>Ingest URL</TableHead>
                           <TableHead>Destination URL</TableHead>
                           <TableHead>Stream Key</TableHead>
                           <TableHead>Pipeline</TableHead>
@@ -164,6 +166,12 @@ export default function MyStreams({searchParams}: {
                               </TableCell>
                               <TableCell>
                                 <a href={`/stream/${stream.id}`}>{stream.name}</a>
+                              </TableCell>
+                              <TableCell>
+                                <div className="inline-flex items-center gap-x-2">
+                                  {appEnv.rtmpUrl}{appEnv.rtmpUrl.endsWith('/')?'':'/'}{stream.stream_key}
+                                  <Copy size={copyIconSize} className="mr-2 cursor-pointer" onClick={() => copy(`${appEnv.rtmpUrl}${appEnv.rtmpUrl.endsWith('/')?'':'/'}${stream.stream_key}`)} />
+                                </div>
                               </TableCell>
                               <TableCell>
                                 <div className="inline-flex items-center gap-x-2">
@@ -210,38 +218,58 @@ export default function MyStreams({searchParams}: {
                                         <strong>Stream Id:</strong> {stream.id}
                                       </div>
                                       <div className="mb-2">
-                                        <strong>Stream Key:</strong>
+                                        <strong>Stream Key: </strong>
                                         <div className="inline-flex items-center gap-x-2">
                                           {stream.stream_key}
-                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer" onClick={() => copy(stream.stream_key)} />
+                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer"
+                                                onClick={() => copy(stream.stream_key)}/>
                                         </div>
                                       </div>
                                       <div className="mb-2">
                                         <strong>Pipeline:</strong> {stream.pipelines.name}
                                       </div>
                                       <div className="mb-2">
-                                        <strong>Destination URL:</strong>
+                                        <strong>Ingest WHIP URL: </strong>
+                                        <div className="inline-flex items-center gap-x-2">
+                                          {appEnv.rtmpUrl}{appEnv.rtmpUrl.endsWith('/') ? '' : '/'}{stream.stream_key}
+                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer"
+                                                onClick={() => copy(`${appEnv.rtmpUrl}${appEnv.rtmpUrl.endsWith('/') ? '' : '/'}${stream.stream_key}`)}/>
+                                        </div>
+                                      </div>
+                                      <div className="mb-2">
+                                        <strong>Ingest WHIP RTMP: </strong>
+                                        <div className="inline-flex items-center gap-x-2">
+                                          {appEnv.whipUrl}{appEnv.whipUrl.endsWith('/') ? '' : '/'}{stream.stream_key}/whip
+                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer"
+                                                onClick={() => copy(`${appEnv.whipUrl}${appEnv.whipUrl.endsWith('/') ? '' : '/'}${stream.stream_key}/whip`)}/>
+                                        </div>
+                                      </div>
+                                      <div className="mb-2">
+                                        <strong>Destination URL: </strong>
                                         <div className="inline-flex items-center gap-x-2">
                                           {stream.output_stream_url}
-                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer" onClick={() => copy(stream.output_stream_url)} />
+                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer"
+                                                onClick={() => copy(stream.output_stream_url)}/>
                                         </div>
                                       </div>
                                       <div className="mb-2">
-                                        <strong>Playback Id:</strong>
+                                        <strong>Playback Id: </strong>
                                         <div className="inline-flex items-center gap-x-2">
                                           {stream.output_playback_id}
-                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer" onClick={() => copy(stream.output_playback_id)} />
+                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer"
+                                                onClick={() => copy(stream.output_playback_id)}/>
                                         </div>
                                       </div>
                                       <div className="mb-2">
                                         <div className="inline-flex items-center gap-x-2">
-                                          <strong>Parameters:</strong>
-                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer" onClick={() => copy(JSON.stringify(stream.pipeline_params))} />
+                                          <strong>Parameters: </strong>
+                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer"
+                                                onClick={() => copy(JSON.stringify(stream.pipeline_params))}/>
                                         </div>
                                       </div>
-                                      <pre className="text-xs bg-gray-100 p-2 mt-2 rounded-md overflow-auto">
-                            {stream.pipeline_params?.json ?? JSON.stringify(stream.pipeline_params, null, 2)}
-                            </pre>
+                                      <pre className="text-xs p-2 mt-2 rounded-md overflow-auto">
+                                        {stream.pipeline_params?.json ?? JSON.stringify(stream.pipeline_params, null, 2)}
+                                      </pre>
                                     </div>
                                   </DialogContent>
                                 </Dialog>
@@ -251,7 +279,7 @@ export default function MyStreams({searchParams}: {
                                         className="relative group"
                                         onClick={() => confirmDeleteStream(stream.id)}
                                     >
-                                      <TrashIcon />
+                                      <TrashIcon/>
                                     </button>
                                   </TooltipTrigger>
                                   <TooltipContent>
