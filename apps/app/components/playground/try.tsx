@@ -35,6 +35,7 @@ export default function Try({
   const [streamId, setStreamId] = useState<string | null>(null);
   const [streamUrl, setStreamUrl] = useState<string | null>(null);
   const [inputValues, setInputValues] = useState<Record<string, any>>({});
+  const [gatewayHost, setGatewayHost] = useState<string | null>(null);
   const [initialValues, setInitialValues] = useState<Record<string, any>>({});
   const [isOpen, setIsOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -58,14 +59,14 @@ export default function Try({
   const handleUpdate = async () => {
     toast("Params updated successfully");
     if (!streamKey) return;
-    updateParams(streamKey, inputValues);
+    updateParams(streamKey, inputValues, gatewayHost);
     setInitialValues({ ...inputValues });
 
     setHasChanges(false);
   };
 
   const handleRun = async (): Promise<void> => {
-    const {data: stream, error} = await upsertStream(
+    const { data: stream, error } = await upsertStream(
       {
         pipeline_id: pipeline.id,
         pipeline_params: inputValues,
@@ -73,13 +74,14 @@ export default function Try({
       user?.id ?? ""
     );
 
-    if(error){
+    if (error) {
       toast.error(`Error creating stream for playback ${error}`);
       return;
     }
     setStreamId(stream.id);
     setStreamInfo(stream);
     setStreamUrl(`${app.whipUrl}${stream.stream_key}/whip`);
+    setGatewayHost(stream.gateway_host);
     setStreamKey(stream.stream_key);
   };
 
