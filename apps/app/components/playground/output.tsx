@@ -22,6 +22,8 @@ import * as Player from "@livepeer/react/player";
 import { LPPLayer } from "./player";
 import track from "@/lib/track";
 import { usePrivy } from "@privy-io/react-auth";
+import { ArrowTopRightIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export default function Output({
   pipeline,
@@ -30,7 +32,6 @@ export default function Output({
   streamInfo: any;
   pipeline: any;
 }) {
-  
   const [showModelInfo, setShowModelInfo] = useState(false);
 
   const modelInfo = [
@@ -74,6 +75,11 @@ export default function Output({
           onClick={() => setShowModelInfo(!showModelInfo)}
         >
           <Info className="mr-2" /> Pipeline Details
+        </Button>
+        <Button variant="outline" asChild>
+          <Link href={"/stream/create?pipeline=" + pipeline.id}>
+            <ArrowTopRightIcon className="mr-2" /> Create Stream
+          </Link>
         </Button>
       </div>
       <div className="bg-sidebar rounded-2xl relative h-[calc(100vh-16rem)] w-full">
