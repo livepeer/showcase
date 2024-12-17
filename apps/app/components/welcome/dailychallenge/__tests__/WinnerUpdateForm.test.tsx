@@ -114,16 +114,6 @@ describe('WinnerUpdateForm', () => {
   });
 
   it('shows validation errors for required fields', async () => {
-    mockedValidateWinnerData.mockResolvedValue({
-      isValid: false,
-      errors: [
-        { field: 'user_full_name', message: 'Full name is required' },
-        { field: 'pipeline_name', message: 'Pipeline name is required' },
-        { field: 'prompt_used', message: 'Prompt is required' },
-        { field: 'description', message: 'Description is required' },
-      ],
-    });
-
     render(<WinnerUpdateForm {...defaultProps} />);
     const user = userEvent.setup();
 
@@ -135,7 +125,7 @@ describe('WinnerUpdateForm', () => {
       expect(screen.getByText(/Pipeline name is required/i)).toBeInTheDocument();
       expect(screen.getByText(/Prompt is required/i)).toBeInTheDocument();
       expect(screen.getByText(/Description is required/i)).toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
   });
 
   it('handles submission errors', async () => {

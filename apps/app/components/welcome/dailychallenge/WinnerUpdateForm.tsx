@@ -103,11 +103,14 @@ export function WinnerUpdateForm({ onSubmit, defaultValues }: WinnerUpdateFormPr
       toast({
         title: 'Success',
         description: 'Winner updated successfully',
+        variant: 'default',
       });
     } catch (error) {
       console.error('Form submission error:', error);
-      form.setError('root', {
-        message: error instanceof Error ? error.message : 'Failed to update winners'
+      toast({
+        title: 'Error',
+        description: 'Failed to update winners',
+        variant: 'destructive',
       });
       throw error; // Re-throw to ensure test can catch the error
     }

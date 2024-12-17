@@ -82,8 +82,8 @@ describe('WinnerHistory', () => {
     await user.click(screen.getByLabelText(/Select date range/i));
 
     // Select date range
-    await user.click(screen.getByText('16'));
-    await user.click(screen.getByText('17'));
+    await user.click(screen.getByLabelText('Monday, January 16th, 2024'));
+    await user.click(screen.getByLabelText('Tuesday, January 17th, 2024'));
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
@@ -105,8 +105,8 @@ describe('WinnerHistory', () => {
     const user = userEvent.setup();
 
     await user.click(screen.getByLabelText(/Select date range/i));
-    await user.click(screen.getByText('16'));
-    await user.click(screen.getByText('17'));
+    await user.click(screen.getByLabelText('Monday, January 16th, 2024'));
+    await user.click(screen.getByLabelText('Tuesday, January 17th, 2024'));
 
     await waitFor(() => {
       expect(screen.getByTestId('error-message')).toBeInTheDocument();
@@ -126,8 +126,8 @@ describe('WinnerHistory', () => {
     const user = userEvent.setup();
 
     await user.click(screen.getByLabelText(/Select date range/i));
-    await user.click(screen.getByText('16'));
-    await user.click(screen.getByText('17'));
+    await user.click(screen.getByLabelText('Monday, January 16th, 2024'));
+    await user.click(screen.getByLabelText('Tuesday, January 17th, 2024'));
 
     expect(screen.getByTestId('winners-loading')).toBeInTheDocument();
 

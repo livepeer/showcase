@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Player } from '@livepeer/react';
+import dynamic from 'next/dynamic';
 import { cn } from '@repo/design-system/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/design-system/components/ui/card';
 import { Badge } from '@repo/design-system/components/ui/badge';
@@ -10,6 +10,16 @@ import { Dialog, DialogContent, DialogTrigger } from '@repo/design-system/compon
 import { GithubIcon, MessageCircle as DiscordIcon } from 'lucide-react';
 import { Spinner } from '@repo/design-system/components/ui/spinner';
 import type { Winner } from './types';
+import { Src } from '@livepeer/react';
+
+// Dynamically import Player to avoid SSR issues
+const Player = dynamic(
+  () => import('@livepeer/react/player').then((mod) => mod.Root),
+  {
+    ssr: false,
+    loading: () => <Spinner />,
+  }
+);
 
 interface WinnerCardProps {
   winner: Winner;
@@ -24,6 +34,18 @@ export const WinnerCard: React.FC<WinnerCardProps> = ({ winner, className }) => 
     setVideoError(true);
     setIsVideoLoading(false);
   };
+
+  // Construct the video source for the Player
+  const videoSource = React.useMemo((): Src[] | null => {
+    if (!winner.playback_id) return null;
+    return [{
+      type: 'hls',
+      src: `https://livepeercdn.com/hls/${winner.playback_id}/index.m3u8`,
+      mime: 'application/vnd.apple.mpegurl',
+      width: null,
+      height: null,
+    }];
+  }, [winner.playback_id]);
 
   return (
     <Card className={cn('w-full', className)} data-testid="winner-card">
@@ -69,11 +91,9 @@ export const WinnerCard: React.FC<WinnerCardProps> = ({ winner, className }) => 
             ) : (
               <div data-testid="video-player">
                 <Player
-                  title={`Winner ${winner.user_full_name}'s submission`}
-                  playbackId={winner.playback_id}
-                  showPipButton
-                  showTitle={false}
-                  aspectRatio="16to9"
+                  src={videoSource}
+                  aspectRatio={16/9}
+                  hotkeys={false}
                   onError={handleVideoError}
                   onPlay={() => setIsVideoLoading(false)}
                 />

@@ -18,11 +18,20 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock window.ResizeObserver
-window.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
+class MockResizeObserver {
+  constructor(callback: ResizeObserverCallback) {
+    this.callback = callback;
+  }
+  private callback: ResizeObserverCallback;
+  observe = vi.fn((target: Element) => {
+    requestAnimationFrame(() => {
+      this.callback([{ target, contentRect: target.getBoundingClientRect() } as ResizeObserverEntry], this as ResizeObserver);
+    });
+  });
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
+window.ResizeObserver = MockResizeObserver as any;
 
 // Mock window.IntersectionObserver
 window.IntersectionObserver = vi.fn().mockImplementation(() => ({

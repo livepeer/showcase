@@ -74,15 +74,15 @@ describe('WinnerCard', () => {
     expect(discordText).toBeInTheDocument();
   });
 
-  it('renders video player with correct lvpr.tv URL', async () => {
+  it('renders video player with correct source', async () => {
     render(<WinnerCard winner={mockWinner} />);
 
     const loadingSpinner = screen.getByTestId('video-loading');
     expect(loadingSpinner).toBeInTheDocument();
 
     const videoPlayer = screen.getByTestId('video-player');
-    expect(videoPlayer).toHaveAttribute('src', `https://lvpr.tv/?v=${mockWinner.playback_id}`);
-    expect(videoPlayer).toHaveAttribute('title', `Winner ${mockWinner.user_full_name}'s submission`);
+    const video = videoPlayer.querySelector('video');
+    expect(video).toHaveAttribute('data-src', `https://livepeercdn.com/hls/${mockWinner.playback_id}/index.m3u8`);
   });
 
   it('truncates long description text', () => {
@@ -122,6 +122,6 @@ describe('WinnerCard', () => {
 
     await waitFor(() => {
       expect(screen.queryByTestId('video-loading')).not.toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
   });
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render as rtlRender } from '@testing-library/react';
+import { render as rtlRender, RenderOptions, RenderResult } from '@testing-library/react';
 import { ThemeProvider } from 'next-themes';
 import { ToastProvider } from '@repo/design-system/components/ui/toast';
 import { Toaster } from '@repo/design-system/components/ui/toaster';
@@ -81,16 +81,26 @@ vi.mock('@repo/design-system/components/ui/toaster', () => ({
 }));
 
 // Mock @livepeer/react Player component
-vi.mock('@livepeer/react', () => ({
-  Player: ({ onError, onPlay, playbackId, title, ...props }: any) => {
+vi.mock('@livepeer/react/player', () => ({
+  Root: ({ src, onError, onPlay }: { src: any[]; onError?: () => void; onPlay?: () => void }) => {
     React.useEffect(() => {
+      if (!src || !Array.isArray(src) || src.length === 0) {
+        onError?.();
+        return;
+      }
+
+      const source = src[0];
+      if (!source.src || source.type !== 'hls' || !source.src.endsWith('.m3u8')) {
+        onError?.();
+        return;
+      }
+
       onPlay?.();
-      return () => {};
-    }, [onPlay]);
+    }, [src, onError, onPlay]);
 
     return (
       <div data-testid="video-player">
-        <video data-playback-id={playbackId} title={title} {...props} />
+        <video data-src={src?.[0]?.src} />
       </div>
     );
   },
@@ -108,16 +118,19 @@ vi.mock('../WinnerCard', () => ({
 }));
 
 // Mock useWinnerFeature hook
-const mockUseWinnerFeature = vi.fn().mockReturnValue({ enabled: true });
+const mockUseWinnerFeature = vi.fn();
+mockUseWinnerFeature.mockReturnValue({ enabled: true });
 
 vi.mock('@/hooks/useWinnerFeature', () => ({
   useWinnerFeature: () => mockUseWinnerFeature(),
 }));
 
-// Export for test manipulation
 export { mockUseWinnerFeature };
 
-function render(ui: React.ReactElement, { ...options } = {}) {
+function render(
+  ui: React.ReactElement,
+  options: Omit<RenderOptions, 'wrapper'> = {}
+): RenderResult {
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
       <ToastProvider>
