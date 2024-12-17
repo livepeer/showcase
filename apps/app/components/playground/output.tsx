@@ -74,7 +74,7 @@ export default function Output({
           variant="outline"
           onClick={() => setShowModelInfo(!showModelInfo)}
         >
-          <Info className="mr-2" /> we info
+          <Info className="mr-2" /> Pipeline info
         </Button>
         <Button variant="outline" asChild>
           <Link href={"/stream/create?pipeline=" + pipeline.id}>
