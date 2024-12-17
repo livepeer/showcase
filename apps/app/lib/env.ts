@@ -27,6 +27,7 @@ const AppConfig = z.object({
   whipUrl: z.string().url(),
   rtmpUrl: z.string().url(),
   environment: Environment,
+  enableWinners: z.boolean().default(true),
 });
 
 const EnvironmentConfig = z.object({
@@ -60,6 +61,7 @@ const envConfig = {
     whipUrl: process.env.NEXT_PUBLIC_WHIP_URL,
     rtmpUrl: process.env.NEXT_PUBLIC_RTMP_URL,
     environment: process.env.NEXT_PUBLIC_ENV as Environment,
+    enableWinners: (process.env.NEXT_PUBLIC_ENABLE_WINNERS === 'false' ? false : true),
   },
 } as const;
 

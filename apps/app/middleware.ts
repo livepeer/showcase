@@ -1,12 +1,26 @@
 import { NextResponse, NextRequest } from "next/server";
 import { compareSync } from "bcrypt-edge";
 import { createAdminServerClient } from "@repo/supabase";
+import { app } from './lib/env';
 
 export const config = {
   matcher: "/api/:path*",
 };
 
 export async function middleware(request: NextRequest) {
+  // Check winner feature flag for winner-related routes
+  if (
+    request.nextUrl.pathname.startsWith('/api/winners') ||
+    request.nextUrl.pathname.startsWith('/api/admin/winners')
+  ) {
+    if (!app.enableWinners) {
+      return NextResponse.json(
+        { message: "Not Found" },
+        { status: 404 }
+      );
+    }
+  }
+
   // if (
   //   request.nextUrl.pathname.includes("/api/streams/webhook") ||
   //   request.nextUrl.pathname.includes("/api/mixpanel")

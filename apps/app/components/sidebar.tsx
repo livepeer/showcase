@@ -1,6 +1,7 @@
 "use client";
 import { app, isProduction } from "@/lib/env";
 import { Badge } from "@repo/design-system/components/ui/badge";
+import { useWinnerFeature } from "@/hooks/useWinnerFeature";
 
 import {
   Sidebar,
@@ -22,7 +23,8 @@ import {
   SendIcon,
   SquareTerminalIcon,
   VideoIcon,
-  BookIcon
+  BookIcon,
+  TrophyIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -81,10 +83,12 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   const _sidebar = useSidebar();
   const router = useRouter();
   const isMobile = useIsMobile();
+  const showWinners = useWinnerFeature();
 
   const data: {
     streams: NavItem[];
     pipelines: NavItem[];
+    winners?: NavItem[];
     settings: NavItem[];
     footer: NavItem[];
   } = {
@@ -115,6 +119,16 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
         isActive: true,
       },
     ],
+    ...(showWinners && {
+      winners: [
+        {
+          title: "Winners History",
+          url: `/winners`,
+          icon: TrophyIcon,
+          isActive: true,
+        },
+      ],
+    }),
     settings: [
       {
         title: "Gateway",
@@ -147,6 +161,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   const labelMap: Record<string, string> = {
     streams: "Streams",
     pipelines: "Pipelines",
+    winners: "Winners",
     settings: "Settings",
     footer: "More",
   };
