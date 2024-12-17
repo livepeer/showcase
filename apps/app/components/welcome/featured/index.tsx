@@ -41,17 +41,17 @@ export const pipelines = [
 
 const dummyPlaybackIds = [
   {
-    playbackId: "9d5e2cjr1m1gjkfx",
+    playbackId: "c99filnga205mzqh",
     socialHandle: "@johndoe",
     socialUrl: "https://twitter.com"
   },
   {
-    playbackId: "9d5e2cjr1m1gjkfx",
+    playbackId: "c99filnga205mzqh",
     socialHandle: "@johndoe",
     socialUrl: "https://twitter.com"
   },  
   {
-    playbackId: "9d5e2cjr1m1gjkfx",
+    playbackId: "c99filnga205mzqh",
     socialHandle: "@johndoe",
     socialUrl: "https://twitter.com"
   }
@@ -78,7 +78,7 @@ export default function Winners() {
           </Link>
         </div>
       </div>
-      <div className="grid md:grid-cols-3 gap-6 mt-6">
+      <div className="grid md:grid-cols-3 gap-6 mt-3">
         {dummyPlaybackIds.map((item) => (
           <div className="aspect-video relative">
             <iframe
