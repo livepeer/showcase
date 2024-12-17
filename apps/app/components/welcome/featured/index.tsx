@@ -61,10 +61,9 @@ export default function Winners() {
     <div className="relative  border p-4 mt-4 h-[calc(100vh-24rem)]">
       <div className="flex flex-row items-center justify-between">
         <div>
-          <h3 className="font-medium text-lg">Yesterday's Challenge Winners</h3>
+          <h3 className="font-medium text-lg">Yesterday's Highlights</h3>
           <p className="text-muted-foreground text-sm w-full">
-            Here are the winners of yesterday's prompt challenge. Check out the
-            AI streams and give them a shoutout!
+            Check out yesterday's prompt challenge winners.
           </p>
         </div>
         <div>
@@ -73,7 +72,7 @@ export default function Winners() {
             target="_blank"
             className="text-sm gap-1 flex items-center -ml-20 -mt-8 md:-ml-0 md:-mt-0"
           >
-            Participate in today's challenge
+            Join Today's Challenge on Discord
             <ArrowTopRightIcon className="h-4 w-4" />
           </Link>
         </div>
