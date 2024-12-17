@@ -46,16 +46,18 @@ export default function PipelineTile({
           </Label>
         </div>
       </div>
-      <Image
-        className="absolute top-0 left-0 h-full w-full object-cover"
-        style={{
-          filter: "blur(0.5px)",
-        }}
-        src={pipeline.cover_image}
-        alt="pipeline"
-        width={500}
-        height={500}
-      />
+      {pipeline.cover_image && (
+        <Image
+          className="absolute top-0 left-0 h-full w-full object-cover"
+          style={{
+            filter: "blur(0.5px)",
+          }}
+          src={pipeline.cover_image}
+          alt="pipeline"
+          width={500}
+          height={500}
+        />
+      )}
       <div className="absolute bottom-0 left-0 h-full w-full  bg-gradient-to-t from-black/50 via-black/50 to-transparent" />
     </Link>
   );
