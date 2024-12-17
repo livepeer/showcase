@@ -20,7 +20,7 @@ export default function Explore({
     <div className="flex-shrink-0 mt-2">
       <h3 className="font-medium text-lg">Explore Pipelines</h3>
       <p className="text-muted-foreground text-sm">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+       Discover and experiment with community-built pipelines.
       </p>
 
       <div className="flex  mt-8">
