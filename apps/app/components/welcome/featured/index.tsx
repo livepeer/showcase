@@ -36,35 +36,35 @@ export const pipelines = [
     docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
     isComfyUI: false,
     isFeatured: true,
-  },
-  {
-    id: "pip_f6PMBBXq44VZCFoP",
-    title: "Comfy UI",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    image: "comfy-ui.jpeg",
-    huggingFaceId: "",
-    docs: "https://docs.livepeer.org/api-reference/generate/video-to-video",
-    isComfyUI: true,
-    isFeatured: false,
-  },
+  }
 ];
 
 const dummyPlaybackIds = [
-  "9d5e2cjr1m1gjkfx",
-  "9d5e2cjr1m1gjkfx",
-  "9d5e2cjr1m1gjkfx",
-  "9d5e2cjr1m1gjkfx",
+  {
+    playbackId: "c99filnga205mzqh",
+    socialHandle: "@johndoe",
+    socialUrl: "https://twitter.com"
+  },
+  {
+    playbackId: "c99filnga205mzqh",
+    socialHandle: "@johndoe",
+    socialUrl: "https://twitter.com"
+  },  
+  {
+    playbackId: "c99filnga205mzqh",
+    socialHandle: "@johndoe",
+    socialUrl: "https://twitter.com"
+  }
 ];
 
 export default function Winners() {
   return (
-    <div className="relative  border p-4 mt-4 h-[calc(100vh-24rem)]">
+    <div className="relative  border p-4 mt-4">
       <div className="flex flex-row items-center justify-between">
         <div>
-          <h3 className="font-medium text-lg">Yesterday's Challenge Winners</h3>
+          <h3 className="font-medium text-lg">Yesterday's Highlights</h3>
           <p className="text-muted-foreground text-sm w-full">
-            Here are the winners of yesterday's prompt challenge. Check out the
-            AI streams and give them a shoutout!
+            Check out yesterday's prompt challenge winners.
           </p>
         </div>
         <div>
@@ -73,27 +73,27 @@ export default function Winners() {
             target="_blank"
             className="text-sm gap-1 flex items-center -ml-20 -mt-8 md:-ml-0 md:-mt-0"
           >
-            Participate in today's challenge
+            Join Today's Challenge on Discord
             <ArrowTopRightIcon className="h-4 w-4" />
           </Link>
         </div>
       </div>
-      <div className="grid md:grid-cols-4 gap-6 mt-4">
-        {dummyPlaybackIds.map((playbackId) => (
+      <div className="grid md:grid-cols-3 gap-6 mt-3">
+        {dummyPlaybackIds.map((item) => (
           <div className="aspect-video relative">
             <iframe
-              src={`https://monster.lvpr.tv/?v=${playbackId}`}
+              src={`https://lvpr.tv/?v=${item.playbackId}`}
               className="w-full h-full"
             />
             <div className="absolute top-2  right-2 z-10 overflow-auto">
               <Link
-                href={`https://example.com`}
+                href={item.socialUrl}
                 target="_blank"
                 className={
                   "flex items-center gap-1 overflow-hidden rounded-full bg-white px-2 py-0.5 text-black text-xs"
                 }
               >
-                @johndoe
+                {item.socialHandle}
               </Link>
             </div>
           </div>

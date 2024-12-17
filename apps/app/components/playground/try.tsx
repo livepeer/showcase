@@ -35,6 +35,7 @@ export default function Try({
   const [streamId, setStreamId] = useState<string | null>(null);
   const [streamUrl, setStreamUrl] = useState<string | null>(null);
   const [inputValues, setInputValues] = useState<Record<string, any>>({});
+  const [gatewayHost, setGatewayHost] = useState<string | null>(null);
   const [initialValues, setInitialValues] = useState<Record<string, any>>({});
   const [isOpen, setIsOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -58,14 +59,14 @@ export default function Try({
   const handleUpdate = async () => {
     toast("Params updated successfully");
     if (!streamKey) return;
-    updateParams(streamKey, inputValues);
+    updateParams(streamKey, inputValues, gatewayHost);
     setInitialValues({ ...inputValues });
 
     setHasChanges(false);
   };
 
   const handleRun = async (): Promise<void> => {
-    const {data: stream, error} = await upsertStream(
+    const { data: stream, error } = await upsertStream(
       {
         pipeline_id: pipeline.id,
         pipeline_params: inputValues,
@@ -73,13 +74,14 @@ export default function Try({
       user?.id ?? ""
     );
 
-    if(error){
+    if (error) {
       toast.error(`Error creating stream for playback ${error}`);
       return;
     }
     setStreamId(stream.id);
     setStreamInfo(stream);
     setStreamUrl(`${app.whipUrl}${stream.stream_key}/whip`);
+    setGatewayHost(stream.gateway_host);
     setStreamKey(stream.stream_key);
   };
 
@@ -97,6 +99,7 @@ export default function Try({
 
   useEffect(() => {
     const defaultValues = createDefaultValues();
+    console.log("input values", defaultValues);
     setInputValues(defaultValues);
     setInitialValues(defaultValues);
     if (!streamId) {
@@ -105,6 +108,7 @@ export default function Try({
   }, [pipeline]);
 
   const renderInput = (input: any) => {
+    console.log("input", input);
     switch (input.type) {
       case "text":
         return (
@@ -119,8 +123,17 @@ export default function Try({
         return (
           <Textarea
             className="h-44"
+            defaultValue={
+              typeof input.defaultValue === "string"
+                ? input.defaultValue
+                : JSON.stringify(input.defaultValue, null, 2)
+            }
             placeholder={input.placeholder}
-            value={inputValues[input.id] || ""}
+            value={
+              typeof inputValues[input.id] === "string"
+                ? inputValues[input.id]
+                : JSON.stringify(inputValues[input.id], null, 2) || ""
+            }
             onChange={(e) => handleInputChange(input.id, e.target.value)}
           />
         );
@@ -180,7 +193,7 @@ export default function Try({
         {streamId && (
           <>
             <Button onClick={handleUpdate} disabled={!hasChanges}>
-              Update params
+              Save Parameters
             </Button>
           </>
         )}
@@ -198,7 +211,7 @@ export default function Try({
               <SelectValue placeholder="Video" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Video">Video</SelectItem>
+              <SelectItem value="Video">Webcam</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -212,57 +225,59 @@ export default function Try({
           </div>
         )}
 
-        <div className="flex flex-col gap-2">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <motion.div
-              animate={{ rotate: isOpen ? 180 : 0 }}
-              transition={{ duration: 0.2 }}
+        {inputs.advanced.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              <ChevronDown className="h-4 w-4" />
-            </motion.div>
-            Advanced Settings
-          </button>
-
-          <AnimatePresence>
-            {isOpen && (
               <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
+                animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={{ duration: 0.2 }}
-                className="overflow-hidden"
               >
-                <ScrollArea className="h-[500px] rounded-md border">
-                  <div className="p-4 space-y-4">
-                    {inputs.advanced
-                      .filter((input: any) => input.id !== "prompt")
-                      .map((input: any) => (
-                        <div
-                          key={input.id}
-                          className={cn({
-                            "flex flex-col gap-2": true,
-                            "flex flex-row justify-between items-center":
-                              input.type === "switch",
-                          })}
-                        >
-                          <Label className="text-muted-foreground">
-                            {input.label}
-                          </Label>
-                          {renderInput(input)}
-                        </div>
-                      ))}
-                  </div>
-                </ScrollArea>
+                <ChevronDown className="h-4 w-4" />
               </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+              Advanced Settings
+            </button>
+
+            <AnimatePresence>
+              {isOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="overflow-hidden"
+                >
+                  <ScrollArea className="h-[500px] rounded-md border">
+                    <div className="p-4 space-y-4">
+                      {inputs.advanced
+                        .filter((input: any) => input.id !== "prompt")
+                        .map((input: any) => (
+                          <div
+                            key={input.id}
+                            className={cn({
+                              "flex flex-col gap-2": true,
+                              "flex flex-row justify-between items-center":
+                                input.type === "switch",
+                            })}
+                          >
+                            <Label className="text-muted-foreground">
+                              {input.label}
+                            </Label>
+                            {renderInput(input)}
+                          </div>
+                        ))}
+                    </div>
+                  </ScrollArea>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
 
         <div className="flex flex-col gap-1.5">
-          <Label className="text-muted-foreground">Stream Source</Label>
+          <Label className="text-muted-foreground">Video Source</Label>
           <div className="flex flex-row h-[300px] w-full bg-sidebar rounded-2xl items-center justify-center overflow-hidden relative">
             {streamUrl ? (
               <BroadcastWithControls ingestUrl={streamUrl} />

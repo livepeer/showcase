@@ -22,6 +22,7 @@ import {
   SendIcon,
   SquareTerminalIcon,
   VideoIcon,
+  BookIcon
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -87,20 +88,6 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
     settings: NavItem[];
     footer: NavItem[];
   } = {
-    streams: [
-      {
-        title: "Create Streams",
-        url: `/stream/create`,
-        icon: SquareTerminalIcon,
-        isActive: true,
-      },
-      {
-        title: "My Streams",
-        url: `/streams/my-streams`,
-        icon: VideoIcon,
-        isActive: true,
-      },
-    ],
     pipelines: [
       {
         title: "Create Pipeline",
@@ -114,6 +101,20 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
         icon: Map,
       },
     ],
+    streams: [
+      {
+        title: "Create Stream",
+        url: `/stream/create`,
+        icon: SquareTerminalIcon,
+        isActive: true,
+      },
+      {
+        title: "My Streams",
+        url: `/streams/my-streams`,
+        icon: VideoIcon,
+        isActive: true,
+      },
+    ],
     settings: [
       {
         title: "Gateway",
@@ -122,6 +123,12 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
       },
     ],
     footer: [
+      {
+        title: "Documentation",
+        url: "https://pipelines.livepeer.org/docs/technical",
+        external: true,
+        icon: BookIcon,
+      },
       {
         title: "Support",
         url: "https://discord.gg/livepeer",

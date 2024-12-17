@@ -25,12 +25,13 @@ export async function POST(request: Request) {
     }
 
     const stream_key = body.stream_key;
+    const gateway_host = body.gateway_host;
 
     const { data, error } = await supabase
-        .from("streams")
-        .select("*, pipeline_id(key,id)")
-        .eq("stream_key", stream_key)
-        .single();
+      .from("streams")
+      .select("*, pipeline_id(key,id)")
+      .eq("stream_key", stream_key)
+      .single();
 
     if (!data) {
       return createErrorResponse(404, ERROR_MESSAGES.NOT_FOUND);
@@ -40,18 +41,31 @@ export async function POST(request: Request) {
       return createErrorResponse(500, ERROR_MESSAGES.INTERNAL_ERROR);
     }
 
+    console.log("Gateway Host:", gateway_host);
+
+    const updateResult = await supabase
+      .from("streams")
+      .update({ gateway_host })
+      .eq("id", data.id);
+
+    if (updateResult.error) {
+      return createErrorResponse(500, ERROR_MESSAGES.INTERNAL_ERROR);
+    }
+
+    console.log("Added gateway host to stream");
+
     // Filter out keys with empty string, null values, and empty arrays from pipeline_params
     const filteredPipelineParams = Object.entries(data?.pipeline_params || {})
-        .filter(
-            ([, value]) =>
-                value !== "" &&
-                value !== null &&
-                (!Array.isArray(value) || value.length > 0)
-        )
-        .reduce<Record<string, any>>((acc, [key, value]) => {
-          acc[key] = value;
-          return acc;
-        }, {});
+      .filter(
+        ([, value]) =>
+          value !== "" &&
+          value !== null &&
+          (!Array.isArray(value) || value.length > 0)
+      )
+      .reduce<Record<string, any>>((acc, [key, value]) => {
+        acc[key] = value;
+        return acc;
+      }, {});
 
     const response = {
       rtmp_output_url: data?.output_stream_url,
@@ -69,7 +83,7 @@ export async function POST(request: Request) {
       return createErrorResponse(400, error.issues);
     }
     const message =
-        error instanceof Error ? error.message : ERROR_MESSAGES.INTERNAL_ERROR;
+      error instanceof Error ? error.message : ERROR_MESSAGES.INTERNAL_ERROR;
     return createErrorResponse(500, message);
   }
 }

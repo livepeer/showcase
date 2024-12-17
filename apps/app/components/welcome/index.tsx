@@ -50,9 +50,10 @@ const Intro = () => {
 
   return (
     <div className="col-span-1">
-      <h3 className="font-medium text-lg">
-        Welcome {name ? `back, ${name}` : "to Livepeer"}
-      </h3>
+      <h2 className="font-medium text-lg">
+        {name ? `Welcome back, ${name}` : "Build Real-time Video AI Pipelines"}
+      </h2>
+        <p>Transform live video streams using AI models.</p>
       <div
         onClick={() => {
           router.replace("?tab=create");
@@ -63,7 +64,7 @@ const Intro = () => {
       mt-3 text-muted-foreground text-md border border-dashed  h-32 flex items-center justify-center"
       >
         <Plus className="h-7 w-7 mr-2" />
-        Create a pipeline
+        Create Pipeline
       </div>
       <div className="flex">
         <Button
@@ -74,6 +75,15 @@ const Intro = () => {
           className="mt-3  w-auto"
         >
           What is a pipeline? <ArrowTopRightIcon className="ml-1 h-4 w-4" />
+        </Button>
+        <Button
+          onClick={() => {
+            window.location.href ="https://pipelines.livepeer.org/explore"
+          }}
+          variant="ghost"
+          className="mt-3  w-auto"
+        >
+          Explore Examples <ArrowTopRightIcon className="ml-1 h-4 w-4" />
         </Button>
       </div>
     </div>
@@ -183,10 +193,11 @@ const CTA = () => {
       className=" h-full  flex flex-col  justify-center relative pl-6 bg-cover bg-center"
     >
       <h3 className="font-medium text-5xl uppercase text-white">
-        Daily Prompt <br />
-        Program
+        Daily Live AI <br />
+        Challenge
       </h3>
-      <p className="text-lg uppercase my-4 text-white">Join our discord</p>
+      <p className="text-md my-4 text-white">Join our community to create unique video AI streams. <br/>Each day is a new challenge.</p>
+      <p className="text-md uppercase my-4 text-white">Join Community</p>
       <img
         src="https://cdn.prod.website-files.com/66b1e1cb750c24d738b2c64b/66b23b09ed2da9e4696256ad_Logo%20(6).svg"
         className="absolute bottom-4 right-6"

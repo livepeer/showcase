@@ -1,14 +1,18 @@
 "use server";
 
-export async function updateParams(streamKey: string, body: any) {
+export async function updateParams(
+  streamKey: string,
+  body: any,
+  gatewayHost: string | null
+) {
   try {
+    console.log("Gateway Host:", gatewayHost);
     console.log("Stream key:", streamKey);
     console.log("Body:", body);
 
     const credentials = Buffer.from("").toString("base64");
-
     const response = await fetch(
-      `https://${process.env.STREAM_STATUS_ENDPOINT_URL}/live/video-to-video/${streamKey}/update`,
+      `https://${gatewayHost}/live/video-to-video/${streamKey}/update`,
       {
         method: "POST",
         headers: {
