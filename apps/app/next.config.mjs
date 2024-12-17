@@ -5,6 +5,10 @@ const config = {
         protocol: "https",
         hostname: "github.com",
       },
+      {
+        protocol: "https",
+        hostname: "fabowvadozbihurwnvwd.supabase.co",
+      },
     ],
   },
   experimental: {

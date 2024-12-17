@@ -2,10 +2,12 @@
 
 import { createServerClient } from "@repo/supabase";
 
-export async function getAllPipelines(userId: string) {
+export async function getAllPipelines() {
   const supabase = await createServerClient();
 
-  const { data, error } = await supabase.from("pipelines").select("*");
+  const { data, error } = await supabase
+    .from("pipelines")
+    .select("*, author:users(name)");
 
   if (error) throw new Error(error.message);
 

@@ -8,43 +8,35 @@ import {
 } from "@repo/design-system/components/ui/scroll-area";
 import Modals from "@/components/modals";
 import PipelineTile from "@/components/welcome/featured/tile";
-import { pipelines } from "@/components/welcome/featured";
-import { Scroll } from "lucide-react";
+import { getAllPipelines } from "../api/pipelines/get";
 
-export default function Explore({
+export default async function Explore({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const allPipelines = await getAllPipelines();
   return (
     <div className="flex-shrink-0 mt-2">
       <h3 className="font-medium text-lg">Explore Pipelines</h3>
       <p className="text-muted-foreground text-sm">
-       Discover and experiment with community-built pipelines.
+        Discover and experiment with community-built pipelines.
       </p>
-
       <div className="flex  mt-8">
         <Filter />
         <div className="w-full md:w-3/4 md:border-l border-border/50 md:ml-[3rem] md:pl-[3rem]">
-          <FeaturedPipelines />
+          <FeaturedPipelines pipelines={allPipelines} />
           <div className="border p-4  mt-6">
             <div>
               <h3 className="font-medium text-lg">Browse All Pipelines</h3>
               <p className="text-muted-foreground text-sm">
-                Explore the entire collection of community-built video AI pipelines.
+                Explore the entire collection of community-built video AI
+                pipelines.
               </p>
             </div>
             <div className="mt-6 grid grid-cols-1  md:grid-cols-2 gap-6 lg:grid-cols-3 w-full">
-              {pipelines.map((pipeline, index) => (
-                <PipelineTile
-                  key={index}
-                  id={pipeline.id}
-                  title={pipeline.title}
-                  description={pipeline.description}
-                  image={`/images/${pipeline.image}`}
-                  isComfyUI={pipeline.isComfyUI || false}
-                  author="Suhail"
-                />
+              {allPipelines.map((pipeline, index) => (
+                <PipelineTile pipeline={pipeline} />
               ))}
             </div>
           </div>
@@ -88,31 +80,24 @@ const Filter = () => {
   );
 };
 
-const FeaturedPipelines = () => {
-  const featuredPipelines = pipelines.filter((pipeline) => pipeline.isFeatured);
-  const featuredPipelinesLimited = featuredPipelines.slice(0, 3);
+const FeaturedPipelines = ({ pipelines }: { pipelines: any[] }) => {
+  const featuredPipelines = pipelines.filter(
+    (pipeline) => pipeline.is_featured
+  );
 
   return (
     <div className="border p-4 ">
       <div>
         <h3 className="font-medium text-lg">Featured Pipelines</h3>
         <p className="text-muted-foreground text-sm">
-        Hand-picked examples showcasing different video AI capabilities. Perfect for getting started or finding inspiration.
+          Hand-picked examples showcasing different video AI capabilities.
+          Perfect for getting started or finding inspiration.
         </p>
       </div>
 
       <div className="flex md:flex-row flex-col md:space-x-4  mt-2 overflow-x-auto">
-        {featuredPipelinesLimited.map((pipeline, index) => (
-          <PipelineTile
-            key={index}
-            id={pipeline.id}
-            isFeatured={true}
-            title={pipeline.title}
-            description={pipeline.description}
-            image={`/images/${pipeline.image}`}
-            isComfyUI={pipeline.isComfyUI || false}
-            author="Suhail"
-          />
+        {featuredPipelines.map((pipeline, index) => (
+          <PipelineTile pipeline={pipeline} />
         ))}
       </div>
     </div>
