@@ -1,12 +1,39 @@
 import React from 'react';
 
-const Player = ({ title, playbackId }: { title: string; playbackId: string }) => {
+interface PlayerProps {
+  title?: string;
+  playbackId: string;
+  showPipButton?: boolean;
+  showTitle?: boolean;
+  aspectRatio?: string;
+  onError?: () => void;
+  onPlay?: () => void;
+}
+
+export const Player: React.FC<PlayerProps> = ({
+  title,
+  playbackId,
+  onError,
+  onPlay,
+}) => {
+  React.useEffect(() => {
+    // Simulate video load completion
+    const timer = setTimeout(() => {
+      onPlay?.();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [onPlay]);
+
   return (
     <div data-testid="mock-player">
-      <div data-testid="video-loading" />
-      <video data-testid="video-player" src={`https://lvpr.tv/?v=${playbackId}`} title={title} />
+      <video
+        data-testid="video-player"
+        src={`https://lvpr.tv/?v=${playbackId}`}
+        title={title}
+      />
     </div>
   );
 };
 
-export { Player };
+export default { Player };

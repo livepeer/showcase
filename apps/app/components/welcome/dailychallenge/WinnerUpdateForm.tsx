@@ -43,37 +43,42 @@ export function WinnerUpdateForm({ onSubmit, defaultValues }: WinnerUpdateFormPr
 
   const handleSubmit = async (data: Winner) => {
     try {
-      // Validate playback ID format and URL
-      const playbackId = data.playback_id.trim();
-
       // Validate all required fields are present and properly formatted
       if (!data.user_full_name?.trim()) {
-        throw new Error('Full name is required');
+        form.setError('user_full_name', { message: 'Username is required' });
+        return;
       }
       if (!data.pipeline_name?.trim()) {
-        throw new Error('Pipeline name is required');
+        form.setError('pipeline_name', { message: 'Pipeline name is required' });
+        return;
       }
       if (!data.prompt_used?.trim()) {
-        throw new Error('Prompt is required');
+        form.setError('prompt_used', { message: 'Prompt is required' });
+        return;
       }
       if (!data.description?.trim()) {
-        throw new Error('Description is required');
+        form.setError('description', { message: 'Description is required' });
+        return;
       }
 
-      // Validate playback ID format and URL using example function logic
+      // Validate playback ID format
+      const playbackId = data.playback_id.trim();
       if (!playbackId.match(/^[a-zA-Z0-9]{16}$/)) {
-        throw new Error('Invalid playback ID format (must be exactly 16 characters)');
+        form.setError('playback_id', { message: 'Invalid playback ID format (must be exactly 16 characters)' });
+        return;
       }
 
       try {
         // Validate playback URL
         const response = await fetch(`https://lvpr.tv/${playbackId}`);
         if (!response.ok) {
-          throw new Error('Invalid playback URL - video not found');
+          form.setError('playback_id', { message: 'Invalid playback ID. Stream not found.' });
+          return;
         }
       } catch (error) {
         console.error('Playback URL validation error:', error);
-        throw new Error('Failed to validate playback URL - please check your internet connection');
+        form.setError('playback_id', { message: 'Failed to validate playback URL' });
+        return;
       }
 
       // Process and validate other fields
@@ -89,23 +94,20 @@ export function WinnerUpdateForm({ onSubmit, defaultValues }: WinnerUpdateFormPr
       };
 
       if (isNaN(processedData.rank) || processedData.rank < 1) {
-        throw new Error('Rank must be a valid positive number');
+        form.setError('rank', { message: 'Rank must be a valid positive number' });
+        return;
       }
 
       await onSubmit?.(processedData);
+      form.reset();
       toast({
         title: 'Success',
         description: 'Winner updated successfully',
       });
-      form.reset();
     } catch (error) {
       console.error('Form submission error:', error);
-      toast({
-        title: 'Submission failed',
-        description: error instanceof Error ? error.message : 'Failed to update winner',
-        variant: 'destructive',
-        duration: 5000,
-        role: 'status',
+      form.setError('root', {
+        message: error instanceof Error ? error.message : 'Failed to update winners'
       });
       throw error; // Re-throw to ensure test can catch the error
     }

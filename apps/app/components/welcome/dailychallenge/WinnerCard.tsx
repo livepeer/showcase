@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@repo/design-system/co
 import { Badge } from '@repo/design-system/components/ui/badge';
 import { Button } from '@repo/design-system/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@repo/design-system/components/ui/dialog';
-import { GithubIcon, Discord as DiscordIcon } from 'lucide-react';
+import { GithubIcon, MessageCircle as DiscordIcon } from 'lucide-react';
 import { Spinner } from '@repo/design-system/components/ui/spinner';
 import type { Winner } from './types';
 
@@ -16,7 +16,7 @@ interface WinnerCardProps {
   className?: string;
 }
 
-export function WinnerCard({ winner, className }: WinnerCardProps) {
+export const WinnerCard: React.FC<WinnerCardProps> = ({ winner, className }) => {
   const [isVideoLoading, setIsVideoLoading] = React.useState(true);
   const [videoError, setVideoError] = React.useState(false);
 

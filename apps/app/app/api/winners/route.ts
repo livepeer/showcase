@@ -99,7 +99,7 @@ export async function POST(request: Request) {
     const validation = await validateWinnerData(data);
     if (!validation.isValid) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: 'Missing required fields' },
         { status: 400 }
       );
     }
@@ -115,9 +115,7 @@ export async function POST(request: Request) {
     // Insert winner data
     const { error } = await supabase
       .from("challenge_winners")
-      .insert(data)
-      .select()
-      .single();
+      .insert(data);
 
     if (error) {
       console.error("Error creating winner:", error);
@@ -129,7 +127,7 @@ export async function POST(request: Request) {
       }
       return NextResponse.json(
         { error: "Failed to create winner" },
-        { status: 500 }
+        { status: 400 }
       );
     }
 

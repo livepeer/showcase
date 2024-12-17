@@ -107,10 +107,11 @@ vi.mock('../WinnerCard', () => ({
   ),
 }));
 
-// Mock useWinnerFeature hook with a default enabled state
-const mockUseWinnerFeature = vi.fn(() => ({ enabled: true }));
+// Mock useWinnerFeature hook
+const mockUseWinnerFeature = vi.fn().mockReturnValue({ enabled: true });
+
 vi.mock('@/hooks/useWinnerFeature', () => ({
-  useWinnerFeature: () => mockUseWinnerFeature()
+  useWinnerFeature: () => mockUseWinnerFeature(),
 }));
 
 // Export for test manipulation
