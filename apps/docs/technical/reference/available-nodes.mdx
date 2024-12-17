@@ -1,180 +1,223 @@
 ---
 title: 'Available ComfyUI nodes'
-description: 'This guide covers the available ComfyUI nodes for creating real-time video pipelines.'
-icon: 'code'
+description: 'This guide covers the available nodes and requirements for creating real-time video pipelines using ComfyUI with Livepeer'
+icon: 'server'
 ---
 
-This guide covers the available nodes and requirements for creating real-time video pipelines using ComfyUI with Livepeer.
+## Required Video Input/Output Nodes
+These nodes are required for creating real-time video pipelines
 
-## Video Input/Output Nodes - REQUIRED FOR ALL PIPELINES
+<AccordionGroup>
+  <Accordion header="ComfyStream" title="ComfyStream" defaultOpen>
+    - **Input:**
+      - Video stream URL or device ID
+      - Optional configuration parameters
+    - **Output:**
+      - RGB frame tensor (3, H, W)
+      - Frame metadata (timestamp, index)
+    - **Performance Requirements:**
+      - Frame processing time: < 5ms
+      - VRAM usage: < 500MB
+      - Buffer size: ≤ 2 frames
+      - Supported formats: RTMP, WebRTC, V4L2
+    - **Best Practices:**
+      - Set fixed frame rate
+  <div style={{ float: 'right', textDecoration: 'none' }}>
+    [GitHub Link](https://github.com/yondonfu/comfystream/)
+  </div>
+  </Accordion>
+</AccordionGroup>
 
-### ComfyStream
-- [Github Link](https://github.com/yondonfu/comfystream/)
-- **Input:** 
-  - Video stream URL or device ID
-  - Optional configuration parameters
-- **Output:** 
-  - RGB frame tensor (3, H, W)
-  - Frame metadata (timestamp, index)
-- **Performance Requirements:**
-  - Frame processing time: < 5ms
-  - VRAM usage: < 500MB
-  - Buffer size: ≤ 2 frames
-  - Supported formats: RTMP, WebRTC, V4L2
-- **Best Practices:**
-  - Set fixed frame rate
+## Inference Nodes
+Nodes for analyzing video frames in real-time. They can be used for tasks like object detection, segmentation, and depth estimation
 
-## Analysis Nodes
+<AccordionGroup>
+  <Accordion header="DepthAnythingTensorRT" title="Depth Anything TensorRT" defaultOpen>
+  <Tabs>
+    <TabItem value="Overview" label="Overview">
+      Overview content goes here.
+    </TabItem>
+    <TabItem value="Details" label="Details">
+      Details content goes here.
+    </TabItem>
+    <TabItem value="Examples" label="Examples">
+      Examples content goes here.
+    </TabItem>
+  </Tabs>
 
-### Depth Anything TensorRT
-- [Github Link](https://github.com/yuvraj108c/ComfyUI-Depth-Anything-Tensorrt)
-- **Input:** RGB frame (3, H, W)
-- **Output:** Depth map (1, H, W)
-- **Performance Requirements:**
-  - Inference time: < 20ms
-  - VRAM usage: 2GB
-  - Batch size: 1
-- **Best Practices:**
-  - Place early in workflow
-  - Cache results for static scenes
-  - Use lowest viable resolution
+    - **Input:** RGB frame (3, H, W)
+    - **Output:** Depth map (1, H, W)
+    - **Performance Requirements:**
+      - Inference time: < 20ms
+      - VRAM usage: 2GB
+      - Batch size: 1
+    - **Best Practices:**
+      - Place early in workflow
+      - Cache results for static scenes
+      - Use lowest viable resolution
+    <div style={{ float: 'right', textDecoration: 'none' }}>
+      [GitHub Link](https://github.com/yuvraj108c/ComfyUI-Depth-Anything-Tensorrt)
+    </div>
+  </Accordion>
+  <Accordion header="Segment Anything 2" title="Segment Anything 2">
+    - **Input:** RGB frame (3, H, W)
+    - **Output:** Segmentation mask (1, H, W)
+    - **Performance Requirements:**
+      - Inference time: < 30ms
+      - VRAM usage: 3GB
+      - Batch size: 1
+    - **Best Practices:**
+      - Cache static masks
+      - Use mask erosion for stability
+      - Implement confidence thresholding
+    <div style={{ float: 'right', textDecoration: 'none' }}>
+      [GitHub Link](https://github.com/pschroedl/ComfyUI-SAM2-Realtime)
+    </div>
+  </Accordion>
+  <Accordion header="Florence2" title="Florence2">
+    - **Input:** RGB frame (3, H, W)
+    - **Output:** Feature vector (1, 512)
+    - **Performance Requirements:**
+      - Inference time: < 15ms
+      - VRAM usage: 1GB
+      - Batch size: 1
+    - **Best Practices:**
+      - Cache embeddings for known references
+      - Use cosine similarity for matching
+      - Implement feature vector normalization
+    <div style={{ float: 'right', textDecoration: 'none' }}>
+      [GitHub Link](https://github.com/ad-astra-video/ComfyUI-Florence2-Vision)
+    </div>
+  </Accordion>
+</AccordionGroup>
 
-### Segment Anything 2
-- (Github Link)[https://github.com/kijai/ComfyUI-segment-anything-2]
-- **Input:** RGB frame (3, H, W)
-- **Output:** Segmentation mask (1, H, W)
-- **Performance Requirements:**
-  - Inference time: < 30ms
-  - VRAM usage: 3GB
-  - Batch size: 1
-- **Best Practices:**
-  - Cache static masks
-  - Use mask erosion for stability
-  - Implement confidence thresholding
-
-### Florence2
-- [Github Link](https://github.com/kijai/ComfyUI-Florence2)
-- **Input:** RGB frame (3, H, W)
-- **Output:** Feature vector (1, 512)
-- **Performance Requirements:**
-  - Inference time: < 15ms
-  - VRAM usage: 1GB
-  - Batch size: 1
-- **Best Practices:**
-  - Cache embeddings for known references
-  - Use cosine similarity for matching
-  - Implement feature vector normalization
-
-## Generation and Control Nodes
-
-### LivePortraitKJ
-- [Github Link](https://github.com/kijai/ComfyUI-LivePortraitKJ)
-- **Input:**
-  - Source image (3, H, W)
-  - Driving frame (3, H, W)
-- **Output:** Animated frame (3, H, W)
-- **Performance Requirements:**
-  - Inference time: < 50ms
-  - VRAM usage: 4GB
-  - Batch size: 1
-- **Best Practices:**
-  - Pre-process source images
-  - Implement motion smoothing
-  - Cache facial landmarks
-
-### ComfyUI Diffusers
-- (Github Link)[https://github.com/Limitex/ComfyUI-Diffusers]
-- **Input:**
-  - Conditioning tensor
-  - Latent tensor
-- **Output:** Generated frame (3, H, W)
-- **Performance Requirements:**
-  - Inference time: < 50ms
-  - VRAM usage: 4GB
-  - Maximum steps: 20
-- **Best Practices:**
-  - Use TensorRT optimization
-  - Implement denoising strength control
-  - Cache conditioning tensors
+## Generative and Control Nodes
+Nodes for applying visual effects and controlling video content in real-time
+<AccordionGroup>
+  <Accordion header="StreamDiffusion" title="StreamDiffusion" defaultOpen>
+    - **Input:** RGB frame (3, H, W)
+    - **Output:** Feature vector (1, 512)
+    <div style={{ float: 'right', textDecoration: 'none' }}>
+      [GitHub Link](https://github.com/pschroedl/ComfyUI-StreamDiffusion)
+    </div>
+  </Accordion>
+  <Accordion header="LivePortraitKJ" title="LivePortraitKJ">
+    - **Input:**
+      - Source image (3, H, W)
+      - Driving frame (3, H, W)
+    - **Output:** Animated frame (3, H, W)
+    - **Performance Requirements:**
+      - Inference time: < 50ms
+      - VRAM usage: 4GB
+      - Batch size: 1
+    - **Best Practices:**
+      - Pre-process source images
+      - Implement motion smoothing
+      - Cache facial landmarks
+    <div style={{ float: 'right', textDecoration: 'none' }}>
+      [GitHub Link](https://github.com/kijai/ComfyUI-LivePortraitKJ)
+    </div>
+  </Accordion>
+  <Accordion header="ComfyUI Diffusers" title="ComfyUI Diffusers">
+    - **Input:**
+      - Conditioning tensor
+      - Latent tensor
+    - **Output:** Generated frame (3, H, W)
+    - **Performance Requirements:**
+      - Inference time: < 50ms
+      - VRAM usage: 4GB
+      - Maximum steps: 20
+    - **Best Practices:**
+      - Use TensorRT optimization
+      - Implement denoising strength control
+      - Cache conditioning tensors
+    <div style={{ float: 'right', textDecoration: 'none' }}>
+      [GitHub Link](https://github.com/Limitex/ComfyUI-Diffusers)
+    </div>
+  </Accordion>
+</AccordionGroup>
 
 ## Supporting Nodes
 
-### K Sampler
-- **Input:**
-  - Latent tensor
-  - Conditioning
-- **Output:** Sampled latent
-- **Performance Requirements:**
-  - Maximum steps: 20
-  - VRAM usage: 2GB
-  - Scheduler: euler_ancestral
-- **Best Practices:**
-  - Use adaptive step sizing
-  - Cache conditioning tensors
-
-### Prompt Control
-- **Input:** Text prompts
-- **Output:** Conditioning tensors
-- **Performance Requirements:**
-  - Processing time: < 5ms
-  - VRAM usage: minimal
-- **Best Practices:**
-  - Cache common prompts
-  - Use consistent style tokens
-  - Implement prompt weighting
-
-### VAE
-- **Input:** Latent tensor
-- **Output:** RGB frame
-- **Performance Requirements:**
-  - Inference time: < 10ms
-  - VRAM usage: 1GB
-  - Tile size: 512
-- **Best Practices:**
-  - Use tiling for large frames
-  - Implement half-precision
-  - Cache common latents
-
-### IPAdapter
-- **Input:**
-  - Reference image
-  - Target tensor
-- **Output:** Conditioned tensor
-- **Performance Requirements:**
-  - Inference time: < 20ms
-  - VRAM usage: 2GB
-  - Reference resolution: ≤ 512x512
-- **Best Practices:**
-  - Cache reference embeddings
-  - Use consistent weights
-  - Implement cross-attention
-
-### Cache Nodes
-- **Input:** Any tensor
-- **Output:** Cached tensor
-- **Performance Requirements:**
-  - Access time: < 1ms
-  - Maximum size: 2GB
-  - Cache type: GPU
-- **Best Practices:**
-  - Implement LRU eviction
-  - Monitor cache pressure
-  - Clear on scene changes
-
-### ControlNet
-- **Input:**
-  - Control signal
-  - Target tensor
-- **Output:** Controlled tensor
-- **Performance Requirements:**
-  - Inference time: < 30ms
-  - VRAM usage: 2GB
-  - Resolution: ≤ 512
-- **Best Practices:**
-  - Use adaptive conditioning
-  - Implement strength scheduling
-  - Cache control signals
-
+<AccordionGroup>
+These nodes are used to provide inputs, prompts and other supporting functions for the video pipeline
+  <Accordion header="K Sampler" title="K Sampler" defaultOpen>
+    - **Input:**
+      - Latent tensor
+      - Conditioning
+    - **Output:** Sampled latent
+    - **Performance Requirements:**
+      - Maximum steps: 20
+      - VRAM usage: 2GB
+      - Scheduler: euler_ancestral
+    - **Best Practices:**
+      - Use adaptive step sizing
+      - Cache conditioning tensors
+  </Accordion>
+  <Accordion header="Prompt Control" title="Prompt Control">
+    - **Input:** Text prompts
+    - **Output:** Conditioning tensors
+    - **Performance Requirements:**
+      - Processing time: < 5ms
+      - VRAM usage: minimal
+    - **Best Practices:**
+      - Cache common prompts
+      - Use consistent style tokens
+      - Implement prompt weighting
+  </Accordion>
+  <Accordion header="VAE" title="VAE">
+    - **Input:** Latent tensor
+    - **Output:** RGB frame
+    - **Performance Requirements:**
+      - Inference time: < 10ms
+      - VRAM usage: 1GB
+      - Tile size: 512
+    - **Best Practices:**
+      - Use tiling for large frames
+      - Implement half-precision
+      - Cache common latents
+  </Accordion>
+  <Accordion header="IPAdapter" title="IPAdapter">
+    - **Input:**
+      - Reference image
+      - Target tensor
+    - **Output:** Conditioned tensor
+    - **Performance Requirements:**
+      - Inference time: < 20ms
+      - VRAM usage: 2GB
+      - Reference resolution: ≤ 512x512
+    - **Best Practices:**
+      - Cache reference embeddings
+      - Use consistent weights
+      - Implement cross-attention
+  </Accordion>
+  <Accordion header="Cache Nodes" title="Cache Nodes">
+    - **Input:** Any tensor
+    - **Output:** Cached tensor
+    - **Performance Requirements:**
+      - Access time: < 1ms
+      - Maximum size: 2GB
+      - Cache type: GPU
+    - **Best Practices:**
+      - Implement LRU eviction
+      - Monitor cache pressure
+      - Clear on scene changes
+  </Accordion>
+  <Accordion header="ControlNet" title="ControlNet">
+    - **Input:**
+      - Control signal
+      - Target tensor
+    - **Output:** Controlled tensor
+    - **Performance Requirements:**
+      - Inference time: < 30ms
+      - VRAM usage: 2GB
+      - Resolution: ≤ 512
+    - **Best Practices:**
+      - Use adaptive conditioning
+      - Implement strength scheduling
+      - Cache control signals
+  </Accordion>
+</AccordionGroup>
 
 ## Default Nodes
 
