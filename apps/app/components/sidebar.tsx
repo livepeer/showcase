@@ -21,7 +21,7 @@ import {
   Map,
   SendIcon,
   SquareTerminalIcon,
-  Video,
+  VideoIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -89,9 +89,15 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
   } = {
     streams: [
       {
+        title: "Create Streams",
+        url: `/stream/create`,
+        icon: SquareTerminalIcon,
+        isActive: true,
+      },
+      {
         title: "My Streams",
-        url: `/my-streams`,
-        icon: Video,
+        url: `/streams/my-streams`,
+        icon: VideoIcon,
         isActive: true,
       },
     ],

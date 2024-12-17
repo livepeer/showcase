@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useImperativeHandle, forwardRef } from "react";
 import { Label } from "@repo/design-system/components/ui/label";
 import {
   Select,
@@ -10,99 +8,78 @@ import {
   SelectValue,
 } from "@repo/design-system/components/ui/select";
 import { Textarea } from "@repo/design-system/components/ui/textarea";
-import { upsertStream } from "@/app/api/streams/upsert";
-import { usePrivy } from "@privy-io/react-auth";
-import { BroadcastWithControls } from "./broadcast";
 import { Input } from "@repo/design-system/components/ui/input";
 import { Switch } from "@repo/design-system/components/ui/switch";
 import { cn } from "@repo/design-system/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { ScrollArea } from "@repo/design-system/components/ui/scroll-area";
-import { Button } from "@repo/design-system/components/ui/button";
-import { toast } from "sonner";
-import { updateParams } from "@/app/api/streams/update-params";
-import { app } from "@/lib/env";
+import Search from "../header/search";
 
-export default function Try({
-  setStreamInfo,
-  pipeline,
-}: {
-  setStreamInfo: (streamInfo: any) => void;
-  pipeline: any;
-}): JSX.Element {
-  const [source, setSource] = useState<string>("");
-  const [streamId, setStreamId] = useState<string | null>(null);
-  const [streamUrl, setStreamUrl] = useState<string | null>(null);
-  const [inputValues, setInputValues] = useState<Record<string, any>>({});
-  const [initialValues, setInitialValues] = useState<Record<string, any>>({});
-  const [isOpen, setIsOpen] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
-  const [streamKey, setStreamKey] = useState<string | null>(null);
-  const { user } = usePrivy();
+const StreamForm = forwardRef(
+(
+  { stream }: { stream?: any | null },
+  ref: React.Ref<any>
+) => {
 
-  const handleInputChange = (id: string, value: any) => {
-    const newValues = {
-      ...inputValues,
-      [id]: value,
-    };
-    setInputValues(newValues);
-
-    const hasAnyChange = Object.keys(newValues).some(
-      (key) => newValues[key] !== initialValues[key]
-    );
-    setHasChanges(hasAnyChange);
-  };
-
-  const handleUpdate = async () => {
-    toast("Params updated successfully");
-    if (!streamKey) return;
-    updateParams(streamKey, inputValues);
-    setInitialValues({ ...inputValues });
-
-    setHasChanges(false);
-  };
-
-  const handleRun = async (): Promise<void> => {
-    const {data: stream, error} = await upsertStream(
-      {
-        pipeline_id: pipeline.id,
-        pipeline_params: inputValues,
-      },
-      user?.id ?? ""
-    );
-
-    if(error){
-      toast.error(`Error creating stream for playback ${error}`);
-      return;
-    }
-    setStreamId(stream.id);
-    setStreamInfo(stream);
-    setStreamUrl(`${app.whipUrl}${stream.stream_key}/whip`);
-    setStreamKey(stream.stream_key);
-  };
-
-  const inputs = pipeline.config.inputs;
-
-  const createDefaultValues = () => {
-    const primaryInput = inputs.primary;
-    const advancedInputs = inputs.advanced;
-    const allInputs = [primaryInput, ...advancedInputs];
-    return allInputs.reduce((acc, input) => {
-      acc[input.id] = input.defaultValue;
-      return acc;
-    }, {});
-  };
+  const [inputValues, setInputValues] = useState<Record<string, any>>(() =>
+    stream?.pipeline_params || {}
+  );
+  const [isOpen, setIsOpen] = useState(true);
+  const [selectedPipeline, setSelectedPipeline] = useState<any | null>(stream?.pipelines || {});
+  const [selectedStream, setSelectedStream] = useState<any | null>(stream || "");
+  const [inputs, setInputs] = useState<Record<string, any>>(selectedPipeline?.config?.inputs || {})
 
   useEffect(() => {
     const defaultValues = createDefaultValues();
     setInputValues(defaultValues);
-    setInitialValues(defaultValues);
-    if (!streamId) {
-      handleRun();
+  }, [inputs]);
+
+  useEffect(() => {
+    setInputs(selectedPipeline?.config?.inputs);
+  }, [selectedPipeline]);
+
+  const handleInputChange = (id: string, value: any) => {
+    if (['name', 'output_stream_url'].includes(id)) {
+      setSelectedStream((prev: any) => ({
+        ...prev,
+        [id]: value
+      }));
+    } else {
+      setInputValues((prev) => ({
+        ...prev,
+        [id]: value,
+      }));
     }
-  }, [pipeline]);
+  };
+
+  useImperativeHandle(ref, () => ({
+    getFormData: () => ({
+      ...selectedStream,
+      pipelines: selectedPipeline,
+      pipeline_id: selectedPipeline.id,
+      pipeline_params: inputValues,
+    }),
+    
+  }));
+
+  const createDefaultValues = () => {
+    const primaryInput = inputs?.primary;
+    const advancedInputs = inputs?.advanced || [];
+    const allInputs = [primaryInput, ...advancedInputs];
+    if (allInputs.length === 0) return {};
+    return allInputs.reduce((acc, input) => {
+      if (!input?.id) return acc;
+      //if there is an existing stream and the pipeline is same as the selectedPipeline, use the values from the
+      //stream.pipeline_params object instead of the default values
+      if (selectedStream && selectedStream?.pipelines === selectedPipeline && selectedStream?.pipeline_params) {
+        acc[input.id] = selectedStream.pipeline_params?.[input.id];
+        return acc;
+      }
+      acc[input.id] = input.defaultValue;
+      return acc;
+    }, {});
+  };
 
   const renderInput = (input: any) => {
     switch (input.type) {
@@ -175,43 +152,60 @@ export default function Try({
   };
 
   return (
-    <div>
-      <div className="flex justify-end h-10">
-        {streamId && (
-          <>
-            <Button onClick={handleUpdate} disabled={!hasChanges}>
-              Update params
-            </Button>
-          </>
-        )}
+    <div className="flex flex-col gap-4 mt-5">
+      <div className="flex items-center gap-8">
+        <h6>Pipeline</h6>
+        <Search onPipelineSelect={setSelectedPipeline} pipeline={selectedPipeline}/>
       </div>
-      <div className="flex flex-col gap-4 mt-2">
-        <div className="flex flex-col gap-2">
-          <Label className="text-muted-foreground">Source</Label>
-          <Select
-            defaultValue="Video"
-            value={source}
-            disabled
-            onValueChange={setSource}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Video" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Video">Video</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
 
-        {inputs.primary && (
+      {(selectedStream?.pipelines || selectedPipeline) &&
+        <>
           <div className="flex flex-col gap-2">
             <Label className="text-muted-foreground">
-              {inputs.primary.label}
+              Stream Name
             </Label>
-            {renderInput(inputs.primary)}
+            <Input
+                  type="text"
+                  placeholder={"Stream Name"}
+                  value={selectedStream?.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                />
           </div>
-        )}
+          {stream?.stream_key && (
+            <div className="flex flex-col gap-2">
+              <Label className="text-muted-foreground">
+                Stream Key
+              </Label>
+              {stream?.stream_key}
+            </div>
+          )}
+          <div className="flex flex-col gap-2">
+            <Label className="text-muted-foreground">
+              Stream Destination
+            </Label>
+            <Input
+                  type="text"
+                  placeholder={"Stream Destination URL (RTMP)"}
+                  value={selectedStream?.output_stream_url}
+                  onChange={(e) => handleInputChange('output_stream_url', e.target.value)}
+                />
+            {/* <RestreamDropdown onOutputStreamsChange={setStreamOutputs} initialStreams={selectedStream?.restream_config} /> */}
+          </div>
+        </>
+      }
 
+      {/* Primary Input (Prompt) */}
+      {inputs?.primary && (
+        <div className="flex flex-col gap-2">
+          <Label className="text-muted-foreground">
+            {inputs?.primary.label}
+          </Label>
+          {renderInput(inputs?.primary)}
+        </div>
+      )}
+
+      {/* Advanced Settings Collapsible */}
+      {inputs?.advanced && inputs.advanced.length > 0 && (
         <div className="flex flex-col gap-2">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -237,7 +231,7 @@ export default function Try({
               >
                 <ScrollArea className="h-[500px] rounded-md border">
                   <div className="p-4 space-y-4">
-                    {inputs.advanced
+                    {(inputs?.advanced || [])
                       .filter((input: any) => input.id !== "prompt")
                       .map((input: any) => (
                         <div
@@ -260,20 +254,9 @@ export default function Try({
             )}
           </AnimatePresence>
         </div>
-
-        <div className="flex flex-col gap-1.5">
-          <Label className="text-muted-foreground">Stream Source</Label>
-          <div className="flex flex-row h-[300px] w-full bg-sidebar rounded-2xl items-center justify-center overflow-hidden relative">
-            {streamUrl ? (
-              <BroadcastWithControls ingestUrl={streamUrl} />
-            ) : (
-              <p className="text-muted-foreground">
-                Waiting for stream to start...
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
-}
+});
+
+export default StreamForm;

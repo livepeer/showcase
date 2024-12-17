@@ -8,7 +8,7 @@ export async function updateParams(streamKey: string, body: any) {
     const credentials = Buffer.from("").toString("base64");
 
     const response = await fetch(
-      `https://origin.livepeer.monster/live/video-to-video/${streamKey}/update`,
+      `https://${process.env.STREAM_STATUS_ENDPOINT_URL}/live/video-to-video/${streamKey}/update`,
       {
         method: "POST",
         headers: {

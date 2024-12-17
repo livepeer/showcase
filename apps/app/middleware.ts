@@ -14,6 +14,14 @@ export async function middleware(request: NextRequest) {
   //   return NextResponse.next();
   // }
 
+  // the exported onfig.matcher did not work with negating patterns so this was added here.
+  // Purpose: If request is to the /api/streams/${streamId}/status endpoint, we don't need to check for API key.
+  // This URL is intended as a public endpoint so that the client can poll for stream status without needing an API key
+  // const streamStatusRegex = /^\/api\/streams\/[^\/]+\/status$/;
+  // if (streamStatusRegex.test(request.nextUrl.pathname)) {
+  //   return NextResponse.next();
+  // }
+
   // const apiKey = request.headers.get("x-api-key");
 
   // const supabase = await createAdminServerClient();

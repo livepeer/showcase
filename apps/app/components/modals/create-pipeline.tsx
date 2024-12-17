@@ -28,6 +28,7 @@ import {
   ScrollBar,
 } from "@repo/design-system/components/ui/scroll-area";
 import { Checkbox } from "@repo/design-system/components/ui/checkbox";
+import Link from "next/link";
 
 const FORM_FIELDS = {
   BASIC: [
@@ -324,7 +325,19 @@ export default function CreatePipeline({ open }: { open: boolean }) {
           onClick={closeModal}
         />
       </div>
-      <ScrollArea className="h-[90vh]">
+      <div className="flex justify-center h-[calc(100vh-15rem)] items-center flex-col space-y-4">
+        <p className="text-center text-sm text-muted-foreground">
+          Pipeline creation is currently in closed beta. Sign up for the
+          waitlist today to be among the first to know when it becomes available
+          in early 2025!
+        </p>
+        <Button asChild>
+          <Link href="https://waitlist.livepeer.org/" target="_blank">
+            Sign up for the waitlist
+          </Link>
+        </Button>
+      </div>
+      {/* <ScrollArea className="h-[90vh]">
         <Tabs defaultValue="basic" className="my-6  h-full">
           <TabsList className="grid w-full grid-cols-2 my-4">
             <TabsTrigger value="basic">Basic Info</TabsTrigger>
@@ -338,15 +351,11 @@ export default function CreatePipeline({ open }: { open: boolean }) {
             {renderContent(FORM_FIELDS.MODEL_CARD)}
           </TabsContent>
 
-          {/* TODO: When implementing pipeline creation, add tracking:
-            OnClick of create pipeline button:
-            track("pipeline_creation_clicked", undefined, user || undefined);
-          */}
           <Button disabled className="w-full my-6">
             Create Pipeline
           </Button>
         </Tabs>
-      </ScrollArea>
+      </ScrollArea> */}
     </div>
   );
 }
