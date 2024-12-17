@@ -8,17 +8,17 @@ export default function AlphaBanner() {
   return (
     <div className="bg-foreground  text-background py-2 flex items-center justify-center mb-2">
       <p className="text-sm text-center">
-        ⚠️ This product is an early preview of real-time live video AI. It is
-        under active development and you may experience bugs or other strange
-        behavior. If something doesn&apos;t behave how you expect,
+      ⚠️ Early Access Preview: This is an early version of our real-time video AI platform. 
+      You may encounter performance variations or unexpected behavior as we optimize the system. 
+      Your feedback is crucial - 
+ 
         <Link
           href={PRODUCT_BOARD_URL}
           target="_blank"
           className="underline mx-1 underline-offset-2 hover:no-underline"
         >
-          please reach out
+          please share your experiences with us!
         </Link>
-        - we want to hear from you!
       </p>
     </div>
   );

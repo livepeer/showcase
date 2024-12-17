@@ -29,9 +29,9 @@ export default function Explore({
           <FeaturedPipelines />
           <div className="border p-4  mt-6">
             <div>
-              <h3 className="font-medium text-lg">All Pipelines</h3>
+              <h3 className="font-medium text-lg">Browse All Pipelines</h3>
               <p className="text-muted-foreground text-sm">
-                Browse through all the pipelines available
+                Explore the entire collection of community-built video AI pipelines.
               </p>
             </div>
             <div className="mt-6 grid grid-cols-1  md:grid-cols-2 gap-6 lg:grid-cols-3 w-full">
@@ -63,14 +63,16 @@ const Filter = () => {
         <Input className="mt-2" placeholder="Search" />
       </div>
       <div>
-        <Label>Comfy UI supported</Label>
+        <Label>ComfyUI supported</Label>
         <div className="flex flex-col space-y-2 mt-2">
           <div className="flex items-center space-x-2 bg-sidebar p-3 ">
             <Checkbox className="" id="comfyui" />
             <Label className="text-foreground/80 font-normal" htmlFor="comfyui">
-              Comfy UI supported
+              ComfyUI supported
             </Label>
           </div>
+          {/* 
+          UNNECESSARY UNTIL WE SUPPORT NON-COMFY PIPELINES
           <div className="flex items-center space-x-2 bg-sidebar p-3 ">
             <Checkbox className="" id="comfyuinot" />
             <Label
@@ -79,7 +81,7 @@ const Filter = () => {
             >
               Comfy UI not supported
             </Label>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
@@ -95,8 +97,7 @@ const FeaturedPipelines = () => {
       <div>
         <h3 className="font-medium text-lg">Featured Pipelines</h3>
         <p className="text-muted-foreground text-sm">
-          Here are some of our hand-picked pipelines, curated to help you get
-          started with Livepeer AI pipelines.
+        Hand-picked examples showcasing different video AI capabilities. Perfect for getting started or finding inspiration.
         </p>
       </div>
 

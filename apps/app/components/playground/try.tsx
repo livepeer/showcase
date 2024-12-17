@@ -180,7 +180,7 @@ export default function Try({
         {streamId && (
           <>
             <Button onClick={handleUpdate} disabled={!hasChanges}>
-              Update params
+              Save Parameters
             </Button>
           </>
         )}
@@ -198,7 +198,7 @@ export default function Try({
               <SelectValue placeholder="Video" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Video">Video</SelectItem>
+              <SelectItem value="Video">Webcam</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -262,7 +262,7 @@ export default function Try({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label className="text-muted-foreground">Stream Source</Label>
+          <Label className="text-muted-foreground">Video Source</Label>
           <div className="flex flex-row h-[300px] w-full bg-sidebar rounded-2xl items-center justify-center overflow-hidden relative">
             {streamUrl ? (
               <BroadcastWithControls ingestUrl={streamUrl} />
