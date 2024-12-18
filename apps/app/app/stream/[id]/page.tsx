@@ -11,6 +11,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import { ExternalToast, toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Modals from "@/components/modals";
+import track from "@/lib/track";
 
 export default function Stream({
                           searchParams,
@@ -56,9 +57,23 @@ export default function Stream({
     fetchStream();
   }, [fetchStream]);
 
+  useEffect(() => {
+    // Track when stream page is viewed
+    track('create_stream_page_viewed', {
+      stream_id: streamInputId,
+      is_new: streamInputId === 'create'
+    });
+  }, [streamInputId]);
+
   const handleSaveStream = async () => {
     if (streamFormRef.current) {
       const updatedStream = streamFormRef.current.getFormData();
+
+      // Track attempt to save
+      track('create_stream_save_attempted', {
+        stream_id: updatedStream.id,
+        is_new: !stream
+      });
 
       // Validate stream input
       if (!updatedStream.name || !updatedStream.pipeline_id) {
@@ -91,14 +106,32 @@ export default function Stream({
         );
         if (error) {
           toast.error("Failed to save stream: " + error, toastOptions);
+          // Track failure
+          track('create_stream_save_failed', {
+            stream_id: updatedStream.id,
+            error: error,
+            is_new: !stream
+          });
           return;
         }
         toast.dismiss(toastId);
         toast.success("Saved stream!", toastOptions);
         setStream(savedStream);
+        // Track success
+        track('create_stream_save_success', {
+          stream_id: savedStream.id,
+          is_new: !stream,
+          pipeline_id: savedStream.pipeline_id
+        });
         router.push(`/streams/my-streams`);
       } catch (error) {
         toast.error("An unexpected error occurred while saving the stream.", toastOptions);
+        // Track unexpected error
+        track('create_stream_save_failed', {
+          stream_id: updatedStream.id,
+          error: 'unexpected_error',
+          is_new: !stream
+        });
       } finally {
         toast.dismiss(toastId);
       }

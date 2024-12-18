@@ -1,6 +1,5 @@
 import { usePrivy } from "@privy-io/react-auth";
 import { useEffect } from "react";
-import track from "@/lib/track";
 import { Input } from "@repo/design-system/components/ui/input";
 import { Label } from "@repo/design-system/components/ui/label";
 import React from "react";
@@ -12,7 +11,7 @@ import {
 import Modals from "@/components/modals";
 import PipelineTile from "@/components/welcome/featured/tile";
 import { getAllPipelines } from "../api/pipelines/get";
-
+import ClientSideTracker from "@/components/analytics/ClientSideTracker";
 export default async function Explore({
   searchParams,
 }: {
@@ -21,11 +20,6 @@ export default async function Explore({
   const allPipelines = await getAllPipelines();
   const { user, authenticated } = usePrivy();
 
-  useEffect(() => {
-    track("explore_page_viewed", {
-      is_authenticated: authenticated
-    }, user || undefined);
-  }, [authenticated, user]);
 
   return (
     <div className="flex-shrink-0 mt-2">
@@ -36,6 +30,7 @@ export default async function Explore({
       <div className="flex  mt-8">
         <Filter />
         <div className="w-full md:w-3/4 md:border-l border-border/50 md:ml-[3rem] md:pl-[3rem]">
+          <ClientSideTracker eventName="explore_page_viewed" />
           <FeaturedPipelines pipelines={allPipelines} />
           <div className="border p-4  mt-6">
             <div>
