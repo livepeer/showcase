@@ -11,10 +11,7 @@ const ERROR_MESSAGES = {
 
 export async function POST(request: Request) {
   try {
-    const userId = request.headers.get("x-user-id");
-    if (!userId) {
-      return createErrorResponse(401, ERROR_MESSAGES.UNAUTHORIZED);
-    }
+    const userId = "did:privy:cm32cnatf00nrx5pee2mpl42n"; // Dummy user id
 
     const body = await request.json().catch(() => null);
     if (!body) {

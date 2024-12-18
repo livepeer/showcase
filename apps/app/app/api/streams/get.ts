@@ -16,9 +16,11 @@ export async function getStream(streamId: string) {
       pipeline_id,
       output_playback_id,
       author,
+      gateway_host,
       pipelines!inner (
         id,
         name,
+        type,
         config
       )
     `)
@@ -44,6 +46,7 @@ export async function getStreams(userId: string, page: number = 1, limit: number
         pipeline_id,
         output_playback_id,
         from_playground,
+        gateway_host,
         pipelines!inner (
           id,
           name

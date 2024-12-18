@@ -22,7 +22,7 @@ import {
   PaginationContent,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
+  PaginationPrevious,
 } from "@repo/design-system/components/ui/pagination";
 import {DoubleArrowLeftIcon, DoubleArrowRightIcon} from "@radix-ui/react-icons";
 import Modals from "@/components/modals";
@@ -169,8 +169,8 @@ export default function MyStreams({searchParams}: {
                               </TableCell>
                               <TableCell>
                                 <div className="inline-flex items-center gap-x-2">
-                                  {appEnv.rtmpUrl}{appEnv.rtmpUrl.endsWith('/')?'':'/'}{stream.stream_key}
-                                  <Copy size={copyIconSize} className="mr-2 cursor-pointer" onClick={() => copy(`${appEnv.rtmpUrl}${appEnv.rtmpUrl.endsWith('/')?'':'/'}${stream.stream_key}`)} />
+                                  {appEnv.rtmpUrl}{appEnv?.rtmpUrl?.endsWith('/')?'':'/'}{stream.stream_key}
+                                  <Copy size={copyIconSize} className="mr-2 cursor-pointer" onClick={() => copy(`${appEnv?.rtmpUrl}${appEnv?.rtmpUrl?.endsWith('/')?'':'/'}${stream.stream_key}`)} />
                                 </div>
                               </TableCell>
                               <TableCell>
@@ -231,17 +231,17 @@ export default function MyStreams({searchParams}: {
                                       <div className="mb-2">
                                         <strong>Ingest URL (RTMP): </strong>
                                         <div className="inline-flex items-center gap-x-2">
-                                          {appEnv.rtmpUrl}{appEnv.rtmpUrl.endsWith('/') ? '' : '/'}{stream.stream_key}
+                                          {appEnv?.rtmpUrl}{appEnv?.rtmpUrl?.endsWith('/') ? '' : '/'}{stream.stream_key}
                                           <Copy size={copyIconSize} className="mr-2 cursor-pointer"
-                                                onClick={() => copy(`${appEnv.rtmpUrl}${appEnv.rtmpUrl.endsWith('/') ? '' : '/'}${stream.stream_key}`)}/>
+                                                onClick={() => copy(`${appEnv?.rtmpUrl}${appEnv?.rtmpUrl?.endsWith('/') ? '' : '/'}${stream.stream_key}`)}/>
                                         </div>
                                       </div>
                                       <div className="mb-2">
                                         <strong>Ingest URL (WHIP): </strong>
                                         <div className="inline-flex items-center gap-x-2">
-                                          {appEnv.whipUrl}{appEnv.whipUrl.endsWith('/') ? '' : '/'}{stream.stream_key}/whip
+                                          {appEnv?.whipUrl}{appEnv?.whipUrl?.endsWith('/') ? '' : '/'}{stream.stream_key}/whip
                                           <Copy size={copyIconSize} className="mr-2 cursor-pointer"
-                                                onClick={() => copy(`${appEnv.whipUrl}${appEnv.whipUrl.endsWith('/') ? '' : '/'}${stream.stream_key}/whip`)}/>
+                                                onClick={() => copy(`${appEnv?.whipUrl}${appEnv?.whipUrl?.endsWith('/') ? '' : '/'}${stream.stream_key}/whip`)}/>
                                         </div>
                                       </div>
                                       <div className="mb-2">
@@ -263,13 +263,31 @@ export default function MyStreams({searchParams}: {
                                       <div className="mb-2">
                                         <div className="inline-flex items-center gap-x-2">
                                           <strong>Parameters: </strong>
-                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer"
-                                                onClick={() => copy(JSON.stringify(stream.pipeline_params))}/>
+                                          <Copy
+                                              size={copyIconSize}
+                                              className="mr-2 cursor-pointer"
+                                              onClick={() =>
+                                                  copy(
+                                                      typeof stream.pipeline_params === "object"
+                                                          ? JSON.stringify(stream.pipeline_params, undefined, 4)
+                                                          : stream.pipeline_params
+                                                  )
+                                              }
+                                          />
                                         </div>
                                       </div>
-                                      <pre className="text-xs p-2 mt-2 rounded-md overflow-auto">
-                                        {stream.pipeline_params?.json ?? JSON.stringify(stream.pipeline_params, null, 2)}
-                                      </pre>
+                                      {/** add style work around to pre tag as tailwind not showing the scrollbar otherwise */}
+                                      <pre
+                                          className="text-xs p-2 mt-2 rounded-md bg-gray-100 overflow-y-scroll max-h-64 whitespace-pre-wrap"
+                                          style={{
+                                            scrollbarWidth: "auto",
+                                            scrollbarColor: "gray lightgray",
+                                          }}
+                                      >
+                                          {typeof stream.pipeline_params === "object"
+                                              ? JSON.stringify(stream.pipeline_params, undefined, 4)
+                                              : stream.pipeline_params}
+                                    </pre>
                                     </div>
                                   </DialogContent>
                                 </Dialog>
@@ -317,7 +335,7 @@ export default function MyStreams({searchParams}: {
                   </Pagination>
                 </div>
             )}
-      <Modals searchParams={searchParams} />
+        <Modals searchParams={searchParams} />
       </div>
   );
 }

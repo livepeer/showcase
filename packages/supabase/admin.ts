@@ -1,11 +1,13 @@
 import { createServerClient as createServerClientSB } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { supabase } from "../../apps/app/lib/env";
+import { serverConfig } from "../../apps/app/lib/serverEnv";
 
 export async function createAdminServerClient() {
   const cookieStore = await cookies();
 
-  return createServerClientSB(supabase.url, supabase.serviceRoleKey!, {
+  const { supabase } = await serverConfig();
+
+  return createServerClientSB(supabase.url!, supabase.serviceRoleKey!, {
     cookies: {
       getAll() {
         return cookieStore.getAll();

@@ -23,7 +23,7 @@ import { Button } from "@repo/design-system/components/ui/button";
 import { toast } from "sonner";
 import { updateParams } from "@/app/api/streams/update-params";
 import { app } from "@/lib/env";
-import createClient from "@repo/supabase/client";
+import {getStream} from "@/app/api/streams/get";
 
 export default function Try({
   setStreamInfo,
@@ -67,22 +67,16 @@ export default function Try({
   };
 
   const handleUpdate = async () => {
-    if (!streamKey) return;
+    if (!streamKey || !streamId) return;
 
-    const supabase = createClient();
-
-    const { data, error } = await supabase
-      .from("streams")
-      .select("*")
-      .eq("id", streamId)
-      .single();
+    const { data, error } = await getStream(streamId);
 
     if (error) {
       toast.error("Error updating parameters");
       return;
     }
 
-    if (!data.gateway_host) {
+    if (!data?.gateway_host) {
       toast("No gateway host found");
       return;
     }
@@ -103,10 +97,20 @@ export default function Try({
   };
 
   const handleRun = async (): Promise<void> => {
+    const processedInputValues = Object.fromEntries(
+      Object.entries(inputValues).map(([key, value]) => {
+        try {
+          return [key, JSON.parse(value as string)];
+        } catch {
+          return [key, value];
+        }
+      })
+    );
+
     const { data: stream, error } = await upsertStream(
       {
         pipeline_id: pipeline.id,
-        pipeline_params: inputValues,
+        pipeline_params: processedInputValues,
       },
       user?.id ?? "did:privy:cm32cnatf00nrx5pee2mpl42n" // Dummy user id for non-authenticated users
     );
@@ -139,10 +143,13 @@ export default function Try({
     const defaultValues = createDefaultValues();
     setInputValues(defaultValues);
     setInitialValues(defaultValues);
-    if (!streamId) {
+  }, [pipeline]);
+
+  useEffect(() => {
+    if (!streamId && Object.keys(inputValues).length > 0) {
       handleRun();
     }
-  }, [pipeline]);
+  }, [inputValues, streamId]);
 
   const renderInput = (input: any) => {
     switch (input.type) {

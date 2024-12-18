@@ -28,6 +28,7 @@ const pipelineSchema = z.object({
   sample_code_repo: z.string().url().nullable().optional(),
   is_featured: z.boolean().default(false),
   sample_input_video: z.string().url().nullable().optional(),
+  config: z.unknown().nullable().optional(),
   key: z.string(),
   author: z.string(),
   model_card: modelCardSchema,
