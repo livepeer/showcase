@@ -143,10 +143,13 @@ export default function Try({
     const defaultValues = createDefaultValues();
     setInputValues(defaultValues);
     setInitialValues(defaultValues);
-    if (!streamId) {
+  }, [pipeline]);
+
+  useEffect(() => {
+    if (!streamId && Object.keys(inputValues).length > 0) {
       handleRun();
     }
-  }, [pipeline]);
+  }, [inputValues, streamId]);
 
   const renderInput = (input: any) => {
     switch (input.type) {
