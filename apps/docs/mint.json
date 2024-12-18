@@ -67,6 +67,7 @@
     {
       "group": "Streamer Tutorials",
       "pages": [
+        "knowledge-base/tutorials/create-a-stream",
         "knowledge-base/tutorials/stream-into-pipeline-obs",
         "knowledge-base/tutorials/stream-to-twitch",
         "knowledge-base/tutorials/stream-to-youtube",
@@ -89,7 +90,11 @@
       "pages": [
         "technical/reference/available-nodes",
         "technical/reference/performance-recommendations",
-        "technical/reference/local-testing"
+        "technical/reference/local-testing",
+        "technical/reference/local-testing-comfyuilauncher",
+        "technical/reference/develop-runpod",
+        "technical/reference/local-testing-comfystream-ui"
+
       ]
     }
   ],

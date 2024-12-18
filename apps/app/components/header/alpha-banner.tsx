@@ -2,8 +2,8 @@ import Link from "next/link";
 import React from "react";
 
 export default function AlphaBanner() {
-  const PRODUCT_BOARD_URL =
-    "https://portal.productboard.com/7xxzmv8xwccfdtkvq3akmf4i/tabs/1-under-consideration";
+  const FEEDBACK_URL =
+    "https://livepeer.notion.site/15f0a348568781aab037c863d91b05e2";
 
   return (
     <div className="bg-foreground  text-background py-2 flex items-center justify-center mb-2">
@@ -13,7 +13,7 @@ export default function AlphaBanner() {
       Your feedback is crucial - 
  
         <Link
-          href={PRODUCT_BOARD_URL}
+          href={FEEDBACK_URL}
           target="_blank"
           className="underline mx-1 underline-offset-2 hover:no-underline"
         >

@@ -63,8 +63,7 @@ export default function Gateway() {
             Gateway Provider
           </AlertDialogTitle>
           <AlertDialogDescription>
-            You can select the gateway provider you want to use. Please note
-            that this will affect the quality and the cost of outputs.
+            Livepeer Pipelines are run on the distributed Livepeer Network. Gateway providers simplify the process of using the network. In a future release, you will be able to change your gateway provider at any time. 
           </AlertDialogDescription>
         </AlertDialogHeader>
         <Select defaultValue="livepeer">

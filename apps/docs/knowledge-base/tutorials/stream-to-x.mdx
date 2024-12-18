@@ -3,3 +3,32 @@ title: Stream to X using a Livepeer Pipeline
 description: ''
 icon: 'x-twitter'
 ---
+
+## Prerequisites
+* Follow the steps in the [Create Stream tutorial](/knowledge-base/tutorials/create-a-stream) to create a new stream that uses a Livepeer pipeline
+
+
+## Step 1: Access X Media Studio
+* Go to X Media Studio.
+* Log in to your X account.
+* In the dashboard, select Producer to access the live stream configuration.
+
+## Step 2: Set Up Your Stream in X Media Studio
+* Create a Broadcast: Click “Create Broadcast” or “Create Live Video.”
+* Enter a title and description for your stream.
+* Choose the Privacy Setting:
+    * Public: Visible to everyone.
+    * Private/Unlisted: For testing purposes only.
+* Set Up Regions: If prompted, choose the closest region/server for optimal performance.
+
+## Step 3: Obtain RTMP Credentials and add them to Livepeer
+After creating the broadcast, X will provide a Stream Key and RTMP Server URL. Copy the RTMP Ingest URL and Stream Key, and  paste the full URL into the "Destination URL" field of your stream on Livepeer.
+
+## Step 4: Start streaming from OBS or similar software
+[Start streaming with OBS](/knowledge-base/tutorials/stream-into-pipeline-OBS).
+
+## Step 5: Preview Your Stream
+Return to X Media Studio, where the stream will appear in the Preview window. You can use the preview to verify video and audio quality and ensure overlays, titles, and graphics are correctly displayed. You can also use this to preview changes to pipeline parameters.
+
+## Step 6: Go Live
+Once you’re happy with the preview, click “Go Live” in X Media Studio. Your stream will now be broadcast to your audience.
