@@ -165,18 +165,22 @@ export default function MyStreams({searchParams}: {
                                 />
                               </TableCell>
                               <TableCell>
-                                <a href={`/stream/${stream.id}`}>{stream.name}</a>
+                                <a href={`/stream/${stream.id}`} className="block truncate max-w-[200px]">{stream.name}</a>
                               </TableCell>
                               <TableCell>
-                                <div className="inline-flex items-center gap-x-2">
-                                  {appEnv.rtmpUrl}{appEnv?.rtmpUrl?.endsWith('/')?'':'/'}{stream.stream_key}
-                                  <Copy size={copyIconSize} className="mr-2 cursor-pointer" onClick={() => copy(`${appEnv?.rtmpUrl}${appEnv?.rtmpUrl?.endsWith('/')?'':'/'}${stream.stream_key}`)} />
+                                <div className="inline-flex items-center gap-x-2 w-full">
+                                  <span className="truncate max-w-[200px]">
+                                    {appEnv.rtmpUrl}{appEnv?.rtmpUrl?.endsWith('/')?'':'/'}{stream.stream_key}
+                                  </span>
+                                  <Copy size={copyIconSize} className="mr-2 cursor-pointer flex-shrink-0" onClick={() => copy(`${appEnv.rtmpUrl}${appEnv?.rtmpUrl?.endsWith('/')?'':'/'}${stream.stream_key}`)} />
                                 </div>
                               </TableCell>
                               <TableCell>
-                                <div className="inline-flex items-center gap-x-2">
-                                  {stream.output_stream_url}
-                                  <Copy size={copyIconSize} className="mr-2 cursor-pointer" onClick={() => copy(stream.output_stream_url)} />
+                                <div className="inline-flex items-center gap-x-2 w-full">
+                                  <span className="truncate max-w-[200px]">
+                                    {stream.output_stream_url}
+                                  </span>
+                                  <Copy size={copyIconSize} className="mr-2 cursor-pointer flex-shrink-0" onClick={() => copy(stream.output_stream_url)} />
                                 </div>
                               </TableCell>
                               <TableCell>
