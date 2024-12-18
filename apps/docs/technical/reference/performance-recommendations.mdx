@@ -4,6 +4,22 @@ description: "This guide covers performance recommendations for creating real-ti
 icon: "rocket"
 ---
 
-A pipeline must pass pre-deployment tests before it can be published to Livepeer
+New pipelines must pass pre-deployment tests before they can be published to Livepeer
 
-Before deployment, we conduct a 30s test using the Big Buck Bunny mp4. This test will fail if the pipeline does not sustain an average of at least 5 frames per second (FPS) during the test.
+**FPS Test**
+- Before deployment, we conduct a 30s test using the Big Buck Bunny mp4. This test will fail if the pipeline does not sustain an average of **at least 5 frames per second (FPS)** during the test.
+
+
+# **Creating a Real-Time Workflow**
+
+When creating a workflow that ComfyStream can run, there are a few important considerations:
+
+1. It should be ***fast.***
+2. The workflow must have one input (a load image node) and one output (a save image node)
+3. When you export the workflow to feed to the ComfyStream interface, it must be exported in API format. Regular workflow files will not work.
+
+Since we are dealing with real-time, speed is a primary focus. You might consider technologies like LCM or Turbo models to keep diffusion fast! Additionally, StreamDiffusion great starting point for advanced workflows.
+
+A simple sample workflow is included in the scripts repo for you to try! It includes a couple of custom nodes developed for use with ComfyStream. This repo was cloned in earlier steps of this document, but you can also find the workflow [here](https://github.com/ryanontheinside/ComfyUI_RealTimeNodes/tree/main/examples)
+
+Take advantage of the Auto-Queue feature in ComfyUI to get a glimpse of what your workflow will produce.
