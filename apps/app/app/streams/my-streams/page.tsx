@@ -263,17 +263,35 @@ export default function MyStreams({searchParams}: {
                                       <div className="mb-2">
                                         <div className="inline-flex items-center gap-x-2">
                                           <strong>Parameters: </strong>
-                                          <Copy size={copyIconSize} className="mr-2 cursor-pointer"
-                                                onClick={() => copy(JSON.stringify(stream.pipeline_params))}/>
+                                          <Copy
+                                              size={copyIconSize}
+                                              className="mr-2 cursor-pointer"
+                                              onClick={() =>
+                                                  copy(
+                                                      typeof stream.pipeline_params === "object"
+                                                          ? JSON.stringify(stream.pipeline_params, undefined, 4)
+                                                          : stream.pipeline_params
+                                                  )
+                                              }
+                                          />
                                         </div>
                                       </div>
-                                      <pre className="text-xs p-2 mt-2 rounded-md overflow-auto">
-                                        {stream.pipeline_params?.json ?? JSON.stringify(stream.pipeline_params, null, 2)}
-                                      </pre>
-                                    </div>
-                                  </DialogContent>
-                                </Dialog>
-                                <Tooltip>
+                                      {/** add style work around to pre tag as tailwind not showing the scrollbar otherwise */}
+                                      <pre
+                                          className="text-xs p-2 mt-2 rounded-md bg-gray-100 overflow-y-scroll max-h-64 whitespace-pre-wrap"
+                                          style={{
+                                            scrollbarWidth: "auto",
+                                            scrollbarColor: "gray lightgray",
+                                          }}
+                                      >
+                                          {typeof stream.pipeline_params === "object"
+                                              ? JSON.stringify(stream.pipeline_params, undefined, 4)
+                                              : stream.pipeline_params}
+                                    </pre>
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                              <Tooltip>
                                   <TooltipTrigger asChild>
                                     <button
                                         className="relative group"
@@ -283,7 +301,7 @@ export default function MyStreams({searchParams}: {
                                     </button>
                                   </TooltipTrigger>
                                   <TooltipContent>
-                                    Delete Stream
+                                  Delete Stream
                                   </TooltipContent>
                                 </Tooltip>
                               </TableCell>

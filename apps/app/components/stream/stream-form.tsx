@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useImperativeHandle, forwardRef } from "react";
+import React, {useState, useEffect, useImperativeHandle, forwardRef, useMemo} from "react";
 import { Label } from "@repo/design-system/components/ui/label";
 import {
   Select,
@@ -15,6 +15,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { ScrollArea } from "@repo/design-system/components/ui/scroll-area";
 import Search from "../header/search";
+import {ExternalToast, toast} from "sonner";
 
 const StreamForm = forwardRef(
 (
@@ -29,6 +30,11 @@ const StreamForm = forwardRef(
   const [selectedPipeline, setSelectedPipeline] = useState<any | null>(stream?.pipelines || {});
   const [selectedStream, setSelectedStream] = useState<any | null>(stream || "");
   const [inputs, setInputs] = useState<Record<string, any>>(selectedPipeline?.config?.inputs || {})
+  const isComfyPipeline = useMemo(
+        () => selectedPipeline?.type?.toString().toLowerCase() === "comfyui",
+        [selectedPipeline]
+    );
+  const [ invalidJsonMessage, setInvalidJsonMessage ] = useState(null);
 
   useEffect(() => {
     const defaultValues = createDefaultValues();
@@ -39,7 +45,25 @@ const StreamForm = forwardRef(
     setInputs(selectedPipeline?.config?.inputs);
   }, [selectedPipeline]);
 
+  const toastOptions: ExternalToast = {
+    position: "top-center",
+    richColors: true,
+  };
+
+  const validateJson = (json: string) => {
+    try {
+      JSON.parse(json);
+      return {isValid: true, message: null};
+    } catch (error: any) {
+      return {isValid: false, message: error.message};
+    }
+  }
+
   const handleInputChange = (id: string, value: any) => {
+    if(id === "json"){
+      const {isValid, message} = validateJson(value);
+      setInvalidJsonMessage(!isValid?message:null);
+    }
     if (['name', 'output_stream_url'].includes(id)) {
       setSelectedStream((prev: any) => ({
         ...prev,
@@ -53,14 +77,55 @@ const StreamForm = forwardRef(
     }
   };
 
+  const convertToObject = (jsonValue: any) => {
+    if (typeof jsonValue === "string") {
+      try {
+        return JSON.parse(jsonValue);
+      } catch (error) {
+        console.error("Failed to parse JSON from inputValues['json']: ", error);
+        return {};
+      }
+    }
+    return jsonValue;
+  };
+
   useImperativeHandle(ref, () => ({
     getFormData: () => ({
       ...selectedStream,
       pipelines: selectedPipeline,
       pipeline_id: selectedPipeline.id,
-      pipeline_params: inputValues,
+      pipeline_params: isComfyPipeline ? convertToObject(inputValues['json']): inputValues,
     }),
-    
+    isFormValid: (): boolean => {
+      if (!selectedStream.name || !selectedPipeline.id) {
+        toast.error("Stream must have a name and a pipeline", toastOptions);
+        return false;
+      }
+
+      if (!selectedStream.output_stream_url) {
+        toast.error("Stream must have a Destination URL", toastOptions);
+        return false;
+      }
+
+      try {
+        new URL(selectedStream.output_stream_url);
+      } catch (e) {
+        toast.error(
+            "The destination URL provided is invalid. It must be a valid URL.",
+            toastOptions
+        );
+        return false;
+      }
+
+      if (isComfyPipeline ){
+        const { isValid } = validateJson(inputValues['json']);
+        if (!isValid){
+          toast.error("Please correct the provided JSON.", toastOptions);
+            return false;
+        }
+      }
+      return true;
+    }
   }));
 
   const createDefaultValues = () => {
@@ -73,7 +138,10 @@ const StreamForm = forwardRef(
       //if there is an existing stream and the pipeline is same as the selectedPipeline, use the values from the
       //stream.pipeline_params object instead of the default values
       if (selectedStream && selectedStream?.pipelines === selectedPipeline && selectedStream?.pipeline_params) {
-        acc[input.id] = selectedStream.pipeline_params?.[input.id];
+        acc[input.id] =
+            isComfyPipeline && input.id === "json"
+                ? selectedStream?.pipeline_params
+                : selectedStream.pipeline_params?.[input.id];
         return acc;
       }
       acc[input.id] = input.defaultValue;
@@ -94,12 +162,17 @@ const StreamForm = forwardRef(
         );
       case "textarea":
         return (
-          <Textarea
-            className="h-44"
-            placeholder={input.placeholder}
-            value={typeof inputValues[input.id] === "object" ? JSON.stringify(inputValues[input.id], undefined, 4) : inputValues[input.id]}
-            onChange={(e) => handleInputChange(input.id, e.target.value)}
-          />
+          <>
+            <Textarea
+              className="h-44"
+              placeholder={input.placeholder}
+              value={typeof inputValues[input.id] === "object" ? JSON.stringify(inputValues[input.id], undefined, 4) : inputValues[input.id]}
+              onChange={(e) => handleInputChange(input.id, e.target.value)}
+            />
+            {invalidJsonMessage && (
+                <div className="text-red-500 text-sm">{invalidJsonMessage}</div>
+            )}
+          </>
         );
       case "number":
         return (
@@ -193,7 +266,6 @@ const StreamForm = forwardRef(
           </div>
         </>
       }
-
       {/* Primary Input (Prompt) */}
       {inputs?.primary && (
         <div className="flex flex-col gap-2">
