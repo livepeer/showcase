@@ -108,7 +108,7 @@ export default function Try({
         pipeline_id: pipeline.id,
         pipeline_params: inputValues,
       },
-      user?.id ?? ""
+      user?.id ?? "did:privy:cm32cnatf00nrx5pee2mpl42n" // Dummy user id for non-authenticated users
     );
 
     if (error) {
@@ -136,15 +136,13 @@ export default function Try({
   };
 
   useEffect(() => {
-    if (user?.id) {
-      const defaultValues = createDefaultValues();
-      setInputValues(defaultValues);
-      setInitialValues(defaultValues);
-      if (!streamId) {
-        handleRun();
-      }
+    const defaultValues = createDefaultValues();
+    setInputValues(defaultValues);
+    setInitialValues(defaultValues);
+    if (!streamId) {
+      handleRun();
     }
-  }, [pipeline, user]);
+  }, [pipeline]);
 
   const renderInput = (input: any) => {
     switch (input.type) {
