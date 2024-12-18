@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerClient } from "@repo/supabase";
+import { createServerClient } from "@/lib/supabase";
 import { z } from "zod";
 import { Livepeer } from "livepeer";
 import { newId } from "@/lib/generate-id";

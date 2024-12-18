@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { createServerClient } from "@repo/supabase";
+import { createServerClient } from "@/lib/supabase";
 
 const ERROR_MESSAGES = {
   UNAUTHORIZED: "Authentication required",

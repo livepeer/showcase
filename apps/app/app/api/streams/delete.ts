@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerClient } from "@repo/supabase";
+import { createServerClient } from "@/lib/supabase";
 import { Livepeer } from "livepeer";
 import {livepeer as livePeerEnv} from "@/lib/env";
 

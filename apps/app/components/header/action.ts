@@ -1,7 +1,7 @@
 "use server";
 
 import { User } from "@privy-io/react-auth";
-import { createServerClient } from "@repo/supabase";
+import { createServerClient } from "@/lib/supabase";
 
 export async function createUser(user: User) {
     //  check if the user exists in supabase, if not, create them

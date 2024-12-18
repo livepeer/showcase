@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { compareSync } from "bcrypt-edge";
-import { createAdminServerClient } from "@repo/supabase";
+import { createAdminServerClient } from "@/lib/supabase";
 
 export const config = {
   matcher: "/api/:path*",

@@ -23,7 +23,7 @@ import { Button } from "@repo/design-system/components/ui/button";
 import { toast } from "sonner";
 import { updateParams } from "@/app/api/streams/update-params";
 import { app } from "@/lib/env";
-import createClient from "@repo/supabase/client";
+import { createClient } from "@/lib/supabase";
 
 export default function Try({
   setStreamInfo,

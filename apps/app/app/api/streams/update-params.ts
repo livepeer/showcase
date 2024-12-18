@@ -1,5 +1,5 @@
 "use server";
-import { createServerClient } from "@repo/supabase";
+import { createServerClient } from "@/lib/supabase";
 
 export async function updateParams({
   body,
