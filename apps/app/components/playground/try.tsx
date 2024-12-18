@@ -23,7 +23,7 @@ import { Button } from "@repo/design-system/components/ui/button";
 import { toast } from "sonner";
 import { updateParams } from "@/app/api/streams/update-params";
 import { app } from "@/lib/env";
-import createClient from "@repo/supabase/client";
+import {getStream} from "@/app/api/streams/get";
 
 export default function Try({
   setStreamInfo,
@@ -67,22 +67,16 @@ export default function Try({
   };
 
   const handleUpdate = async () => {
-    if (!streamKey) return;
+    if (!streamKey || !streamId) return;
 
-    const supabase = createClient();
-
-    const { data, error } = await supabase
-      .from("streams")
-      .select("*")
-      .eq("id", streamId)
-      .single();
+    const { data, error } = await getStream(streamId);
 
     if (error) {
       toast.error("Error updating parameters");
       return;
     }
 
-    if (!data.gateway_host) {
+    if (!data?.gateway_host) {
       toast("No gateway host found");
       return;
     }

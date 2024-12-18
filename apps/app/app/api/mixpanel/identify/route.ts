@@ -2,9 +2,19 @@ import { mixpanel } from "@/lib/env";
 import { NextResponse } from "next/server";
 const Mixpanel = require("mixpanel");
 
-const mixpanelClient = Mixpanel.init(mixpanel.projectToken);
+let mixpanelClient: any;
+if (mixpanel.projectToken) {
+  mixpanelClient = Mixpanel.init(mixpanel.projectToken);
+}
 
 export async function POST(request: Request) {
+  if (!mixpanelClient) {
+    return NextResponse.json(
+      { error: "Mixpanel not configured" },
+      { status: 500 }
+    );
+  }
+
   const { distinct_id, anonymous_id } = await request.json();
 
   try {

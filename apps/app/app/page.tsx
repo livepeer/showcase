@@ -4,13 +4,15 @@ import type { Metadata } from "next";
 import { type ReactElement, Suspense } from "react";
 import FeaturedPipelines from "@/components/welcome/featured";
 import { validateEnv } from "@/lib/env";
+import {validateServerEnv} from "@/lib/serverEnv";
 
 const App = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }): Promise<ReactElement> => {
-  await validateEnv();
+  validateEnv();
+  await validateServerEnv();
 
   return (
     <div>
