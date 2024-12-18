@@ -9,12 +9,6 @@ const LivepeerConfig = z.object({
   rtmpUrl: z.string().url().optional(),
 });
 
-const SupabaseConfig = z.object({
-  url: z.string().url(),
-  anonKey: z.string().min(1),
-  serviceRoleKey: z.string().min(1).optional(),
-});
-
 const IntercomConfig = z.object({
   appId: z.string().min(1),
 });
@@ -31,7 +25,6 @@ const AppConfig = z.object({
 
 const EnvironmentConfig = z.object({
   livepeer: LivepeerConfig,
-  supabase: SupabaseConfig,
   intercom: IntercomConfig,
   mixpanel: MixpanelConfig,
   app: AppConfig,
@@ -44,11 +37,6 @@ const envConfig = {
     apiKey: process.env.NEXT_PUBLIC_LIVEPEER_STUDIO_API_KEY,
     apiUrl: process.env.NEXT_PUBLIC_LIVEPEER_STUDIO_API_URL,
     rtmpUrl: process.env.LIVEPEER_STUDIO_RTMP_URL,
-  },
-  supabase: {
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
   },
   intercom: {
     appId: process.env.NEXT_PUBLIC_INTERCOM_APP_ID,
@@ -67,7 +55,7 @@ export const config = EnvironmentConfig.parse(envConfig);
 
 export const isProduction = () => config.app.environment === "production";
 
-export const { livepeer, supabase, intercom, mixpanel, app } = config;
+export const { livepeer, intercom, mixpanel, app } = config;
 
 export const validateEnv = () => {
   try {

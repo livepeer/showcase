@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { type ReactElement, Suspense } from "react";
 import FeaturedPipelines from "@/components/welcome/featured";
 import { validateEnv } from "@/lib/env";
+import {validateServerEnv} from "@/lib/serverEnv";
 
 const title = "Livepeer Pipelines ";
 
@@ -16,7 +17,8 @@ const App = async ({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }): Promise<ReactElement> => {
-  await validateEnv();
+  validateEnv();
+  await validateServerEnv();
 
   return (
     <div>

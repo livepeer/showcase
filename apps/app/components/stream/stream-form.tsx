@@ -97,7 +97,7 @@ const StreamForm = forwardRef(
           <Textarea
             className="h-44"
             placeholder={input.placeholder}
-            value={inputValues[input.id] || ""}
+            value={typeof inputValues[input.id] === "object" ? JSON.stringify(inputValues[input.id], undefined, 4) : inputValues[input.id]}
             onChange={(e) => handleInputChange(input.id, e.target.value)}
           />
         );
