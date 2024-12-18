@@ -97,10 +97,20 @@ export default function Try({
   };
 
   const handleRun = async (): Promise<void> => {
+    const processedInputValues = Object.fromEntries(
+      Object.entries(inputValues).map(([key, value]) => {
+        try {
+          return [key, JSON.parse(value as string)];
+        } catch {
+          return [key, value];
+        }
+      })
+    );
+
     const { data: stream, error } = await upsertStream(
       {
         pipeline_id: pipeline.id,
-        pipeline_params: inputValues,
+        pipeline_params: processedInputValues,
       },
       user?.id ?? "did:privy:cm32cnatf00nrx5pee2mpl42n" // Dummy user id for non-authenticated users
     );
