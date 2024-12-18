@@ -229,7 +229,7 @@ export default function MyStreams({searchParams}: {
                                         <strong>Pipeline:</strong> {stream.pipelines.name}
                                       </div>
                                       <div className="mb-2">
-                                        <strong>Ingest WHIP URL: </strong>
+                                        <strong>Ingest URL (RTMP): </strong>
                                         <div className="inline-flex items-center gap-x-2">
                                           {appEnv.rtmpUrl}{appEnv.rtmpUrl.endsWith('/') ? '' : '/'}{stream.stream_key}
                                           <Copy size={copyIconSize} className="mr-2 cursor-pointer"
@@ -237,7 +237,7 @@ export default function MyStreams({searchParams}: {
                                         </div>
                                       </div>
                                       <div className="mb-2">
-                                        <strong>Ingest WHIP RTMP: </strong>
+                                        <strong>Ingest URL (WHIP): </strong>
                                         <div className="inline-flex items-center gap-x-2">
                                           {appEnv.whipUrl}{appEnv.whipUrl.endsWith('/') ? '' : '/'}{stream.stream_key}/whip
                                           <Copy size={copyIconSize} className="mr-2 cursor-pointer"

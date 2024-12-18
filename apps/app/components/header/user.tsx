@@ -91,7 +91,7 @@ export default function User() {
           }}
           disabled={disableLogin}
         >
-          Sign In
+          {user?.id ? "Sign in" : "Sign up"}
         </Button>
       )}
     </div>

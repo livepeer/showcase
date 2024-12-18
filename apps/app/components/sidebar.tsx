@@ -137,7 +137,7 @@ export const GlobalSidebar = ({ children }: GlobalSidebarProperties) => {
       },
       {
         title: "Feedback",
-        url: "https://portal.productboard.com/7xxzmv8xwccfdtkvq3akmf4i",
+        url: "https://livepeer.notion.site/15f0a348568781aab037c863d91b05e2",
         external: true,
         icon: SendIcon,
       },
