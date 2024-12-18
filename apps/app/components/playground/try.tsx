@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { updateParams } from "@/app/api/streams/update-params";
 import { app } from "@/lib/env";
 import {getStream} from "@/app/api/streams/get";
+import track from "@/lib/track";
 
 export default function Try({
   setStreamInfo,
@@ -54,6 +55,17 @@ export default function Try({
       (key) => newValues[key] !== initialValues[key]
     );
     setHasChanges(hasAnyChange);
+    
+
+    // Track parameter change
+    track("inputs_parameter_changed", {
+      parameter_id: id,
+      parameter_value: value,
+      pipeline_id: pipeline.id,
+      pipeline_name: pipeline.name,
+      pipeline_type: pipeline.type,
+      is_authenticated: user !== undefined
+    }, user || undefined);
   };
 
   const constructUpdateValues = (inputValues: any) => {

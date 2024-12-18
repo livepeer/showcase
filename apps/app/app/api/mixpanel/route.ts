@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
 import { app, mixpanel } from "@/lib/env";
-import type { Mixpanel } from "mixpanel";
-const MixpanelLib = require("mixpanel");
+const Mixpanel = require("mixpanel");
 
-let mixpanelClient: Mixpanel | null = null;
-if (mixpanel.projectToken) {
-  mixpanelClient = MixpanelLib.init(mixpanel.projectToken);
-}
+const mixpanelClient = Mixpanel.init(mixpanel.projectToken);
 
 async function getGeoData(ip: string) {
   try {
@@ -26,13 +22,6 @@ async function getGeoData(ip: string) {
 }
 
 export async function POST(request: Request) {
-  if (!mixpanelClient) {
-    return NextResponse.json(
-      { error: "Mixpanel not configured" },
-      { status: 500 }
-    );
-  }
-
   const forwardedFor = request.headers.get("x-forwarded-for");
 
   const ip =
@@ -47,8 +36,10 @@ export async function POST(request: Request) {
     geoData = await getGeoData(ip);
   }
 
+  const data = await request.json();
+
   try {
-    const { event, properties } = await request.json();
+    const { event, properties } = data;
     const enrichedProperties = {
       ...properties,
       ...geoData,

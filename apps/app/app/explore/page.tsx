@@ -1,3 +1,6 @@
+import { usePrivy } from "@privy-io/react-auth";
+import { useEffect } from "react";
+import track from "@/lib/track";
 import { Input } from "@repo/design-system/components/ui/input";
 import { Label } from "@repo/design-system/components/ui/label";
 import React from "react";
@@ -16,6 +19,14 @@ export default async function Explore({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const allPipelines = await getAllPipelines();
+  const { user, authenticated } = usePrivy();
+
+  useEffect(() => {
+    track("explore_page_viewed", {
+      is_authenticated: authenticated
+    }, user || undefined);
+  }, [authenticated, user]);
+
   return (
     <div className="flex-shrink-0 mt-2">
       <h3 className="font-medium text-lg">Explore Pipelines</h3>
