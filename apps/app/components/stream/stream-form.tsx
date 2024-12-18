@@ -153,7 +153,7 @@ const StreamForm = forwardRef(
 
   return (
     <div className="flex flex-col gap-4 mt-5">
-      <div className="flex items-center gap-8">
+      <div className="flex flex-col gap-2">
         <Label className="text-muted-foreground">
               Pipeline
           </Label>
