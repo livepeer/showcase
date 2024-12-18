@@ -58,49 +58,29 @@ export default function Stream({
 
   const handleSaveStream = async () => {
     if (streamFormRef.current) {
-      const updatedStream = streamFormRef.current.getFormData();
-
-      // Validate stream input
-      if (!updatedStream.name || !updatedStream.pipeline_id) {
-        toast.error("Stream must have a name and a pipeline", toastOptions);
-        return;
-      }
-
-      if (!updatedStream.output_stream_url) {
-        toast.error("Stream must have a Destination URL", toastOptions);
-        return;
-      }
-
-      try {
-        new URL(updatedStream.output_stream_url);
-      } catch (e) {
-        toast.error(
-            "The destination URL provided is invalid. It must be a valid URL.",
-            toastOptions
-        );
-        return;
-      }
-
-      const toastId = toast.loading("Saving stream...", toastOptions);
-      updatedStream.author = user?.id;
-      updatedStream.from_playground = false;//set flag indicating this is not ephemeral stream being shown in the Try/Playground components/views
-      try {
-        const { data: savedStream, error } = await upsertStream(
-            updatedStream,
-            updatedStream.author
-        );
-        if (error) {
-          toast.error("Failed to save stream: " + error, toastOptions);
-          return;
+      if (streamFormRef.current.isFormValid()) {
+        const updatedStream = streamFormRef.current.getFormData();
+        const toastId = toast.loading("Saving stream...", toastOptions);
+        updatedStream.author = user?.id;
+        updatedStream.from_playground = false;//set flag indicating this is not ephemeral stream being shown in the Try/Playground components/views
+        try {
+          const {data: savedStream, error} = await upsertStream(
+              updatedStream,
+              updatedStream.author
+          );
+          if (error) {
+            toast.error("Failed to save stream: " + error, toastOptions);
+            return;
+          }
+          toast.dismiss(toastId);
+          toast.success("Saved stream!", toastOptions);
+          setStream(savedStream);
+          router.push(`/streams/my-streams`);
+        } catch (error) {
+          toast.error("An unexpected error occurred while saving the stream.", toastOptions);
+        } finally {
+          toast.dismiss(toastId);
         }
-        toast.dismiss(toastId);
-        toast.success("Saved stream!", toastOptions);
-        setStream(savedStream);
-        router.push(`/streams/my-streams`);
-      } catch (error) {
-        toast.error("An unexpected error occurred while saving the stream.", toastOptions);
-      } finally {
-        toast.dismiss(toastId);
       }
     }
   };

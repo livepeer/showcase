@@ -20,6 +20,7 @@ export async function getStream(streamId: string) {
       pipelines!inner (
         id,
         name,
+        type,
         config
       )
     `)
