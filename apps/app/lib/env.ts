@@ -34,8 +34,8 @@ type EnvironmentConfig = z.infer<typeof EnvironmentConfig>;
 
 const envConfig = {
   livepeer: {
-    apiKey: process.env.NEXT_PUBLIC_LIVEPEER_STUDIO_API_KEY,
-    apiUrl: process.env.NEXT_PUBLIC_LIVEPEER_STUDIO_API_URL,
+    apiKey: process.env.LIVEPEER_STUDIO_API_KEY,
+    apiUrl: process.env.LIVEPEER_STUDIO_API_URL,
     rtmpUrl: process.env.LIVEPEER_STUDIO_RTMP_URL,
   },
   intercom: {
