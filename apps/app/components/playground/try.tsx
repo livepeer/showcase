@@ -235,7 +235,7 @@ export default function Try({
         )}
       </div>
       <div className="flex flex-col gap-4 mt-2">
-        <div className="flex flex-col gap-2 max-w-md">
+        <div className="flex flex-col gap-2">
           <Label className="text-muted-foreground">Source</Label>
           <Select
             defaultValue="Video"
@@ -253,7 +253,7 @@ export default function Try({
         </div>
 
         {inputs.primary && (
-          <div className="flex flex-col gap-2 max-w-md">
+          <div className="flex flex-col gap-2">
             <Label className="text-muted-foreground">
               {inputs.primary.label}
             </Label>
@@ -262,7 +262,7 @@ export default function Try({
         )}
 
         {inputs.advanced.length > 0 && (
-          <div className="flex flex-col gap-2 max-w-2xl">
+          <div className="flex flex-col gap-2">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
