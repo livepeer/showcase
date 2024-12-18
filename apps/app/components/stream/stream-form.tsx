@@ -50,9 +50,11 @@ const StreamForm = forwardRef(
         richColors: true,
       };
 
-      const validateJson = (json: string) => {
+      const validateJson = (json: any) => {
         try {
-          JSON.parse(json);
+          typeof json !== "object"
+              ? JSON.parse(json as string)
+              : JSON.stringify(json);
           return {isValid: true, message: null};
         } catch (error: any) {
           return {isValid: false, message: error.message};
