@@ -5,25 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function PipelineTile({
-  title,
-  description,
-  image,
-  isComfyUI,
-  author,
-  id,
+  pipeline,
   isFeatured = false,
 }: {
-  title: string;
-  description: string;
-  image: string;
-  isComfyUI: boolean;
-  author: string;
-  id: string;
+  pipeline: any;
   isFeatured?: boolean;
 }) {
   return (
     <Link
-      href={`/playground/${id}`}
+      href={`/playground/${pipeline.id}`}
       className={cn(
         "relative min-w-[20rem] cursor-pointer  border-2",
         isFeatured ? "h-48" : "h-52"
@@ -31,7 +21,7 @@ export default function PipelineTile({
     >
       <div className="relative z-10 flex h-full flex-col justify-between overflow-visible p-4">
         <div className="flex h-[2rem] items-center justify-between">
-          {isComfyUI ? (
+          {pipeline.type == "comfyui" ? (
             <Badge className="bg-green-500/90 text-white font-medium text-xs">
               Comfy UI
             </Badge>
@@ -46,12 +36,14 @@ export default function PipelineTile({
               "flex items-center gap-1 overflow-hidden  bg-white px-2 py-0.5 text-black text-xs"
             }
           >
-            @johndoe
+            {pipeline.author.name}
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <p className="font-medium text-white">{title}</p>
-          <Label className="text-gray-300 text-xs">{description}</Label>
+          <p className="font-medium text-white">{pipeline.name}</p>
+          <Label className="text-gray-300 text-xs">
+            {pipeline.description}
+          </Label>
         </div>
       </div>
       <Image
@@ -59,7 +51,7 @@ export default function PipelineTile({
         style={{
           filter: "blur(0.5px)",
         }}
-        src={image}
+        src={pipeline.cover_image}
         alt="pipeline"
         width={500}
         height={500}

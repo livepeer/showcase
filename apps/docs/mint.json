@@ -90,7 +90,10 @@
       "pages": [
         "technical/reference/available-nodes",
         "technical/reference/performance-recommendations",
-        "technical/reference/local-testing"
+        "technical/reference/local-testing",
+        "technical/reference/local-testing-comfyuilauncher",
+        "technical/reference/local-testing-comfystream-ui"
+
       ]
     }
   ],

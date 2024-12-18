@@ -43,7 +43,7 @@ export async function GET(request: Request) {
       return createErrorResponse(401, ERROR_MESSAGES.UNAUTHORIZED);
     }
 
-    const pipelines = await getAllPipelines(userId);
+    const pipelines = await getAllPipelines();
 
     return NextResponse.json(pipelines, { status: 200 });
   } catch (error) {
