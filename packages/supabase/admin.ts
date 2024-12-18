@@ -7,7 +7,7 @@ export async function createAdminServerClient() {
 
   const { supabase } = await serverConfig();
 
-  return createServerClientSB(supabase.url, supabase.serviceRoleKey!, {
+  return createServerClientSB(supabase.url!, supabase.serviceRoleKey!, {
     cookies: {
       getAll() {
         return cookieStore.getAll();
