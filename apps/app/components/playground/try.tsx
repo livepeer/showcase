@@ -23,6 +23,7 @@ import { Button } from "@repo/design-system/components/ui/button";
 import { toast } from "sonner";
 import { updateParams } from "@/app/api/streams/update-params";
 import { app } from "@/lib/env";
+import createClient from "@repo/supabase/client";
 
 export default function Try({
   setStreamInfo,
@@ -35,10 +36,9 @@ export default function Try({
   const [streamId, setStreamId] = useState<string | null>(null);
   const [streamUrl, setStreamUrl] = useState<string | null>(null);
   const [inputValues, setInputValues] = useState<Record<string, any>>({});
-  const [gatewayHost, setGatewayHost] = useState<string | null>(null);
   const [initialValues, setInitialValues] = useState<Record<string, any>>({});
   const [isOpen, setIsOpen] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
+  const [gatewayHost, setGatewayHost] = useState<string | null>(null);
   const [hasChanges, setHasChanges] = useState(false);
   const [streamKey, setStreamKey] = useState<string | null>(null);
   const { user } = usePrivy();
@@ -56,13 +56,50 @@ export default function Try({
     setHasChanges(hasAnyChange);
   };
 
-  const handleUpdate = async () => {
-    toast("Params updated successfully");
-    if (!streamKey) return;
-    updateParams(streamKey, inputValues, gatewayHost);
-    setInitialValues({ ...inputValues });
+  const constructUpdateValues = (inputValues: any) => {
+    if (pipeline.type == "comfyui") {
+      return {
+        prompt: JSON.parse(JSON.stringify(inputValues["json"])),
+      };
+    } else {
+      return initialValues;
+    }
+  };
 
-    setHasChanges(false);
+  const handleUpdate = async () => {
+    if (!streamKey) return;
+
+    const supabase = createClient();
+
+    const { data, error } = await supabase
+      .from("streams")
+      .select("*")
+      .eq("id", streamId)
+      .single();
+
+    if (error) {
+      toast.error("Error updating parameters");
+      return;
+    }
+
+    if (!data.gateway_host) {
+      toast("No gateway host found");
+      return;
+    }
+
+    const updateValues = constructUpdateValues(inputValues);
+
+    const response = await updateParams({
+      body: updateValues,
+      host: data.gateway_host as string,
+      streamKey: streamKey as string,
+    });
+
+    if (response.status == 200 || response.status == 201) {
+      toast.success("Parameters updated successfully");
+    } else {
+      toast.error("Error updating parameters");
+    }
   };
 
   const handleRun = async (): Promise<void> => {
@@ -81,8 +118,9 @@ export default function Try({
     setStreamId(stream.id);
     setStreamInfo(stream);
     setStreamUrl(`${app.whipUrl}${stream.stream_key}/whip`);
-    setGatewayHost(stream.gateway_host);
     setStreamKey(stream.stream_key);
+    console.log("stream", stream);
+    setGatewayHost(stream.gateway_host);
   };
 
   const inputs = pipeline.config.inputs;
@@ -98,17 +136,17 @@ export default function Try({
   };
 
   useEffect(() => {
-    const defaultValues = createDefaultValues();
-    console.log("input values", defaultValues);
-    setInputValues(defaultValues);
-    setInitialValues(defaultValues);
-    if (!streamId) {
-      handleRun();
+    if (user?.id) {
+      const defaultValues = createDefaultValues();
+      setInputValues(defaultValues);
+      setInitialValues(defaultValues);
+      if (!streamId) {
+        handleRun();
+      }
     }
-  }, [pipeline]);
+  }, [pipeline, user]);
 
   const renderInput = (input: any) => {
-    console.log("input", input);
     switch (input.type) {
       case "text":
         return (

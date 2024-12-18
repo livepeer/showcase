@@ -27,6 +27,18 @@ export async function POST(request: Request) {
     const stream_key = body.stream_key;
     const gateway_host = body.gateway_host;
 
+    const updateResult = await supabase
+      .from("streams")
+      .update({ gateway_host })
+      .eq("stream_key", stream_key);
+
+    if (updateResult.error) {
+      console.log("Error updating gateway host", updateResult.error);
+      return createErrorResponse(500, ERROR_MESSAGES.INTERNAL_ERROR);
+    }
+
+    console.log("Added gateway host to stream");
+
     const { data, error } = await supabase
       .from("streams")
       .select("*, pipeline_id(key,id)")
@@ -40,19 +52,6 @@ export async function POST(request: Request) {
     if (error) {
       return createErrorResponse(500, ERROR_MESSAGES.INTERNAL_ERROR);
     }
-
-    console.log("Gateway Host:", gateway_host);
-
-    const updateResult = await supabase
-      .from("streams")
-      .update({ gateway_host })
-      .eq("id", data.id);
-
-    if (updateResult.error) {
-      return createErrorResponse(500, ERROR_MESSAGES.INTERNAL_ERROR);
-    }
-
-    console.log("Added gateway host to stream");
 
     // Filter out keys with empty string, null values, and empty arrays from pipeline_params
     const filteredPipelineParams = Object.entries(data?.pipeline_params || {})
