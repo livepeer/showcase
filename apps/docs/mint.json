@@ -67,6 +67,7 @@
     {
       "group": "Streamer Tutorials",
       "pages": [
+        "knowledge-base/tutorials/create-a-stream",
         "knowledge-base/tutorials/stream-into-pipeline-obs",
         "knowledge-base/tutorials/stream-to-twitch",
         "knowledge-base/tutorials/stream-to-youtube",

@@ -3,3 +3,30 @@ title: Stream to Twitch using a Livepeer Pipeline
 description: ''
 icon: 'twitch'
 ---
+
+## Prerequisites
+* Follow the steps in the [Create Stream tutorial](/knowledge-base/tutorials/create-a-stream) to create a new stream
+
+
+## Step 1: Access Twitch Inspector
+Go to the [Twitch Inspector website](https://inspector.twitch.tv) and log in with your Twitch account credentials.
+
+## Step 2: Prepare Your Stream
+* In a new tab, go to your Twitch Creator Dashboard.
+* Navigate to Settings > Stream to find your Stream Key and RTMP ingest URL
+* Copy the RTMP URL & Stream Key, append `?bandwidthtest=true` to the end, and paste the full URL into the "Destination URL" field of your stream on Livepeer.
+
+## Step 3: Start a Stream Test
+* In Twitch Inspector, click the Run a Stream Test button.
+
+## Step 4: Stream and Monitor
+[Start streaming with OBS](/knowledge-base/tutorials/stream-into-pipeline-OBS). Twitch Inspector will begin receiving your stream data.
+
+In Twitch Inspector, confirm that the stream output is what you expect. You can also use this to preview changes to pipeline parameters.
+
+##Step 5: Final Check & Real Stream
+Once your stream test looks stable in Twitch Inspector:
+
+* Stop the stream in OBS
+* In Livepeer, remove `?bandwidthtest=true` from the Stream Key.
+* Start your actual live stream
