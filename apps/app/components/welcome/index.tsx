@@ -193,8 +193,7 @@ const CTA = () => {
       className=" h-full  flex flex-col  justify-center relative pl-6 bg-cover bg-center"
     >
       <h3 className="font-medium text-5xl uppercase text-white">
-        Daily Live AI <br />
-        Challenge
+        DailyChallenge
       </h3>
       <p className="text-md my-4 text-white">Join our community to create unique video AI streams. <br/>Each day is a new challenge.</p>
       <p className="text-md uppercase my-4 text-white">Join Community</p>
