@@ -18,7 +18,7 @@ import { format } from "date-fns";
 export const winnerSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  playbackUrl: z.string().url("Invalid playback URL"),
+  playbackId: z.string().min(1, "Playback ID is required"),
   winnerName: z.string().min(1, "Winner name is required"),
   rank: z.number().min(1, "Rank must be at least 1"),
   discordHandle: z.string().min(1, "Discord handle is required"),
@@ -54,7 +54,7 @@ export function ManageWinnersModal({
     defaultValues: {
       title: "",
       description: "",
-      playbackUrl: "",
+      playbackId: "",
       winnerName: "",
       rank: 1,
       discordHandle: "",
@@ -161,12 +161,12 @@ export function ManageWinnersModal({
 
               <FormField
                 control={form.control}
-                name="playbackUrl"
+                name="playbackId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Playback URL</FormLabel>
+                    <FormLabel>Playback ID</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="https://..." />
+                      <Input {...field} placeholder="e.g., c99filnga205mzqh" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -252,10 +252,9 @@ export function ManageWinnersModal({
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date) =>
+                          disabled={(date: Date) =>
                             date > new Date() || date < new Date("1900-01-01")
                           }
-                          initialFocus
                         />
                       </PopoverContent>
                     </Popover>

@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 const mockWinner = {
   title: "Test Winner",
   description: "Test Description",
-  playbackUrl: "https://example.com/video",
+  playbackId: "c99filnga205mzqh",
   winnerName: "John Doe",
   rank: 1,
   discordHandle: "@johndoe",
@@ -39,7 +39,7 @@ describe('ManageWinnersModal', () => {
 
     expect(await screen.findByLabelText('Title')).toBeInTheDocument();
     expect(await screen.findByLabelText('Description')).toBeInTheDocument();
-    expect(await screen.findByLabelText('Playback URL')).toBeInTheDocument();
+    expect(await screen.findByLabelText('Playback ID')).toBeInTheDocument();
     expect(await screen.findByLabelText('Winner Name')).toBeInTheDocument();
     expect(await screen.findByLabelText('Rank')).toBeInTheDocument();
     expect(await screen.findByLabelText('Discord Handle')).toBeInTheDocument();
