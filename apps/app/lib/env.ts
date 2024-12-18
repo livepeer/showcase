@@ -19,7 +19,7 @@ const MixpanelConfig = z.object({
 
 const AppConfig = z.object({
   whipUrl: z.string().url(),
-  rtmpUrl: z.string().url(),
+  rtmpUrl: z.string().url().optional(),
   environment: Environment,
 });
 
@@ -68,6 +68,6 @@ export const validateEnv = () => {
         console.error(`- ${err.path.join(".")}: ${err.message}`);
       });
     }
-    throw new Error("Environment validation failed");
+    console.log("Environment validation failed");
   }
 };

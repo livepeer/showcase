@@ -47,7 +47,7 @@ export default function PipelineTile({
         </div>
       </div>
       {pipeline.cover_image && (
-        <Image
+        <img
           className="absolute top-0 left-0 h-full w-full object-cover"
           style={{
             filter: "blur(0.5px)",
