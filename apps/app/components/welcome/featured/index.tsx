@@ -1,7 +1,6 @@
-import PipelineTile from "./tile";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
 import Link from "next/link";
+import { Winner, getYesterdaysWinners } from "../../../config/winners";
 
 export const pipelines = [
   {
@@ -39,27 +38,11 @@ export const pipelines = [
   }
 ];
 
-const dummyPlaybackIds = [
-  {
-    playbackId: "c99filnga205mzqh",
-    socialHandle: "@johndoe",
-    socialUrl: "https://twitter.com"
-  },
-  {
-    playbackId: "c99filnga205mzqh",
-    socialHandle: "@johndoe",
-    socialUrl: "https://twitter.com"
-  },  
-  {
-    playbackId: "c99filnga205mzqh",
-    socialHandle: "@johndoe",
-    socialUrl: "https://twitter.com"
-  }
-];
+export default function Winners(): JSX.Element {
+  const winners = getYesterdaysWinners();
 
-export default function Winners() {
   return (
-    <div className="relative  border p-4 mt-4">
+    <div className="relative border p-4 mt-4">
       <div className="flex flex-row items-center justify-between">
         <div>
           <h3 className="font-medium text-lg">Yesterday's Highlights</h3>
@@ -79,22 +62,24 @@ export default function Winners() {
         </div>
       </div>
       <div className="grid md:grid-cols-3 gap-6 mt-3">
-        {dummyPlaybackIds.map((item) => (
-          <div className="aspect-video relative">
+        {winners.map((winner) => (
+          <div key={`${winner.winningDate}-${winner.rank}`} className="aspect-video relative">
             <iframe
-              src={`https://lvpr.tv/?v=${item.playbackId}`}
+              src={`https://lvpr.tv/?v=${winner.playbackId}`}
               className="w-full h-full"
             />
-            <div className="absolute top-2  right-2 z-10 overflow-auto">
-              <Link
-                href={item.socialUrl}
-                target="_blank"
-                className={
-                  "flex items-center gap-1 overflow-hidden rounded-full bg-white px-2 py-0.5 text-black text-xs"
-                }
-              >
-                {item.socialHandle}
-              </Link>
+            <div className="absolute top-2 right-2 z-10 overflow-auto">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-1 overflow-hidden rounded-full bg-white px-2 py-0.5 text-black text-xs">
+                  {winner.discordHandle}
+                </div>
+                <div className="flex items-center gap-1 overflow-hidden rounded-full bg-white px-2 py-0.5 text-black text-xs">
+                  Rank #{winner.rank}
+                </div>
+                <div className="flex items-center gap-1 overflow-hidden rounded-full bg-white px-2 py-0.5 text-black text-xs">
+                  {winner.title}
+                </div>
+              </div>
             </div>
           </div>
         ))}
