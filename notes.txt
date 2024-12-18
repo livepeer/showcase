@@ -1,0 +1,59 @@
+# Livepeer Showcase App Styling Patterns
+
+## Form Patterns
+From create-pipeline.tsx and stream-form.tsx:
+- Labels use text-muted-foreground class for subdued text
+- Form fields have consistent spacing with space-y-4
+- Input fields use full width with rounded borders
+- Form sections use space-y-6 for vertical spacing
+- Form validation messages appear below inputs
+- Form fields are grouped in flex flex-col gap-2
+
+## Modal Patterns
+From billing.tsx and my-pipelines.tsx:
+- Modal headers have text-lg font-medium for titles
+- Descriptions use text-sm text-muted-foreground
+- Content sections use flex flex-col layout
+- Action buttons aligned right with space-x-2
+- Close buttons use XIcon with w-5 h-5
+- Modal content max width: sm:max-w-[600px]
+
+## List Patterns
+From history.tsx:
+- List items use flex justify-between for layout
+- Items have rounded-lg borders and p-4 padding
+- Text hierarchy: font-medium for titles
+- Secondary text uses text-sm text-muted-foreground
+- Action buttons use variant="outline" and "destructive"
+- Lists use space-y-4 for vertical spacing
+
+## Color Schemes and Spacing
+Common patterns:
+- Text colors:
+  - Primary: text-foreground
+  - Secondary: text-muted-foreground
+  - Links: text-primary
+- Spacing:
+  - Vertical: space-y-4, space-y-6
+  - Horizontal: space-x-2
+  - Gaps: gap-2, gap-4
+- Backgrounds:
+  - Main: bg-background
+  - Secondary: bg-accent
+  - Hover: hover:bg-accent/50
+
+## Design System Components
+Common components:
+- Dialog for modals
+- Form, FormField, FormItem for forms
+- Button with variants: default, outline, destructive
+- Input and Textarea for form fields
+- Label for form labels
+- ScrollArea for scrollable content
+- Animations use framer-motion for transitions
+
+## Error Handling
+- Form validation uses react-hook-form
+- Error messages appear below inputs
+- FormMessage component for displaying errors
+- text-destructive for error text color

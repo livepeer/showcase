@@ -50,6 +50,7 @@
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@types/date-fns": "^2.6.3",
     "@types/node": "22.9.0",
