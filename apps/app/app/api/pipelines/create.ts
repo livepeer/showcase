@@ -1,7 +1,7 @@
 "use server";
 
 import { newId } from "@/lib/generate-id";
-import { createServerClient } from "@/lib/supabase";
+import { createServerClient } from "@repo/supabase";
 import { z } from "zod";
 
 const modelCardSchema = z

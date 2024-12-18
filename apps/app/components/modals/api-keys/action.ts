@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerClient } from "@/lib/supabase";
+import { createServerClient } from "@repo/supabase";
 import crypto from "crypto";
 import { hashSync } from "bcrypt-edge";
 import { newId } from "@/lib/generate-id";

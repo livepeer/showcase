@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerClient } from "@/lib/supabase";
+import { createServerClient } from "@repo/supabase";
 
 export async function getAllPipelines() {
   const supabase = await createServerClient();
