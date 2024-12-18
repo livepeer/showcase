@@ -169,8 +169,8 @@ export default function MyStreams({searchParams}: {
                               </TableCell>
                               <TableCell>
                                 <div className="inline-flex items-center gap-x-2">
-                                  {appEnv.rtmpUrl}{appEnv.rtmpUrl.endsWith('/')?'':'/'}{stream.stream_key}
-                                  <Copy size={copyIconSize} className="mr-2 cursor-pointer" onClick={() => copy(`${appEnv.rtmpUrl}${appEnv.rtmpUrl.endsWith('/')?'':'/'}${stream.stream_key}`)} />
+                                  {appEnv.rtmpUrl}{appEnv?.rtmpUrl?.endsWith('/')?'':'/'}{stream.stream_key}
+                                  <Copy size={copyIconSize} className="mr-2 cursor-pointer" onClick={() => copy(`${appEnv?.rtmpUrl}${appEnv?.rtmpUrl?.endsWith('/')?'':'/'}${stream.stream_key}`)} />
                                 </div>
                               </TableCell>
                               <TableCell>
@@ -231,17 +231,17 @@ export default function MyStreams({searchParams}: {
                                       <div className="mb-2">
                                         <strong>Ingest WHIP URL: </strong>
                                         <div className="inline-flex items-center gap-x-2">
-                                          {appEnv.rtmpUrl}{appEnv.rtmpUrl.endsWith('/') ? '' : '/'}{stream.stream_key}
+                                          {appEnv?.rtmpUrl}{appEnv?.rtmpUrl?.endsWith('/') ? '' : '/'}{stream.stream_key}
                                           <Copy size={copyIconSize} className="mr-2 cursor-pointer"
-                                                onClick={() => copy(`${appEnv.rtmpUrl}${appEnv.rtmpUrl.endsWith('/') ? '' : '/'}${stream.stream_key}`)}/>
+                                                onClick={() => copy(`${appEnv?.rtmpUrl}${appEnv?.rtmpUrl?.endsWith('/') ? '' : '/'}${stream.stream_key}`)}/>
                                         </div>
                                       </div>
                                       <div className="mb-2">
                                         <strong>Ingest WHIP RTMP: </strong>
                                         <div className="inline-flex items-center gap-x-2">
-                                          {appEnv.whipUrl}{appEnv.whipUrl.endsWith('/') ? '' : '/'}{stream.stream_key}/whip
+                                          {appEnv?.whipUrl}{appEnv?.whipUrl?.endsWith('/') ? '' : '/'}{stream.stream_key}/whip
                                           <Copy size={copyIconSize} className="mr-2 cursor-pointer"
-                                                onClick={() => copy(`${appEnv.whipUrl}${appEnv.whipUrl.endsWith('/') ? '' : '/'}${stream.stream_key}/whip`)}/>
+                                                onClick={() => copy(`${appEnv?.whipUrl}${appEnv?.whipUrl?.endsWith('/') ? '' : '/'}${stream.stream_key}/whip`)}/>
                                         </div>
                                       </div>
                                       <div className="mb-2">
@@ -288,10 +288,10 @@ export default function MyStreams({searchParams}: {
                                               ? JSON.stringify(stream.pipeline_params, undefined, 4)
                                               : stream.pipeline_params}
                                     </pre>
-                                  </div>
-                                </DialogContent>
-                              </Dialog>
-                              <Tooltip>
+                                    </div>
+                                  </DialogContent>
+                                </Dialog>
+                                <Tooltip>
                                   <TooltipTrigger asChild>
                                     <button
                                         className="relative group"
@@ -301,7 +301,7 @@ export default function MyStreams({searchParams}: {
                                     </button>
                                   </TooltipTrigger>
                                   <TooltipContent>
-                                  Delete Stream
+                                    Delete Stream
                                   </TooltipContent>
                                 </Tooltip>
                               </TableCell>
@@ -335,7 +335,7 @@ export default function MyStreams({searchParams}: {
                   </Pagination>
                 </div>
             )}
-      <Modals searchParams={searchParams} />
+        <Modals searchParams={searchParams} />
       </div>
   );
 }
