@@ -17,6 +17,6 @@ export const DesignSystemProvider = ({
       <TooltipProvider>{children}</TooltipProvider>
     </PrivyProvider>
     <Toaster />
-    <VercelToolbar />
+    {process.env.NODE_ENV !== "production" && <VercelToolbar />}
   </ThemeProvider>
 );
