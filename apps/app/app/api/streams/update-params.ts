@@ -1,39 +1,35 @@
 "use server";
+import { createServerClient } from "@repo/supabase";
 
-export async function updateParams(
-  streamKey: string,
-  body: any,
-  gatewayHost: string | null
-) {
-  try {
-    console.log("Gateway Host:", gatewayHost);
-    console.log("Stream key:", streamKey);
-    console.log("Body:", body);
+export async function updateParams({
+  body,
+  host,
+  streamKey,
+}: {
+  body: any;
+  host: string;
+  streamKey: string;
+}) {
+  console.log("updateParams", body, host);
+  const credentials = Buffer.from(
+    process.env.USERNAME_PASSWORD as string
+  ).toString("base64");
 
-    const credentials = Buffer.from("").toString("base64");
-    const response = await fetch(
-      `https://${gatewayHost}/live/video-to-video/${streamKey}/update`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${credentials}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Error response:", errorText);
-      throw new Error(`HTTP error! status: ${response.status}`);
+  const response = await fetch(
+    `https://${host}/live/video-to-video/${streamKey}/update`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${credentials}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
     }
+  );
 
-    const data = await response.json();
-    console.log("Success response:", data);
-    return data;
-  } catch (error) {
-    console.error("Error in updateParams:", error);
-    throw error;
-  }
+  console.log("response", response);
+
+  const status = response.status;
+
+  return { status };
 }

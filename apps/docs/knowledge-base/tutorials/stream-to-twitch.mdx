@@ -5,28 +5,37 @@ icon: 'twitch'
 ---
 
 ## Prerequisites
+
 * Follow the steps in the [Create Stream tutorial](/knowledge-base/tutorials/create-a-stream) to create a new stream
 
-
 ## Step 1: Access Twitch Inspector
-Go to the [Twitch Inspector website](https://inspector.twitch.tv) and log in with your Twitch account credentials.
+
+* Go to the [Twitch Inspector website](https://inspector.twitch.tv) and log in with your Twitch account credentials.
 
 ## Step 2: Prepare Your Stream
+
 * In a new tab, go to your Twitch Creator Dashboard.
+
 * Navigate to Settings > Stream to find your Stream Key and RTMP ingest URL
-* Copy the RTMP URL & Stream Key, append `?bandwidthtest=true` to the end, and paste the full URL into the "Destination URL" field of your stream on Livepeer.
+
+* Copy the RTMP URL & Stream Key, and add `?bandwidthtest=true` to the end, creating a URL like `rtmp://live.twitch.tv/app/<stream_key>?bandwidthtest=true`
+
+* Taste the full URL into the "Stream Target" field of your stream on Livepeer.
 
 ## Step 3: Start a Stream Test
+
 * In Twitch Inspector, click the Run a Stream Test button.
 
 ## Step 4: Stream and Monitor
-[Start streaming with OBS](/knowledge-base/tutorials/stream-into-pipeline-OBS). Twitch Inspector will begin receiving your stream data.
 
-In Twitch Inspector, confirm that the stream output is what you expect. You can also use this to preview changes to pipeline parameters.
+* [Start streaming with OBS](/knowledge-base/tutorials/stream-into-pipeline-OBS). Twitch Inspector will begin receiving your stream data. Please be patient as this may take up to 90 seconds.
 
-##Step 5: Final Check & Real Stream
-Once your stream test looks stable in Twitch Inspector:
+* In Twitch Inspector, confirm that the stream output is what you expect. You can also use this to preview changes to pipeline parameters.
 
-* Stop the stream in OBS
+## Step 5: Final Check & Real Stream
+
+* Once your stream test looks stable in Twitch Inspector, stop the stream in OBS
+
 * In Livepeer, remove `?bandwidthtest=true` from the Stream Key.
+
 * Start your actual live stream
