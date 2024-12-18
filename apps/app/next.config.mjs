@@ -1,11 +1,8 @@
-import { config as baseConfig } from "@repo/next-config";
-
+/** @type {import('next').NextConfig} */
 const config = {
-  ...baseConfig,
   images: {
-    ...baseConfig.images,
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
-      ...(baseConfig.images?.remotePatterns || []),
       {
         protocol: "https",
         hostname: "github.com",
@@ -13,6 +10,10 @@ const config = {
       {
         protocol: "https",
         hostname: "fabowvadozbihurwnvwd.supabase.co",
+      },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
       },
     ],
   },
