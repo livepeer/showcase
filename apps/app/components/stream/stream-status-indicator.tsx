@@ -3,7 +3,7 @@ import { Badge } from '@repo/design-system/components/ui/badge';
 import { LoaderCircleIcon } from 'lucide-react';
 
 const StreamStatusIndicator = ({ streamId }: { streamId: string }) => {
-    
+
     const { status, loading, error } = useStreamStatus(streamId);
 
     const getStatusColor = () => {
