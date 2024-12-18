@@ -83,7 +83,7 @@ const Intro = () => {
           variant="ghost"
           className="mt-3  w-auto"
         >
-          Explore Examples <ArrowTopRightIcon className="ml-1 h-4 w-4" />
+          Explore examples <ArrowTopRightIcon className="ml-1 h-4 w-4" />
         </Button>
       </div>
     </div>

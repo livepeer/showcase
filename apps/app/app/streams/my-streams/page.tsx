@@ -294,7 +294,7 @@ export default function MyStreams({ searchParams }: { searchParams: any }) {
                               </div>
                             </div>
                             <div className="mb-2">
-                              <strong>Ingest WHIP RTMP: </strong>
+                              <strong>Ingest URL (WHIP): </strong>
                               <div className="inline-flex items-center gap-x-2">
                                 {appEnv.whipUrl}
                                 {appEnv.whipUrl.endsWith("/") ? "" : "/"}
