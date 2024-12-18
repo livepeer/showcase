@@ -92,6 +92,7 @@
         "technical/reference/performance-recommendations",
         "technical/reference/local-testing",
         "technical/reference/local-testing-comfyuilauncher",
+        "technical/reference/develop-runpod",
         "technical/reference/local-testing-comfystream-ui"
 
       ]
