@@ -232,16 +232,16 @@ export default function Try({
         <div className="flex flex-col gap-2">
           <Label className="text-muted-foreground">Source</Label>
           <Select
-            defaultValue="Video"
+            defaultValue="Webcam"
             value={source}
             disabled
             onValueChange={setSource}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Video" />
+              <SelectValue placeholder="Webcam" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Video">Webcam</SelectItem>
+              <SelectItem value="Webcam">Webcam</SelectItem>
             </SelectContent>
           </Select>
         </div>
