@@ -1,5 +1,5 @@
 ---
-title: "Develop with ComfyUI-Launcher"
+title: "Develop in ComfyUI-Launcher"
 description: "ComfyUI-Launcher Development Guide"
 icon: "code"
 ---
@@ -21,7 +21,7 @@ When you create an “empty” workflow, you will see the new workspace with the
 
 Enjoy generating your first purple bottle image.
 
-## Step 2: Install ComfyStream
+## Step 1: Install ComfyStream
 
 First, we install Conda
 ```bash
@@ -60,7 +60,7 @@ After that, we copy the `tensor_utils` nodes into the `custom_nodes` folder in t
 cp -r nodes/tensor_utils /workspace/comfyui_launcher_projects/{workspace}/comfyui/custom_nodes
 ```
 
-## Step 3: Install DepthAnything Tensorrt Node
+## Step 2: Install DepthAnything Tensorrt Node
 
 The `https://github.com/yuvraj108c/ComfyUI-Depth-Anything-Tensorrt` custom node generates depth maps from images. Installing the node is pretty manual. 
 
@@ -88,7 +88,7 @@ mv depth_anything_vitl14-fp16.engine /workspace/comfyui_launcher_models/tensorrt
     - If this doesn't show up, try and see if it's because the custom node is installed correctly.  If not, you can try to “fix it”.  The fixing process will take a while, since it'll be installing some packages.
 - Add a ”Load Image” node as the input, and the “Preview Image” node as the output.  You should be able to pick an image and see the depth map.
 
-# Step 4: Bring Up ComfyStream Server
+# Step 3: Bring Up ComfyStream Server
 
 Tunnel to open up UDP connection
 
@@ -97,8 +97,7 @@ Tunnel to open up UDP connection
 - On the local machine, run `socat UDP4-LISTEN:1234,fork TCP4:127.0.0.1:4321`
 
 Traffic sent to `localhost:1234` on the local machine will be forwarded over the SSH tunnel and will reach `127.0.0.1:5678` on the remote server.
-
-Bring up ComfyStream Server
+er
 
 ```bash
 cd /workspace/comfystream
