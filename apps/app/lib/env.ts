@@ -19,7 +19,7 @@ const MixpanelConfig = z.object({
 
 const AppConfig = z.object({
   whipUrl: z.string().url(),
-  rtmpUrl: z.string().url(),
+  rtmpUrl: z.string().url().optional(),
   environment: Environment,
 });
 
