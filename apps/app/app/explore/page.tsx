@@ -18,7 +18,6 @@ export default async function Explore({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const allPipelines = await getAllPipelines();
-  const { user, authenticated } = usePrivy();
 
 
   return (
