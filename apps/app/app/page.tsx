@@ -5,12 +5,6 @@ import { type ReactElement, Suspense } from "react";
 import FeaturedPipelines from "@/components/welcome/featured";
 import { validateEnv } from "@/lib/env";
 
-const title = "Livepeer Pipelines ";
-
-export const metadata: Metadata = {
-  title,
-};
-
 const App = async ({
   searchParams,
 }: {

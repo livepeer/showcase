@@ -153,7 +153,7 @@ const StreamForm = forwardRef(
 
   return (
     <div className="flex flex-col gap-4 mt-5">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 max-w-md">
         <Label className="text-muted-foreground">
               Pipeline
           </Label>
@@ -162,7 +162,7 @@ const StreamForm = forwardRef(
 
       {(selectedStream?.pipelines || selectedPipeline) &&
         <>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 max-w-md">
             <Label className="text-muted-foreground">
               Stream Name
             </Label>
@@ -174,14 +174,14 @@ const StreamForm = forwardRef(
                 />
           </div>
           {stream?.stream_key && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 max-w-md">
               <Label className="text-muted-foreground">
                 Stream Key
               </Label>
               {stream?.stream_key}
             </div>
           )}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 max-w-md">
             <Label className="text-muted-foreground">
               Stream Target
             </Label>
@@ -191,14 +191,13 @@ const StreamForm = forwardRef(
                   value={selectedStream?.output_stream_url}
                   onChange={(e) => handleInputChange('output_stream_url', e.target.value)}
                 />
-            {/* <RestreamDropdown onOutputStreamsChange={setStreamOutputs} initialStreams={selectedStream?.restream_config} /> */}
           </div>
         </>
       }
 
       {/* Primary Input (Prompt) */}
       {inputs?.primary && (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 max-w-md">
           <Label className="text-muted-foreground">
             {inputs?.primary.label}
           </Label>
@@ -208,7 +207,7 @@ const StreamForm = forwardRef(
 
       {/* Advanced Settings Collapsible */}
       {inputs?.advanced && inputs.advanced.length > 0 && (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 max-w-2xl">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -239,8 +238,8 @@ const StreamForm = forwardRef(
                         <div
                           key={input.id}
                           className={cn({
-                            "flex flex-col gap-2": true,
-                            "flex flex-row justify-between items-center":
+                            "flex flex-col gap-2 max-w-md": input.type !== "switch",
+                            "flex flex-row justify-between items-center max-w-md":
                               input.type === "switch",
                           })}
                         >
