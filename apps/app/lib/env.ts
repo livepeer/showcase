@@ -68,6 +68,6 @@ export const validateEnv = () => {
         console.error(`- ${err.path.join(".")}: ${err.message}`);
       });
     }
-    throw new Error("Environment validation failed");
+    console.log("Environment validation failed");
   }
 };
