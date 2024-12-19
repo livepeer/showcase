@@ -5,7 +5,7 @@ import { createAdminServerClient } from "@repo/supabase";
 export const config = {
   matcher: "/api/:path*",
 };
-
+const LOCAL_STORAGE_KEY = 'isVerified';
 
 export function middleware(request: NextRequest) {
   // Don't protect the password-protect page itself
@@ -13,9 +13,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Check for verification in cookies/localStorage
-  const isVerified = request.cookies.get('isVerified')
-  
+  // Check for verification in localStorage
+  const isVerified = localStorage.getItem(LOCAL_STORAGE_KEY);
+
   if (!isVerified) {
     return NextResponse.redirect(new URL('/password-protect', request.url))
   }
