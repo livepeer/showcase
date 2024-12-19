@@ -15,20 +15,21 @@ ComfyUI will automatically generate a workflow json file from changes in the lig
 3. Open the workflow file in ComfyUI
 4. Change the `lora_name` input in the workflow to reflect the name of a LoRa checkpoint file you want to use 
 5. From ComfyUI, run the workflow to validate the change, save the workflow file when done: **File > Save**
-<Note>
-Be sure to download the LoRa checkpoint files to the correct directory on your local machine. ComfyUI will not automatically download the LoRa checkpoint files until the workflow is deployed to the Livepeer AI Network
-</Note>
 6. Export and download the new workflow json file from ComfyUI: **File > Export > API**
 
-### Checkpoint files
-- LoRa Checkpoint files for [ComfyUI StreamDiffusion](http://localhost:3000/technical/reference/available-nodes#streamdiffusion) are downloaded from their huggingface repo [pschroedl/comfystream_checkpoints](https://huggingface.co/pschroedl/comfystream_checkpoints/tree/main)
-- Files are stored in `ComfyUI/models/checkpoints` by default
+### Checkpoint Files
+
+- **LoRa checkpoints** should be downloaded to `ComfyUI/models/loras`
+    - Deployed LoRas are available at [pschroedl/comfystream_loras](https://huggingface.co/pschroedl/comfystream_loras/tree/main)
+
+- **SD 1.5 model checkpoints** should be downloaded to `ComfyUI/models/checkpoints`
+    - Deployed SD 1.5 models are available at [pschroedl/comfystream_checkpoints](https://huggingface.co/pschroedl/comfystream_checkpoints/tree/main)
+
 
 ## Configure LoRa checkpoint in workflow manually
 
 ### Changing the LoRa checkpoint
-The `lora_name` input will reflect the name of a LoRa file from [pschroedl/comfystream_loras](https://huggingface.co/pschroedl/comfystream_loras/tree/main). 
-<Note>See [examples/LoRAs/lahmixMysterious_alienzkin_lora_API_FORMAT.json#L15C1-L21C4](https://github.com/pschroedl/ComfyUI-StreamDiffusion/blob/a1b6aeb6a1281d40cfbfa557cf0c1db2090bbd50/examples/LoRAs/lahmixMysterious_alienzkin_lora_API_FORMAT.json#L15C1-L21C4)</Note>
+The `lora_name` input will reflect the name of a LoRa file from [pschroedl/comfystream_loras](https://huggingface.co/pschroedl/comfystream_loras/tree/main): 
 ```json
   "178": {
     "inputs": {
@@ -37,11 +38,13 @@ The `lora_name` input will reflect the name of a LoRa file from [pschroedl/comfy
     "class_type": "StreamDiffusionCheckpointLoader"
   },
 ```
-Update the `lora_name` input to the name of the LoRa checkpoint you want to use. Be sure to download the LoRa checkpoint file as it will not be downloaded automatically until deployed to the Livepeer AI Network
+Update the `lora_name` input to the name of the LoRa checkpoint you want to use.
+<Info>See [examples/LoRAs/lahmixMysterious_alienzkin_lora_API_FORMAT.json#L15C1-L21C4](https://github.com/pschroedl/ComfyUI-StreamDiffusion/blob/main/examples/LoRAs/lahmixMysterious_alienzkin_lora_API_FORMAT.json#L15C1-L21C4)</Info>
+
 
 ### Changing the StreamDiffusion model
-Normally you will not need to change the model when switching LoRas, however LoRas are only compatible with specific SD models. 
-If you need to change the model, the `checkpoint` input defines the stable diffusion model (sd_turbo, sd1.5, or a fine-tuned variant) that will be loaded by the workflow.
+LoRas are only compatible with specific SD models. 
+If you need to change the model, the `checkpoint` input defines the stable diffusion model (sd_turbo, sd1.5, or a fine-tuned variant) that will be loaded by the workflow:
 ```json
   "178": {
     "inputs": {
@@ -50,6 +53,7 @@ If you need to change the model, the `checkpoint` input defines the stable diffu
     "class_type": "StreamDiffusionCheckpointLoader"
   },
 ```
+<Info>See [examples/LoRAs/lahmixMysterious_alienzkin_lora_API_FORMAT.json#L15C1-L21C4](https://github.com/pschroedl/ComfyUI-StreamDiffusion/blob/main/examples/LoRAs/lahmixMysterious_alienzkin_lora_API_FORMAT.json#L15C1-L21C4)</Info>
 
 ## Submit your LoRa Checkpoint to Livepeer
 
