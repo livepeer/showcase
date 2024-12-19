@@ -12,18 +12,8 @@ import { Input } from "@repo/design-system/components/ui/input";
 import { Button } from "@repo/design-system/components/ui/button";
 import React, { useState, useEffect } from "react";
 import track from "@/lib/track";
-import { fetchPipelines } from "./fetchPipelines";
+import { fetchPipelines, fetchFeaturedPipelines } from "./fetchPipelines";
 import { LoaderCircleIcon } from "lucide-react";
-
-async function fetchFeaturedPipelines() {
-  try {
-    const response = await fetch('/api/pipelines/featured');
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching featured pipelines:', error);
-    return [];
-  }
-}
 
 export default function Search({ pipeline, onPipelineSelect }: { pipeline?: any; onPipelineSelect?: (pipeline: any) => void }) {
   const [open, setOpen] = useState(false);
