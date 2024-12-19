@@ -7,9 +7,9 @@ import { usePrivy } from '@privy-io/react-auth';
 export function VersionInfo() {
     const [copied, setCopied] = useState(false);
     const appVersion = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || 'dev';
+    const { user } = usePrivy();
 
-    const handleCopy = async () => {
-        const { user } = usePrivy();
+    const handleCopy = async () => {    
         const fullInfo = {
             version: appVersion,
             browser: navigator.userAgent,
