@@ -17,6 +17,7 @@ export async function createUser(user: User) {
 
     if (data?.length === 0) {
       console.log("user not found, creating");
+
       const { error } = await supabase.from("users").insert({
         id: user?.id,
         email: user?.email,
