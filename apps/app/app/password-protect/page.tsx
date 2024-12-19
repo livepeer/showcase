@@ -9,7 +9,7 @@ export default function PasswordProtect() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
-  const CORRECT_PASSWORD = 'realtimeAIpipelines';
+  const CORRECT_PASSWORD = process.env.SITE_PASSWORD;
   const LOCAL_STORAGE_KEY = 'isVerified';
 
   useEffect(() => {
