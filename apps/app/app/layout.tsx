@@ -9,14 +9,19 @@ import { Separator } from "@repo/design-system/components/ui/separator";
 import Intercom from "@/components/intercom";
 import { AlarmCheck } from "lucide-react";
 import AlphaBanner from "@/components/header/alpha-banner";
+import { Metadata } from "next";
 
 type RootLayoutProperties = {
   readonly children: ReactNode;
 };
 
+export const metadata: Metadata = {
+  title: "Livepeer Pipelines"  // This will be used for all pages
+};
+
 const RootLayout = ({ children }: RootLayoutProperties) => (
   <html lang="en" suppressHydrationWarning>
-    <body className="bg-sidebar">
+    <body className="bg-sidebar pt-10">
       <DesignSystemProvider defaultTheme="dark">
         <AlphaBanner />
         <SidebarProvider>
