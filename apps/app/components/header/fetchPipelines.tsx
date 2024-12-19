@@ -29,7 +29,7 @@ export async function fetchFeaturedPipelines(limit: number = 3) {
     const { data, error } = await supabase
       .from("pipelines")
       .select("*")
-      .eq("featured", true)
+      .eq("is_featured", true)
       .limit(limit);
 
     if (error) {
