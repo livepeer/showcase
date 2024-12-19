@@ -104,12 +104,6 @@ const StreamForm = forwardRef(
           pipeline_params: isComfyPipeline ? convertToJsonObjectIfNecessary(inputValues[inputs?.primary?.id], "Failed to parse the comfy json provided when calling getFormData."): inputValues,
         }),
         isFormValid: (): boolean => {
-          // Check for no orchestrators error first
-          if (selectedStream?.error?.toLowerCase().includes('no orchestrators available')) {
-            toast.info('We are reaching full capacity, please try it later', toastOptions);
-            return false;
-          }
-
           if (!selectedStream.name || !selectedPipeline.id) {
             toast.error("Stream must have a name and a pipeline", toastOptions);
             return false;

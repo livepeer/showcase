@@ -59,14 +59,10 @@ export async function upsertStream(body: any, userId: string) {
   if (!isUpdate) {
     const result = await createLivepeerStream(streamData?.name);
     if (result.error) {
-      const errorMessage = result.error.toLowerCase().includes('no orchestrators available')
-        ? 'We are reaching full capacity, please try it later'
-        : result.error;
       console.error(
         "Error creating livepeer stream. Perhaps the Livepeer Studio API Key is not configured?",
         result.error
       );
-      return { data: null, error: errorMessage };
     } else {
       livepeerStream = result.stream;
     }
