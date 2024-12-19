@@ -65,13 +65,14 @@ export default function Output({
   return (
     <div className="flex flex-col h-full relative">
       <div className="flex-shrink-0 flex justify-end mb-4 space-x-4">
-        {streamInfo?.output_stream_url ? (
+        <div className="text-muted-foreground">
+              Your stream may take up to 90 seconds to start.
+        </div>
+        {streamInfo?.output_stream_url && (
           <Button variant="outline" onClick={() => copyLogs()}>
             <Copy className="mr-2" /> Copy logs
           </Button>
-        ) : (<div className="text-muted-foreground">
-              Your stream may take up to 90 seconds to start.
-        </div>)}
+        )}
         <Button
           variant="outline"
           onClick={() => setShowModelInfo(!showModelInfo)}
