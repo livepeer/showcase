@@ -3,19 +3,29 @@
 import { useEffect } from 'react';
 import track from '@/lib/track';
 import { usePrivy } from '@privy-io/react-auth';
-
+import mixpanel from 'mixpanel-browser';
+import { mixpanel as mixpanelConfig } from '@/lib/env';
 async function identifyUser(userId: string, anonymousId: string) {
   try {
-    const response = await fetch(`/api/mixpanel/identify`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        distinct_id: userId,
-        anonymous_id: anonymousId,
-      }),
+   
+    console.log("identifyUser userId:", userId);
+    mixpanel.identify(userId);
+    console.log("mixpanel.identify(userId);");
+
+    mixpanel.people.set({
+      $userId: userId,
+      last_login: new Date().toISOString(),
+      authenticated: true
     });
+
+    mixpanel.register({
+      user_id: userId,
+      user_type: 'authenticated'
+    });
+
+    mixpanel.alias(userId, anonymousId);
+    console.log("mixpanel.alias(userId, anonymousId);");
+
   } catch (error) {
     console.error("Error identifying user:", error);
   }
@@ -37,7 +47,10 @@ async function handleDistinctId(user: any) {
   if (!distinctId) {
     distinctId = crypto.randomUUID();
     localStorage.setItem('mixpanel_distinct_id', distinctId);
+    mixpanel.identify(distinctId);
   }
+
+  await identifyUser(user?.id, distinctId);
 
   return distinctId;
 }
@@ -93,7 +106,6 @@ function handleSessionEnd() {
 
 export default function SessionTracker() {
   const { user, authenticated, ready } = usePrivy();
-  
   useEffect(() => {
     if (!ready) return; // Don't initialize until Privy is ready and user is authenticated
 
