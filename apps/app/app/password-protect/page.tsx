@@ -20,14 +20,22 @@ export default function PasswordProtect() {
     }
   }, [router]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === CORRECT_PASSWORD) {
-      localStorage.setItem(LOCAL_STORAGE_KEY, 'true');
-      document.cookie = 'isVerified=true; path=/';
-      router.push('/');
-    } else {
-      setError('Incorrect password');
+    try {
+      if (password === CORRECT_PASSWORD) {
+        localStorage.setItem(LOCAL_STORAGE_KEY, 'true');
+        // Set cookie with proper attributes
+        document.cookie = `isVerified=true; path=/; max-age=86400`; // 24 hours
+        await router.push('/');
+        // Force a page refresh to ensure middleware picks up the new cookie
+        window.location.href = '/';
+      } else {
+        setError('Incorrect password');
+      }
+    } catch (error) {
+      console.error('Navigation error:', error);
+      setError('An error occurred. Please try again.');
     }
   };
 
