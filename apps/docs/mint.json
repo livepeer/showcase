@@ -78,7 +78,8 @@
       "group": "Pipeline Development",
       "pages": [
         "technical/develop-pipeline/what-is-pipeline",
-        "technical/develop-pipeline/create-your-first-pipeline"
+        "technical/develop-pipeline/create-your-first-pipeline",
+        "technical/develop-pipeline/add-sd-loras"
       ]
     },
     {
