@@ -1,5 +1,11 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse, NextRequest } from "next/server";
+import { compareSync } from "bcrypt-edge";
+import { createAdminServerClient } from "@repo/supabase";
+
+export const config = {
+  matcher: "/api/:path*",
+};
+
 
 export function middleware(request: NextRequest) {
   // Don't protect the password-protect page itself
@@ -14,9 +20,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/password-protect', request.url))
   }
 
-  return NextResponse.next()
-}
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-user-id", "123");
 
-export const config = {
-  matcher: '/:path*',
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
