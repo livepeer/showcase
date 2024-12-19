@@ -47,13 +47,6 @@ icon: "code"
         New-Item -ItemType SymbolicLink -Path "$realtimePath\ComfyUI\models" -Target "$comfyUIPath\models"
         ```
 
-        6. Run ComfyUI
-        ```powershell
-        cd ..\ComfyUI
-        conda activate comfyui
-        python main.py --listen
-        ```
-
         <Warning>
         If you need to delete the conda environment and start over, you can run the following commands:
         ```powershell
@@ -235,12 +228,12 @@ icon: "code"
 ## Step 2: Run ComfyUI
 1. From the devcontainer, run the following:
 ```bash
+conda activate comfyui
 cd /ComfyUI
 python main.py --listen
 ```
-You should see startup logs:
 <Info>
-It is normal for the tensorrt nodes to fail to import, as they are not compatible with ComfyUI alone and are used only by ComfyStream
+It is normal to see logs for the tensorrt nodes to failing to import, as they are not compatible with ComfyUI alone and are used only by ComfyStream
 </Info>
 ```
 Import times for custom nodes:
@@ -258,12 +251,12 @@ You can also set the interface with `--host`</Info>
 
 # Step 3: Run ComfyStream
 
-1. From the devcontainer, activate the `comfystream` conda environment:
+1. Activate the comfystream environment
 ```bash
 conda activate comfystream
 cd /comfystream
 ```
-2. Run ComfyStream
+2. Run ComfyStream:
 ```bash
 python server/app.py --workspace /ComfyUI --media-ports=5678 --host=0.0.0.0
 ```
