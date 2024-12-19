@@ -84,9 +84,14 @@ export default function Output({
       </div>
       <div className="bg-sidebar rounded-2xl relative h-[calc(100vh-16rem)] w-full">
         {streamInfo?.output_playback_id && (
-          <div className="w-full h-full  relative overflow-hidden z-10">
-            <LPPLayer output_playback_id={streamInfo?.output_playback_id} />
-          </div>
+          <>
+            <div className="absolute top-0 left-0 right-0 p-4 text-center text-muted-foreground bg-background/80 rounded-t-2xl border-b">
+              Your stream is loading. This may take up to 1 minute, so please be patient.
+            </div>
+            <div className="w-full h-full relative overflow-hidden z-10">
+              <LPPLayer output_playback_id={streamInfo?.output_playback_id} />
+            </div>
+          </>
         )}
       </div>
 
