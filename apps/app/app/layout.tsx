@@ -44,7 +44,7 @@ const RootLayout = ({ children }: RootLayoutProperties) => (
             </div>
           </GlobalSidebar>
         </SidebarProvider>
-        <Intercom />
+        {/* TODO: REENABLE WHEN SHIH-YU IS READY FOR IT <Intercom /> */}
       </DesignSystemProvider>
     </body>
   </html>
