@@ -24,17 +24,20 @@ export default function PasswordProtect() {
     e.preventDefault();
     try {
       if (password === CORRECT_PASSWORD) {
-        localStorage.setItem(LOCAL_STORAGE_KEY, 'true');
-        // Set cookie with proper attributes
-        document.cookie = `isVerified=true; path=/; max-age=86400`; // 24 hours
-        await router.push('/');
-        // Force a page refresh to ensure middleware picks up the new cookie
-        window.location.href = '/';
+        
+        // Set cookie with all necessary attributes
+        document.cookie = `isVerified=true; path=/; SameSite=Strict; secure=${window.location.protocol === 'https:'}`;
+        
+        // Small delay to ensure cookie is set
+        await new Promise(resolve => setTimeout(resolve, 100));
+     
+        // Force a hard refresh to the home page
+        window.location.replace('/');
       } else {
         setError('Incorrect password');
       }
     } catch (error) {
-      console.error('Navigation error:', error);
+      console.error('Submit error:', error);
       setError('An error occurred. Please try again.');
     }
   };
