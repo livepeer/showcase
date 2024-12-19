@@ -243,7 +243,7 @@ const StreamForm = forwardRef(
                     </Label>
                     <Input
                         type="text"
-                        placeholder={"Stream Name"}
+                        placeholder={"My First AI Stream"}
                         value={selectedStream?.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
                     />
@@ -262,7 +262,7 @@ const StreamForm = forwardRef(
                     </Label>
                     <Input
                         type="text"
-                        placeholder={"Stream Destination URL (RTMP)"}
+                        placeholder={"E.g., rtmp://twitch.tv/app/<stream_key>"}
                         value={selectedStream?.output_stream_url}
                         onChange={(e) => handleInputChange('output_stream_url', e.target.value)}
                     />
