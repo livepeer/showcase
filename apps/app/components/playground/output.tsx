@@ -73,7 +73,7 @@ export default function Output({
             <Copy className="mr-2" /> Copy logs
           </Button>
         )}
-        {/* COMMENTED OUT UNTIL WE HAVE TIME TO IMPLEMENT FETCHING PIPELINE DETAILS FROM THE DB
+        {/* TODO: COMMENTED OUT UNTIL WE HAVE TIME TO IMPLEMENT FETCHING PIPELINE DETAILS FROM THE DB
          <Button
           variant="outline"
           onClick={() => setShowModelInfo(!showModelInfo)}
