@@ -2,18 +2,19 @@
 
 import { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
+import { usePrivy } from '@privy-io/react-auth';
 
 export function VersionInfo() {
     const [copied, setCopied] = useState(false);
     const appVersion = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || 'dev';
 
     const handleCopy = async () => {
+        const { user } = usePrivy();
         const fullInfo = {
             version: appVersion,
             browser: navigator.userAgent,
             path: window.location.pathname,
-            // Add user ID if available in your auth context
-            // userId: session?.user?.id
+            userId: user?.id || 'anonymous'
         };
 
         await navigator.clipboard.writeText(JSON.stringify(fullInfo, null, 2));
