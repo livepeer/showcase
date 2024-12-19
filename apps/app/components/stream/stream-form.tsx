@@ -50,9 +50,11 @@ const StreamForm = forwardRef(
         richColors: true,
       };
 
-      const validateJson = (json: string) => {
+      const validateJson = (json: any) => {
         try {
-          JSON.parse(json);
+          typeof json !== "object"
+              ? JSON.parse(json as string)
+              : JSON.stringify(json);
           return {isValid: true, message: null};
         } catch (error: any) {
           return {isValid: false, message: error.message};
@@ -227,38 +229,42 @@ const StreamForm = forwardRef(
       return (
           <div className="flex flex-col gap-4 mt-5">
             <div className="flex items-center gap-8">
-              <h6>Pipeline</h6>
-              <Search onPipelineSelect={setSelectedPipeline} pipeline={selectedPipeline}/>
+              <div className="flex flex-col gap-2 max-w-md">
+                <Label className="text-muted-foreground">
+                      Pipeline
+                  </Label>
+                <Search onPipelineSelect={setSelectedPipeline} pipeline={selectedPipeline}/>
+              </div>
             </div>
 
             {(selectedStream?.pipelines || selectedPipeline) &&
                 <>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 max-w-md">
                     <Label className="text-muted-foreground">
                       Stream Name
                     </Label>
                     <Input
                         type="text"
-                        placeholder={"Stream Name"}
+                        placeholder={"My First AI Stream"}
                         value={selectedStream?.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
                     />
                   </div>
                   {stream?.stream_key && (
-                      <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-2 max-w-md">
                         <Label className="text-muted-foreground">
                           Stream Key
                         </Label>
                         {stream?.stream_key}
                       </div>
                   )}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 max-w-md">
                     <Label className="text-muted-foreground">
-                      Stream Destination
+                      Stream Target
                     </Label>
                     <Input
                         type="text"
-                        placeholder={"Stream Destination URL (RTMP)"}
+                        placeholder={"E.g., rtmp://twitch.tv/app/<stream_key>"}
                         value={selectedStream?.output_stream_url}
                         onChange={(e) => handleInputChange('output_stream_url', e.target.value)}
                     />
@@ -268,7 +274,7 @@ const StreamForm = forwardRef(
             }
             {/* Primary Input (Prompt) */}
             {inputs?.primary && (
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 max-w-md">
                   <Label className="text-muted-foreground">
                     {inputs?.primary.label}
                   </Label>
@@ -278,7 +284,7 @@ const StreamForm = forwardRef(
 
             {/* Advanced Settings Collapsible */}
             {inputs?.advanced && inputs.advanced.length > 0 && (
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 max-w-2xl">
                   <button
                       onClick={() => setIsOpen(!isOpen)}
                       className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -309,8 +315,8 @@ const StreamForm = forwardRef(
                                       <div
                                           key={input.id}
                                           className={cn({
-                                            "flex flex-col gap-2": true,
-                                            "flex flex-row justify-between items-center":
+                                            "flex flex-col gap-2 max-w-md": input.type !== "switch",
+                                            "flex flex-row justify-between items-center max-w-md":
                                                 input.type === "switch",
                                           })}
                                       >

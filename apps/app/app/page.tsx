@@ -6,12 +6,6 @@ import FeaturedPipelines from "@/components/welcome/featured";
 import { validateEnv } from "@/lib/env";
 import {validateServerEnv} from "@/lib/serverEnv";
 
-const title = "Livepeer Pipelines ";
-
-export const metadata: Metadata = {
-  title,
-};
-
 const App = async ({
   searchParams,
 }: {

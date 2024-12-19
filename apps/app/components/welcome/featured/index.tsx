@@ -90,7 +90,7 @@ export default function Winners() {
                 href={item.socialUrl}
                 target="_blank"
                 className={
-                  "flex items-center gap-1 overflow-hidden rounded-full bg-white px-2 py-0.5 text-black text-xs"
+                  "flex items-center gap-1 overflow-hidden bg-white px-2 py-0.5 text-black text-xs"
                 }
               >
                 {item.socialHandle}
