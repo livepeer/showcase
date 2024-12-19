@@ -10,6 +10,7 @@ import Intercom from "@/components/intercom";
 import { AlarmCheck } from "lucide-react";
 import AlphaBanner from "@/components/header/alpha-banner";
 import { Metadata } from "next";
+import SessionTracker from "@/components/analytics/SessionTracker";
 
 type RootLayoutProperties = {
   readonly children: ReactNode;
@@ -23,6 +24,7 @@ const RootLayout = ({ children }: RootLayoutProperties) => (
   <html lang="en" suppressHydrationWarning>
     <body className="bg-sidebar pt-10">
       <DesignSystemProvider defaultTheme="dark">
+        <SessionTracker />
         <AlphaBanner />
         <SidebarProvider>
           <GlobalSidebar>
