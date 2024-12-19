@@ -73,12 +73,13 @@ export default function Output({
             <Copy className="mr-2" /> Copy logs
           </Button>
         )}
-        <Button
+        {/* COMMENTED OUT UNTIL WE HAVE TIME TO IMPLEMENT FETCHING PIPELINE DETAILS FROM THE DB
+         <Button
           variant="outline"
           onClick={() => setShowModelInfo(!showModelInfo)}
         >
           <Info className="mr-2" /> Pipeline Details
-        </Button>
+        </Button> */}
         <Button variant="outline" asChild>
           <Link href={"/stream/create?pipeline=" + pipeline.id}>
             <ArrowTopRightIcon className="mr-2" /> Create Stream
