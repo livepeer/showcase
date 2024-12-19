@@ -43,13 +43,13 @@ export default function PasswordProtect() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="w-full max-w-md space-y-8 p-6">
+    <div className="h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-md p-6 bg-card rounded-lg shadow-lg">
         <div className="text-center">
-          <h2 className="text-2xl font-bold">Password Required</h2>
-          <p className="mt-2 text-gray-600">Please enter the password to access the site</p>
+          <h2 className="text-2xl font-bold text-foreground">Password Required</h2>
+          <p className="mt-2 text-muted-foreground">Please enter the password to access the site</p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <Input
             type="password"
             value={password}
@@ -57,7 +57,7 @@ export default function PasswordProtect() {
             placeholder="Enter password"
             className="w-full"
           />
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-destructive text-sm">{error}</p>}
           <Button type="submit" className="w-full">
             Submit
           </Button>
