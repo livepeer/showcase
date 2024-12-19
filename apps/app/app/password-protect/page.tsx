@@ -24,6 +24,7 @@ export default function PasswordProtect() {
     e.preventDefault();
     if (password === CORRECT_PASSWORD) {
       localStorage.setItem(LOCAL_STORAGE_KEY, 'true');
+      document.cookie = 'isVerified=true; path=/';
       router.push('/');
     } else {
       setError('Incorrect password');
