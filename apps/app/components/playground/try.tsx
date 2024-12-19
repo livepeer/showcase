@@ -326,7 +326,7 @@ export default function Try({
               <BroadcastWithControls ingestUrl={streamUrl} />
             ) : (
               <p className="text-muted-foreground">
-                Your stream is loading. This may take up to 1 minute, so please be patient.
+                Waiting for webcam to start...
               </p>
             )}
           </div>
