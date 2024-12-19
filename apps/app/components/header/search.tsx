@@ -12,7 +12,7 @@ import { Input } from "@repo/design-system/components/ui/input";
 import { Button } from "@repo/design-system/components/ui/button";
 import React, { useState, useEffect } from "react";
 import track from "@/lib/track";
-import { fetchPipelines } from "./fetchPipelines";
+import { fetchPipelines, fetchFeaturedPipelines } from "./fetchPipelines";
 import { LoaderCircleIcon } from "lucide-react";
 
 export default function Search({ pipeline, onPipelineSelect }: { pipeline?: any; onPipelineSelect?: (pipeline: any) => void }) {
@@ -21,6 +21,17 @@ export default function Search({ pipeline, onPipelineSelect }: { pipeline?: any;
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [featuredPipelines, setFeaturedPipelines] = useState<any>([]);
+
+  useEffect(() => {
+    if (open) {
+      const loadFeaturedPipelines = async () => {
+        const featured = await fetchFeaturedPipelines();
+        setFeaturedPipelines(featured);
+      };
+      loadFeaturedPipelines();
+    }
+  }, [open]);
 
   const selectPipeline = (pipeline: any) => {
     if (!pipeline) {
@@ -75,6 +86,17 @@ export default function Search({ pipeline, onPipelineSelect }: { pipeline?: any;
                 <div className="flex justify-center items-center py-4">
                   <LoaderCircleIcon className="w-8 h-8 animate-spin" />
                 </div>
+            ) : query.length === 0 ? (
+                <CommandGroup heading="Featured Pipelines">
+                  {featuredPipelines.map((pipeline: any) => (
+                      <CommandItem
+                          key={pipeline.id}
+                          onSelect={() => selectPipeline(pipeline)}
+                      >
+                        {pipeline.name}
+                      </CommandItem>
+                  ))}
+                </CommandGroup>
             ) : results.length === 0 && query.length >= 3 ? (
                 <CommandEmpty>No results found.</CommandEmpty>
             ) : results.length === 0 && query.length < 3 ? (
